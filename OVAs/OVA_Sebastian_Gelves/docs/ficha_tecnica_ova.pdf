@@ -1,0 +1,189 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 5 0 R >>
+endobj
+5 0 obj
+<< /Length 2812 >>
+stream
+BT
+/F1 11 Tf
+/F1 18 Tf
+50 772 Td (Ficha tecnica del proyecto) Tj
+-50 -26 Td
+/F1 13 Tf
+50 746 Td (Objeto Virtual de Aprendizaje \(OVA\)) Tj
+-50 -18 Td
+/F1 11 Tf
+50 728 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 705 Td (Datos generales) Tj
+-50 -20 Td
+/F1 11 Tf
+50 685 Td (Proyecto: Objeto Virtual de Aprendizaje) Tj
+-50 -15 Td
+/F1 11 Tf
+50 670 Td (Tema: 6. Propiedades de los sistemas) Tj
+-50 -15 Td
+/F1 11 Tf
+50 655 Td (Autor: Gelves Triana Sebastian) Tj
+-50 -15 Td
+/F1 11 Tf
+50 640 Td (Asignatura: Teoria General de Sistemas) Tj
+-50 -15 Td
+/F1 11 Tf
+50 625 Td (Formato: pagina web interactiva para localhost y publicacion web) Tj
+-50 -15 Td
+/F1 11 Tf
+50 610 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 587 Td (Objetivo general) Tj
+-50 -20 Td
+/F1 11 Tf
+50 567 Td (Disenar e implementar una OVA funcional, accesible y didactica que explique las propiedades) Tj
+-50 -15 Td
+/F1 11 Tf
+50 552 Td (de los sistemas y permita practicar el tema mediante recursos interactivos.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 537 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 514 Td (Objetivos especificos) Tj
+-50 -20 Td
+/F1 11 Tf
+50 494 Td (- Sintetizar el marco conceptual de las propiedades de los sistemas.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 479 Td (- Relacionar sinergia, totalidad, retroalimentacion, emergencia, entropia, limites, entorno,) Tj
+-50 -15 Td
+/F1 11 Tf
+50 464 Td (jerarquia y equifinalidad con casos reales.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 449 Td (- Incorporar ejercicios con retroalimentacion, juegos y quiz automatico.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 434 Td (- Preparar el proyecto para ejecucion local y publicacion en una plataforma web.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 419 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 396 Td (Herramientas usadas) Tj
+-50 -20 Td
+/F1 11 Tf
+50 376 Td (- Python 3 para servidor local.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 361 Td (- HTML5, CSS3 y JavaScript.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 346 Td (- Canvas para simulaciones visuales.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 331 Td (- SVG local como mapa conceptual.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 316 Td (- Apoyo de IA para generacion y organizacion del codigo.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 301 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 278 Td (Componentes de la OVA) Tj
+-50 -20 Td
+/F1 11 Tf
+50 258 Td (Contextualizacion, marco teorico, ejemplos aplicados, simulador, glosario buscable, mision) Tj
+-50 -15 Td
+/F1 11 Tf
+50 243 Td (integradora Campus Vivo, modelo iceberg, radar sistemico, ejercicios, tres juegos) Tj
+-50 -15 Td
+/F1 11 Tf
+50 228 Td (interactivos, videos reales de YouTube, pasaporte de progreso, credencial imprimible, quiz) Tj
+-50 -15 Td
+/F1 11 Tf
+50 213 Td (automatico, creditos y referencias.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 198 Td () Tj
+-50 -15 Td
+/F1 14 Tf
+50 175 Td (Referencias) Tj
+-50 -20 Td
+/F1 11 Tf
+50 155 Td (von Bertalanffy, L. \(1968\). General System Theory: Foundations, Development, Applications.) Tj
+-50 -15 Td
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R >> >> /Contents 7 0 R >>
+endobj
+7 0 obj
+<< /Length 1151 >>
+stream
+BT
+/F1 11 Tf
+/F1 11 Tf
+50 780 Td (George Braziller.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 765 Td (Meadows, D. H. \(2008\). Thinking in Systems: A Primer. Chelsea Green Publishing.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 750 Td (Checkland, P. \(1981\). Systems Thinking, Systems Practice. John Wiley & Sons.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 735 Td (Arnold, R. D., & Wade, J. P. \(2015\). A Definition of Systems Thinking: A Systems Approach.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 720 Td (Procedia Computer Science, 44, 669-678. https://doi.org/10.1016/j.procs.2015.03.050) Tj
+-50 -15 Td
+/F1 11 Tf
+50 705 Td (Donella Meadows Project. Systems Thinking Resources. https://donellameadows.org/systems-) Tj
+-50 -15 Td
+/F1 11 Tf
+50 690 Td (thinking-resources/) Tj
+-50 -15 Td
+/F1 11 Tf
+50 675 Td (Donella Meadows Project. Sustainable Systems Lecture.) Tj
+-50 -15 Td
+/F1 11 Tf
+50 660 Td (https://donellameadows.org/sustainable-systems-videos/) Tj
+-50 -15 Td
+/F1 11 Tf
+50 645 Td (Videos de YouTube verificados: https://www.youtube.com/watch?v=A_BtS008J0k,) Tj
+-50 -15 Td
+/F1 11 Tf
+50 630 Td (https://www.youtube.com/watch?v=HMmChiLZZHg y https://www.youtube.com/watch?v=HuIoego-xVc) Tj
+-50 -15 Td
+ET
+endstream
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000127 00000 n 
+0000000224 00000 n 
+0000000350 00000 n 
+0000003214 00000 n 
+0000003340 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+4543
+%%EOF

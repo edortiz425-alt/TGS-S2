@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Mapa visual de propiedades de los sistemas</title>
+  <desc id="desc">Diagrama con un sistema central conectado a propiedades como sinergia, retroalimentacion, emergencia, limites, entorno, entropia, equifinalidad y jerarquia.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset=".55" stop-color="#eef7f4"/>
+      <stop offset="1" stop-color="#fff4ea"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset=".55" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#e11d48"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0f172a" flood-opacity=".14"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="760" rx="34" fill="url(#bg)"/>
+  <g opacity=".18" fill="none" stroke="#0f172a">
+    <path d="M82 622 C252 444 339 638 486 450 S778 272 1082 370"/>
+    <path d="M125 164 C321 350 447 92 601 256 S869 572 1076 160"/>
+    <path d="M156 380 C352 240 501 549 680 395 S932 264 1045 485"/>
+  </g>
+  <g stroke="#334155" stroke-width="4" fill="none" marker-end="url(#arrow)" opacity=".72">
+    <path d="M562 336 L317 180"/>
+    <path d="M642 329 L888 166"/>
+    <path d="M703 393 L1001 380"/>
+    <path d="M657 457 L896 590"/>
+    <path d="M548 467 L301 604"/>
+    <path d="M494 395 L190 388"/>
+    <path d="M573 289 L508 95"/>
+    <path d="M628 501 L660 675"/>
+  </g>
+  <g filter="url(#soft)">
+    <circle cx="600" cy="390" r="122" fill="url(#core)"/>
+    <circle cx="600" cy="390" r="94" fill="#ffffff" opacity=".13"/>
+    <text x="600" y="371" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="800" fill="#fff">SISTEMA</text>
+    <text x="600" y="412" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#fff">elementos + relaciones + proposito</text>
+  </g>
+  <g font-family="Arial, Helvetica, sans-serif" filter="url(#soft)">
+    <g transform="translate(118 118)">
+      <rect width="245" height="116" rx="22" fill="#ffffff"/>
+      <circle cx="54" cy="58" r="26" fill="#ccfbf1"/>
+      <text x="54" y="66" text-anchor="middle" font-size="28" font-weight="800" fill="#0f766e">+</text>
+      <text x="94" y="52" font-size="24" font-weight="800" fill="#0f172a">Sinergia</text>
+      <text x="94" y="80" font-size="15" fill="#475569">El todo supera la suma.</text>
+    </g>
+    <g transform="translate(779 104)">
+      <rect width="292" height="124" rx="22" fill="#ffffff"/>
+      <circle cx="58" cy="62" r="27" fill="#dbeafe"/>
+      <text x="58" y="70" text-anchor="middle" font-size="26" font-weight="800" fill="#2563eb">↻</text>
+      <text x="103" y="54" font-size="24" font-weight="800" fill="#0f172a">Retroalimentacion</text>
+      <text x="103" y="83" font-size="15" fill="#475569">El resultado vuelve como informacion.</text>
+    </g>
+    <g transform="translate(942 322)">
+      <rect width="198" height="116" rx="22" fill="#ffffff"/>
+      <circle cx="52" cy="58" r="26" fill="#ffe4e6"/>
+      <text x="52" y="66" text-anchor="middle" font-size="26" font-weight="800" fill="#e11d48">✦</text>
+      <text x="90" y="52" font-size="24" font-weight="800" fill="#0f172a">Emergencia</text>
+      <text x="90" y="80" font-size="15" fill="#475569">Aparecen patrones nuevos.</text>
+    </g>
+    <g transform="translate(782 544)">
+      <rect width="270" height="116" rx="22" fill="#ffffff"/>
+      <circle cx="55" cy="58" r="26" fill="#ffedd5"/>
+      <text x="55" y="66" text-anchor="middle" font-size="24" font-weight="800" fill="#ea580c">≈</text>
+      <text x="94" y="52" font-size="24" font-weight="800" fill="#0f172a">Equifinalidad</text>
+      <text x="94" y="80" font-size="15" fill="#475569">Rutas distintas pueden llegar al mismo fin.</text>
+    </g>
+    <g transform="translate(148 552)">
+      <rect width="275" height="118" rx="22" fill="#ffffff"/>
+      <circle cx="57" cy="59" r="26" fill="#fef9c3"/>
+      <text x="57" y="67" text-anchor="middle" font-size="26" font-weight="800" fill="#ca8a04">△</text>
+      <text x="98" y="53" font-size="24" font-weight="800" fill="#0f172a">Jerarquia</text>
+      <text x="98" y="82" font-size="15" fill="#475569">Subsistemas dentro de sistemas mayores.</text>
+    </g>
+    <g transform="translate(61 331)">
+      <rect width="245" height="116" rx="22" fill="#ffffff"/>
+      <circle cx="54" cy="58" r="26" fill="#e0e7ff"/>
+      <text x="54" y="66" text-anchor="middle" font-size="24" font-weight="800" fill="#4f46e5">[]</text>
+      <text x="94" y="52" font-size="24" font-weight="800" fill="#0f172a">Limites</text>
+      <text x="94" y="80" font-size="15" fill="#475569">Separan sistema y entorno.</text>
+    </g>
+    <g transform="translate(404 44)">
+      <rect width="236" height="112" rx="22" fill="#ffffff"/>
+      <circle cx="54" cy="56" r="26" fill="#dcfce7"/>
+      <text x="54" y="64" text-anchor="middle" font-size="24" font-weight="800" fill="#16a34a">≋</text>
+      <text x="93" y="50" font-size="24" font-weight="800" fill="#0f172a">Entorno</text>
+      <text x="93" y="78" font-size="15" fill="#475569">Intercambia energia e informacion.</text>
+    </g>
+    <g transform="translate(532 618)">
+      <rect width="250" height="112" rx="22" fill="#ffffff"/>
+      <circle cx="54" cy="56" r="26" fill="#f3e8ff"/>
+      <text x="54" y="64" text-anchor="middle" font-size="24" font-weight="800" fill="#9333ea">!</text>
+      <text x="93" y="50" font-size="24" font-weight="800" fill="#0f172a">Entropia</text>
+      <text x="93" y="78" font-size="15" fill="#475569">Desorden si no entra informacion util.</text>
+    </g>
+  </g>
+</svg>

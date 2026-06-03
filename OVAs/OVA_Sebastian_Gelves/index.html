@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="OVA interactiva sobre propiedades de los sistemas para Teoria General de Sistemas.">
+    <title>OVA | Propiedades de los sistemas</title>
+    <link rel="stylesheet" href="assets/styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <header class="topbar" aria-label="Barra superior">
+      <div class="brand" aria-label="Identidad de la OVA">
+        <span class="brand-mark">TGS</span>
+        <span>
+          <strong>Propiedades de los sistemas</strong>
+          <small>OVA interactiva - Tema 6</small>
+        </span>
+      </div>
+      <nav class="nav" aria-label="Navegacion principal">
+        <a href="#inicio">Inicio</a>
+        <a href="#conceptos">Conceptos</a>
+        <a href="#laboratorio">Laboratorio</a>
+        <a href="#mision">Mision</a>
+        <a href="#juegos">Juegos</a>
+        <a href="#videos">Videos</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#creditos">Creditos</a>
+      </nav>
+      <div class="top-actions">
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Cambiar tema" title="Cambiar tema">◐</button>
+      </div>
+    </header>
+
+    <aside class="progress-dock" aria-label="Pasaporte de progreso">
+      <div>
+        <span>Pasaporte OVA</span>
+        <strong id="progress-percent">0%</strong>
+      </div>
+      <progress id="overall-progress" max="100" value="0"></progress>
+      <div class="progress-actions">
+        <button class="small-button" id="certificate-button" type="button">Credencial</button>
+        <button class="small-button" id="reset-progress" type="button">Reiniciar</button>
+      </div>
+    </aside>
+
+    <main id="contenido">
+      <section class="hero section-band" id="inicio">
+        <div class="hero-copy">
+          <p class="eyebrow">Objeto Virtual de Aprendizaje</p>
+          <h1>Comprende un sistema por lo que emerge entre sus partes.</h1>
+          <p class="lead">
+            Esta OVA explica las propiedades esenciales de los sistemas: sinergia, interdependencia,
+            limites, entorno, jerarquia, retroalimentacion, emergencia, entropia, equifinalidad y resiliencia.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#laboratorio">Explorar simulador</a>
+            <a class="button secondary" href="#juegos">Practicar con juegos</a>
+          </div>
+          <dl class="quick-stats" aria-label="Resumen de la OVA">
+            <div>
+              <dt>3</dt>
+              <dd>juegos</dd>
+            </div>
+            <div>
+              <dt>10</dt>
+              <dd>preguntas</dd>
+            </div>
+            <div>
+              <dt>3</dt>
+              <dd>videos</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="system-stage" aria-label="Visualizacion animada de sistema">
+          <canvas id="system-canvas" width="760" height="520"></canvas>
+          <div class="stage-panel">
+            <span>Estado del sistema</span>
+            <strong id="stage-status">Conectado</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-band white" id="contexto">
+        <div class="section-heading">
+          <p class="eyebrow">Contextualizacion</p>
+          <h2>Por que importan las propiedades de un sistema</h2>
+          <p>
+            En Teoria General de Sistemas, un sistema no se entiende solo listando sus piezas.
+            Lo decisivo es reconocer como se relacionan, como intercambian informacion con el entorno
+            y como producen comportamientos que no aparecen en elementos aislados.
+          </p>
+        </div>
+        <div class="context-grid">
+          <article class="info-block">
+            <h3>Justificacion</h3>
+            <p>
+              Las propiedades permiten analizar organizaciones, ecosistemas, software, familias,
+              ciudades y procesos academicos como totalidades dinamicas. Identificarlas ayuda a
+              anticipar consecuencias, mejorar decisiones y evitar soluciones parciales.
+            </p>
+          </article>
+          <article class="info-block">
+            <h3>Objetivo general</h3>
+            <p>
+              Explicar y aplicar las principales propiedades de los sistemas mediante actividades
+              interactivas que conectan teoria, ejemplos reales y evaluacion automatica.
+            </p>
+          </article>
+          <article class="info-block">
+            <h3>Objetivos especificos</h3>
+            <ul class="clean-list">
+              <li>Reconocer propiedades sistemicas en casos cotidianos.</li>
+              <li>Diferenciar propiedades estructurales, funcionales y dinamicas.</li>
+              <li>Aplicar retroalimentacion y equifinalidad en ejercicios.</li>
+              <li>Evaluar el aprendizaje con juegos y quiz automatico.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band" id="conceptos">
+        <div class="section-heading">
+          <p class="eyebrow">Marco conceptual</p>
+          <h2>Propiedades clave de los sistemas</h2>
+          <p>
+            La TGS propone mirar los fenomenos como totalidades organizadas. Estas propiedades
+            explican por que una empresa, una celula o una red social pueden cambiar aunque sus
+            componentes individuales parezcan iguales.
+          </p>
+        </div>
+
+        <div class="property-layout">
+          <figure class="visual-card">
+            <img src="assets/system-network.svg" alt="Mapa visual de propiedades de los sistemas">
+            <figcaption>Mapa conceptual local creado para esta OVA.</figcaption>
+          </figure>
+
+          <div class="property-grid" id="property-grid">
+            <article class="property-card" data-type="estructura">
+              <span class="chip">Estructural</span>
+              <h3>Totalidad</h3>
+              <p>El sistema se interpreta como un conjunto organizado; cambiar una parte puede afectar el comportamiento global.</p>
+            </article>
+            <article class="property-card" data-type="estructura">
+              <span class="chip">Estructural</span>
+              <h3>Sinergia</h3>
+              <p>La interaccion coordinada produce un resultado superior o distinto al de las partes por separado.</p>
+            </article>
+            <article class="property-card" data-type="estructura">
+              <span class="chip">Estructural</span>
+              <h3>Interdependencia</h3>
+              <p>Los elementos dependen entre si mediante flujos de energia, informacion, recursos o decisiones.</p>
+            </article>
+            <article class="property-card" data-type="frontera">
+              <span class="chip">Frontera</span>
+              <h3>Limites y entorno</h3>
+              <p>Los limites definen que pertenece al sistema; el entorno aporta presiones, recursos y restricciones.</p>
+            </article>
+            <article class="property-card" data-type="dinamica">
+              <span class="chip">Dinamica</span>
+              <h3>Retroalimentacion</h3>
+              <p>La salida del sistema vuelve como informacion. Puede estabilizar el comportamiento o amplificar cambios.</p>
+            </article>
+            <article class="property-card" data-type="dinamica">
+              <span class="chip">Dinamica</span>
+              <h3>Emergencia</h3>
+              <p>Aparecen patrones nuevos que no se explican por una pieza aislada, sino por la red de relaciones.</p>
+            </article>
+            <article class="property-card" data-type="dinamica">
+              <span class="chip">Dinamica</span>
+              <h3>Entropia y neguentropia</h3>
+              <p>Sin energia o informacion util aumenta el desorden; con organizacion y aprendizaje el sistema se renueva.</p>
+            </article>
+            <article class="property-card" data-type="resultado">
+              <span class="chip">Resultado</span>
+              <h3>Equifinalidad</h3>
+              <p>Diferentes rutas o condiciones iniciales pueden conducir a un mismo resultado final.</p>
+            </article>
+            <article class="property-card" data-type="estructura">
+              <span class="chip">Estructural</span>
+              <h3>Jerarquia</h3>
+              <p>Un sistema puede contener subsistemas y, al mismo tiempo, pertenecer a un suprasistema.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="glossary-panel" aria-label="Brujula conceptual">
+          <div class="glossary-copy">
+            <p class="eyebrow">Brujula conceptual</p>
+            <h3>Busca una propiedad y conecta su idea central</h3>
+            <p>
+              Usa este glosario como apoyo de sustentacion: cada termino tiene una explicacion corta,
+              una pista para reconocerlo y una pregunta guia para aplicarlo.
+            </p>
+          </div>
+          <div class="glossary-tool">
+            <label class="search-label" for="glossary-search">Buscar propiedad</label>
+            <input id="glossary-search" type="search" placeholder="Ej: sinergia, entropia, limites">
+            <div class="glossary-list" id="glossary-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-band white" id="ejemplos">
+        <div class="section-heading">
+          <p class="eyebrow">Casos reales</p>
+          <h2>Ejemplos aplicados</h2>
+        </div>
+        <div class="examples-grid">
+          <article class="example-card">
+            <span class="number">01</span>
+            <h3>Hospital en urgencias</h3>
+            <p>
+              Pacientes, medicos, triage, camas, laboratorio y ambulancias forman un sistema.
+              Si el laboratorio se retrasa, cambia el flujo completo. La retroalimentacion del
+              triage ayuda a priorizar y estabilizar la atencion.
+            </p>
+            <strong>Propiedades: interdependencia, limites, retroalimentacion.</strong>
+          </article>
+          <article class="example-card">
+            <span class="number">02</span>
+            <h3>Transporte urbano</h3>
+            <p>
+              Una via cerrada modifica rutas, tiempos, consumo de combustible y decisiones de
+              los usuarios. El trafico emergente no depende de un solo conductor, sino de miles
+              de interacciones simultaneas.
+            </p>
+            <strong>Propiedades: emergencia, entorno, entropia.</strong>
+          </article>
+          <article class="example-card">
+            <span class="number">03</span>
+            <h3>Tienda en linea</h3>
+            <p>
+              Inventario, pagos, proveedores, repartidores y servicio al cliente se coordinan.
+              Dos tiendas pueden llegar al mismo nivel de satisfaccion usando rutas distintas:
+              mejor logistica, mejor soporte o mejores pronosticos.
+            </p>
+            <strong>Propiedades: sinergia, equifinalidad, jerarquia.</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band lab" id="laboratorio">
+        <div class="section-heading">
+          <p class="eyebrow">Laboratorio interactivo</p>
+          <h2>Simula como cambian las propiedades</h2>
+          <p>
+            Ajusta las variables y observa como la red cambia de estabilidad, emergencia y entropia.
+            La idea es experimentar antes de responder los ejercicios.
+          </p>
+        </div>
+        <div class="lab-grid">
+          <div class="simulator">
+            <canvas id="lab-canvas" width="840" height="520"></canvas>
+          </div>
+          <aside class="control-panel" aria-label="Controles del simulador">
+            <label>
+              Conectividad
+              <input id="control-coupling" type="range" min="1" max="100" value="62">
+            </label>
+            <label>
+              Fuerza de retroalimentacion
+              <input id="control-feedback" type="range" min="1" max="100" value="54">
+            </label>
+            <label>
+              Ruido del entorno
+              <input id="control-noise" type="range" min="1" max="100" value="34">
+            </label>
+            <div class="metric-list">
+              <div>
+                <span>Estabilidad</span>
+                <strong id="metric-stability">0%</strong>
+              </div>
+              <div>
+                <span>Emergencia</span>
+                <strong id="metric-emergence">0%</strong>
+              </div>
+              <div>
+                <span>Entropia</span>
+                <strong id="metric-entropy">0%</strong>
+              </div>
+            </div>
+            <p id="lab-feedback" class="feedback-text" aria-live="polite"></p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section-band white mission" id="mision">
+        <div class="section-heading">
+          <p class="eyebrow">Mision integradora</p>
+          <h2>Rescata el Campus Vivo</h2>
+          <p>
+            Analiza un caso completo como si fueras consultor sistemico. Debes identificar propiedades,
+            proponer intervenciones y justificar por que el sistema cambia como totalidad.
+          </p>
+        </div>
+
+        <div class="mission-grid">
+          <article class="mission-brief">
+            <span class="chip">Caso realista</span>
+            <h3>El problema</h3>
+            <p>
+              En una institucion educativa aumentaron retrasos, fallas de comunicacion y quejas.
+              Cada area intenta resolver su parte, pero las soluciones aisladas generan nuevos cuellos
+              de botella. La rectoria pide un diagnostico sistemico en 10 minutos.
+            </p>
+            <ol class="timeline">
+              <li><strong>Semana 1:</strong> secretaria cambia horarios sin avisar a biblioteca.</li>
+              <li><strong>Semana 2:</strong> estudiantes reciben informacion contradictoria.</li>
+              <li><strong>Semana 3:</strong> docentes duplican reportes y aumenta el cansancio.</li>
+              <li><strong>Semana 4:</strong> se crea una mesa de feedback con datos comunes.</li>
+            </ol>
+          </article>
+
+          <article class="mission-console">
+            <div class="game-header">
+              <div>
+                <span class="chip">Diagnostico</span>
+                <h3>Selecciona las propiedades presentes</h3>
+              </div>
+              <strong id="mission-score">0/5</strong>
+            </div>
+            <div class="mission-options" id="mission-options">
+              <button type="button" data-property="interdependencia" data-correct="true">Interdependencia</button>
+              <button type="button" data-property="retroalimentacion" data-correct="true">Retroalimentacion</button>
+              <button type="button" data-property="entropia" data-correct="true">Entropia</button>
+              <button type="button" data-property="limites" data-correct="true">Limites</button>
+              <button type="button" data-property="jerarquia" data-correct="true">Jerarquia</button>
+              <button type="button" data-property="equifinalidad" data-correct="false">Equifinalidad</button>
+              <button type="button" data-property="aislamiento" data-correct="false">Aislamiento total</button>
+              <button type="button" data-property="azar" data-correct="false">Azar sin relaciones</button>
+            </div>
+            <button class="button primary" id="analyze-mission" type="button">Analizar caso</button>
+            <div class="mission-result" id="mission-result" aria-live="polite"></div>
+          </article>
+
+          <article class="radar-card">
+            <span class="chip">Radar sistemico</span>
+            <h3>Lectura del sistema</h3>
+            <canvas id="radar-canvas" width="560" height="420"></canvas>
+            <p id="radar-caption">Selecciona propiedades para construir el diagnostico visual.</p>
+          </article>
+
+          <article class="iceberg-card">
+            <span class="chip">Modelo iceberg</span>
+            <h3>Del sintoma a la causa</h3>
+            <div class="iceberg-layers" id="iceberg-layers">
+              <button type="button" data-layer="evento">Evento</button>
+              <button type="button" data-layer="patron">Patron</button>
+              <button type="button" data-layer="estructura">Estructura</button>
+              <button type="button" data-layer="mental">Modelo mental</button>
+            </div>
+            <p id="iceberg-text">Elige una capa para ver como se profundiza el analisis sistemico.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band white" id="ejercicios">
+        <div class="section-heading">
+          <p class="eyebrow">Ejercicios con retroalimentacion</p>
+          <h2>Aplica el concepto antes del quiz</h2>
+        </div>
+        <div class="exercise-grid">
+          <article class="exercise-card" data-answer="retroalimentacion">
+            <h3>Ejercicio 1</h3>
+            <p>Una universidad encuesta a sus estudiantes y ajusta horarios segun los resultados. Que propiedad se observa?</p>
+            <div class="choice-row">
+              <button type="button" data-choice="entropia">Entropia</button>
+              <button type="button" data-choice="retroalimentacion">Retroalimentacion</button>
+              <button type="button" data-choice="jerarquia">Jerarquia</button>
+            </div>
+            <p class="exercise-feedback" aria-live="polite"></p>
+          </article>
+          <article class="exercise-card" data-answer="emergencia">
+            <h3>Ejercicio 2</h3>
+            <p>En redes sociales, una tendencia se vuelve viral aunque ningun usuario individual controle el resultado. Que propiedad domina?</p>
+            <div class="choice-row">
+              <button type="button" data-choice="sinergia">Sinergia</button>
+              <button type="button" data-choice="emergencia">Emergencia</button>
+              <button type="button" data-choice="limites">Limites</button>
+            </div>
+            <p class="exercise-feedback" aria-live="polite"></p>
+          </article>
+          <article class="exercise-card" data-answer="equifinalidad">
+            <h3>Ejercicio 3</h3>
+            <p>Dos empresas aumentan ventas: una mejora publicidad y otra mejora entregas. Llegan al mismo resultado por caminos distintos.</p>
+            <div class="choice-row">
+              <button type="button" data-choice="equifinalidad">Equifinalidad</button>
+              <button type="button" data-choice="entorno">Entorno</button>
+              <button type="button" data-choice="totalidad">Totalidad</button>
+            </div>
+            <p class="exercise-feedback" aria-live="polite"></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band games" id="juegos">
+        <div class="section-heading">
+          <p class="eyebrow">Juegos interactivos</p>
+          <h2>Aprendizaje activo</h2>
+          <p>La rubrica pide minimo 2 juegos; esta OVA incluye 3 para reforzar conceptos desde varios angulos.</p>
+        </div>
+
+        <div class="game-grid">
+          <article class="game-card wide">
+            <div class="game-header">
+              <div>
+                <span class="chip">Juego 1</span>
+                <h3>Conecta la propiedad</h3>
+              </div>
+              <button type="button" class="small-button" id="reset-match">Reiniciar</button>
+            </div>
+            <div class="match-game">
+              <div class="term-bank" aria-label="Propiedades para arrastrar">
+                <button class="term-chip" draggable="true" data-match="sinergia" type="button">Sinergia</button>
+                <button class="term-chip" draggable="true" data-match="entropia" type="button">Entropia</button>
+                <button class="term-chip" draggable="true" data-match="limites" type="button">Limites</button>
+                <button class="term-chip" draggable="true" data-match="equifinalidad" type="button">Equifinalidad</button>
+              </div>
+              <div class="drop-grid">
+                <div class="drop-zone" data-answer="limites">Define que queda dentro o fuera del sistema.</div>
+                <div class="drop-zone" data-answer="equifinalidad">Distintos caminos alcanzan un mismo resultado.</div>
+                <div class="drop-zone" data-answer="sinergia">La colaboracion produce valor adicional.</div>
+                <div class="drop-zone" data-answer="entropia">Tendencia al desorden si no hay organizacion.</div>
+              </div>
+            </div>
+            <p id="match-score" class="score-line" aria-live="polite">Puntaje: 0/4</p>
+          </article>
+
+          <article class="game-card">
+            <div class="game-header">
+              <div>
+                <span class="chip">Juego 2</span>
+                <h3>Caza bucles</h3>
+              </div>
+              <strong id="loop-count">1/5</strong>
+            </div>
+            <p id="loop-scenario" class="scenario"></p>
+            <div class="choice-column" id="loop-options"></div>
+            <p id="loop-feedback" class="score-line" aria-live="polite"></p>
+          </article>
+
+          <article class="game-card">
+            <div class="game-header">
+              <div>
+                <span class="chip">Juego 3</span>
+                <h3>Arquitecto del sistema</h3>
+              </div>
+              <strong><span id="builder-budget">10</span> pts</strong>
+            </div>
+            <p class="scenario">Invierte puntos para mejorar un sistema academico sin disparar la entropia.</p>
+            <div class="builder-actions">
+              <button type="button" data-action="feedback">Canales de feedback</button>
+              <button type="button" data-action="training">Capacitacion</button>
+              <button type="button" data-action="automation">Automatizacion</button>
+              <button type="button" data-action="rules">Reglas claras</button>
+            </div>
+            <div class="builder-meter">
+              <span>Resiliencia</span>
+              <progress id="builder-resilience" max="100" value="30"></progress>
+            </div>
+            <div class="builder-meter">
+              <span>Entropia</span>
+              <progress id="builder-entropy" max="100" value="40"></progress>
+            </div>
+            <p id="builder-feedback" class="score-line" aria-live="polite"></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band white" id="videos">
+        <div class="section-heading">
+          <p class="eyebrow">Videos curados</p>
+          <h2>Recursos audiovisuales</h2>
+        </div>
+        <div class="video-grid">
+          <article class="video-card">
+            <div class="video-frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/A_BtS008J0k" title="In a World of Systems - Donella Meadows Project" allowfullscreen></iframe>
+            </div>
+            <h3>In a World of Systems</h3>
+            <p>Introduccion visual a sistemas cotidianos, basada en el pensamiento de Donella Meadows.</p>
+            <a href="https://www.youtube.com/watch?v=A_BtS008J0k" target="_blank" rel="noreferrer">Abrir en YouTube</a>
+          </article>
+          <article class="video-card">
+            <div class="video-frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/HMmChiLZZHg" title="Donella Meadows Sustainable Systems lecture" allowfullscreen></iframe>
+            </div>
+            <h3>Sustainable Systems</h3>
+            <p>Parte 1 de la conferencia de Donella Meadows sobre sistemas sostenibles y bucles de feedback.</p>
+            <a href="https://www.youtube.com/watch?v=HMmChiLZZHg" target="_blank" rel="noreferrer">Abrir en YouTube</a>
+          </article>
+          <article class="video-card">
+            <div class="video-frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/HuIoego-xVc" title="Dana Meadows Sustainable Systems Part 2" allowfullscreen></iframe>
+            </div>
+            <h3>Sustainable Systems - Parte 2</h3>
+            <p>Continuacion de la conferencia, util para explicar proposito, estructura y consecuencias no intencionadas.</p>
+            <a href="https://www.youtube.com/watch?v=HuIoego-xVc" target="_blank" rel="noreferrer">Abrir en YouTube</a>
+          </article>
+          <article class="video-card resource-card">
+            <h3>Fuente verificada</h3>
+            <p>
+              Los enlaces fueron revisados en recursos del Donella Meadows Project y en YouTube.
+              Se dejan visibles para que el docente pueda abrirlos aunque el embed no cargue en algun navegador.
+            </p>
+            <a href="https://donellameadows.org/systems-thinking-resources/" target="_blank" rel="noreferrer">Recursos de pensamiento sistemico</a>
+            <a href="https://donellameadows.org/sustainable-systems-videos/" target="_blank" rel="noreferrer">Sustainable Systems Lecture</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-band" id="quiz">
+        <div class="section-heading">
+          <p class="eyebrow">Evaluacion interactiva</p>
+          <h2>Quiz automatico</h2>
+          <p>Responde las preguntas y obtendras puntaje, retroalimentacion y recomendacion de repaso.</p>
+        </div>
+        <form class="quiz-panel" id="quiz-form">
+          <div id="quiz-questions"></div>
+          <div class="quiz-actions">
+            <button class="button primary" type="submit">Calificar quiz</button>
+            <button class="button secondary" id="reset-quiz" type="button">Reiniciar</button>
+          </div>
+        </form>
+        <div class="quiz-result" id="quiz-result" aria-live="polite"></div>
+      </section>
+
+      <section class="section-band white" id="creditos">
+        <div class="section-heading">
+          <p class="eyebrow">Creditos y referencias</p>
+          <h2>Ficha de autoria</h2>
+        </div>
+        <div class="credits-grid">
+          <article class="info-block">
+            <h3>Autor</h3>
+            <p><strong>Gelves Triana Sebastian</strong></p>
+            <p>Tema 6: Propiedades de los sistemas. Asignatura: Teoria General de Sistemas.</p>
+          </article>
+          <article class="info-block">
+            <h3>Herramientas usadas</h3>
+            <ul class="clean-list">
+              <li>Python 3 con servidor HTTP local.</li>
+              <li>HTML, CSS y JavaScript sin frameworks obligatorios.</li>
+              <li>Canvas y SVG local para visualizacion interactiva.</li>
+              <li>Apoyo de IA para estructuracion y desarrollo del codigo.</li>
+            </ul>
+          </article>
+          <article class="info-block references">
+            <h3>Referencias bibliograficas</h3>
+            <ol>
+              <li>von Bertalanffy, L. (1968). <em>General System Theory: Foundations, Development, Applications</em>. George Braziller.</li>
+              <li>Meadows, D. H. (2008). <em>Thinking in Systems: A Primer</em>. Chelsea Green Publishing.</li>
+              <li>Checkland, P. (1981). <em>Systems Thinking, Systems Practice</em>. John Wiley &amp; Sons.</li>
+              <li>Arnold, R. D., &amp; Wade, J. P. (2015). A Definition of Systems Thinking: A Systems Approach. <em>Procedia Computer Science, 44</em>, 669-678.</li>
+            </ol>
+          </article>
+          <article class="info-block references">
+            <h3>Enlaces consultados</h3>
+            <ol>
+              <li><a href="https://www.panarchy.org/vonbertalanffy/systems.1968.html" target="_blank" rel="noreferrer">General System Theory - extracto</a></li>
+              <li><a href="https://donellameadows.org/systems-thinking-resources/" target="_blank" rel="noreferrer">Donella Meadows Project - Systems Thinking Resources</a></li>
+              <li><a href="https://donellameadows.org/sustainable-systems-videos/" target="_blank" rel="noreferrer">Donella Meadows Project - Sustainable Systems Lecture</a></li>
+              <li><a href="https://doi.org/10.1016/j.procs.2015.03.050" target="_blank" rel="noreferrer">Arnold &amp; Wade DOI</a></li>
+              <li><a href="https://www.youtube.com/watch?v=A_BtS008J0k" target="_blank" rel="noreferrer">Video In a World of Systems</a></li>
+              <li><a href="https://www.youtube.com/watch?v=HMmChiLZZHg" target="_blank" rel="noreferrer">Video Sustainable Systems - Parte 1</a></li>
+              <li><a href="https://www.youtube.com/watch?v=HuIoego-xVc" target="_blank" rel="noreferrer">Video Sustainable Systems - Parte 2</a></li>
+            </ol>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>OVA Tema 6 - Propiedades de los sistemas. Creada para ejecucion local y publicacion web.</p>
+      <p>© <span id="year"></span> Gelves Triana Sebastian</p>
+    </footer>
+
+    <div class="modal" id="certificate-modal" role="dialog" aria-modal="true" aria-labelledby="certificate-title" hidden>
+      <div class="modal-panel">
+        <button class="icon-button modal-close" id="certificate-close" type="button" aria-label="Cerrar credencial">×</button>
+        <p class="eyebrow">Credencial de aprendizaje</p>
+        <h2 id="certificate-title">Pasaporte sistemico</h2>
+        <p>
+          Se reconoce a <strong>Gelves Triana Sebastian</strong> por completar una OVA interactiva
+          sobre propiedades de los sistemas, con practica, diagnostico y evaluacion automatica.
+        </p>
+        <dl class="certificate-stats">
+          <div><dt id="certificate-progress">0%</dt><dd>Progreso</dd></div>
+          <div><dt id="certificate-quiz">Sin quiz</dt><dd>Resultado</dd></div>
+          <div><dt>Tema 6</dt><dd>TGS</dd></div>
+        </dl>
+        <button class="button primary" type="button" onclick="window.print()">Imprimir credencial</button>
+      </div>
+    </div>
+
+    <script src="assets/app.js"></script>
+  </body>
+</html>
