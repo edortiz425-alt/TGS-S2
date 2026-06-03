@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVA – Teoría de Comportamientos | TGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #FF6B35;
+  --c2: #F7C59F;
+  --c3: #EFEFD0;
+  --c4: #004E89;
+  --c5: #1A936F;
+  --c6: #C3423F;
+  --c7: #9B5DE5;
+  --c8: #F15BB5;
+  --c9: #FEE440;
+  --c10: #00BBF9;
+  --bg: #080815;
+  --sidebar-bg: #0f0f20;
+  --card: #12122a;
+  --card2: #1a1a35;
+  --text: #F0F0FF;
+  --muted: #8888aa;
+  --radius: 16px;
+  --sidebar-w: 260px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  overflow-x: hidden;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--sidebar-bg);
+  border-right: 1px solid rgba(255,255,255,.07);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transition: transform .3s;
+}
+.sidebar-header {
+  padding: 28px 22px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.sidebar-logo {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.05rem;
+  background: linear-gradient(135deg, var(--c1), var(--c8));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.sidebar-sub {
+  font-size: .72rem;
+  color: var(--muted);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.sidebar-nav {
+  flex: 1;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.nav-section-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 12px 10px 6px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--muted);
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: all .2s;
+  position: relative;
+}
+.nav-item .nav-icon { font-size: 1.1rem; flex-shrink: 0; }
+.nav-item:hover { background: rgba(255,255,255,.06); color: var(--text); }
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(255,107,53,.18), rgba(241,91,181,.12));
+  color: var(--text);
+  font-weight: 600;
+  border: 1px solid rgba(255,107,53,.25);
+}
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 25%; bottom: 25%;
+  width: 3px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--c1), var(--c8));
+}
+.sidebar-footer {
+  padding: 16px 22px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  font-size: .72rem;
+  color: var(--muted);
+}
+
+/* ── MAIN ── */
+#main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* ── HAMBURGER (mobile) ── */
+#ham-btn {
+  display: none;
+  position: fixed;
+  top: 14px; left: 14px;
+  z-index: 300;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ── TABS (pages) ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── INTRO PAGE ── */
+#page-intro {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.blobs {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.blob {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); opacity: .3;
+  animation: drift 14s ease-in-out infinite alternate;
+}
+.blob1 { width: 500px; height: 500px; background: var(--c7); top:-120px; left:-80px; }
+.blob2 { width: 380px; height: 380px; background: var(--c1); bottom:-60px; right:-60px; animation-delay:-5s; }
+.blob3 { width: 300px; height: 300px; background: var(--c10); top:40%; left:40%; animation-delay:-9s; }
+@keyframes drift {
+  from { transform: translate(0,0) scale(1); }
+  to   { transform: translate(40px,25px) scale(1.12); }
+}
+.intro-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(155,93,229,.3), rgba(241,91,181,.2));
+  border: 1px solid rgba(155,93,229,.4);
+  color: var(--c7); font-size: .75rem; font-weight: 700;
+  padding: 7px 20px; border-radius: 40px;
+  letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp .8s ease both;
+}
+.intro-title {
+  font-family: var(--font-head);
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 800; line-height: 1.05;
+  margin-bottom: 24px;
+  animation: fadeUp .8s ease .15s both;
+}
+.grad { background: linear-gradient(90deg, var(--c1) 0%, var(--c8) 50%, var(--c10) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.intro-desc {
+  max-width: 580px; font-size: 1.05rem;
+  color: var(--muted); line-height: 1.75;
+  margin-bottom: 44px;
+  animation: fadeUp .8s ease .3s both;
+}
+.intro-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  max-width: 860px;
+  width: 100%;
+  margin-bottom: 44px;
+  animation: fadeUp .8s ease .45s both;
+}
+.intro-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  cursor: pointer;
+  transition: all .25s;
+  text-align: left;
+}
+.intro-card:hover {
+  border-color: rgba(255,107,53,.35);
+  background: var(--card2);
+  transform: translateY(-4px);
+}
+.intro-card .ic-icon { font-size: 1.8rem; margin-bottom: 10px; }
+.intro-card .ic-title { font-family: var(--font-head); font-weight: 700; font-size: .95rem; margin-bottom: 5px; }
+.intro-card .ic-desc { font-size: .8rem; color: var(--muted); }
+.intro-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 15px 36px; border-radius: 50px;
+  font-family: var(--font-head); font-weight: 700; font-size: 1rem;
+  cursor: pointer; border: none;
+  background: linear-gradient(135deg, var(--c1), var(--c8));
+  color: #fff;
+  box-shadow: 0 10px 35px rgba(255,107,53,.4);
+  transition: all .25s;
+  animation: fadeUp .8s ease .6s both;
+}
+.intro-btn:hover { transform: translateY(-3px); box-shadow: 0 16px 45px rgba(255,107,53,.55); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── GENERIC PAGE HEADER ── */
+.page-header {
+  padding: 52px 48px 32px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  background: linear-gradient(160deg, var(--bg) 60%, rgba(155,93,229,.06) 100%);
+}
+.page-label {
+  font-size: .7rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--c9); margin-bottom: 8px;
+}
+.page-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; line-height: 1.1;
+  margin-bottom: 10px;
+}
+.page-desc { color: var(--muted); font-size: .95rem; max-width: 580px; }
+.page-content { padding: 44px 48px; }
+
+/* ── CONTEXTO ── */
+.ctx-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 20px; }
+.ctx-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative; overflow: hidden;
+  transition: transform .3s, box-shadow .3s;
+}
+.ctx-card::before {
+  content: ''; position: absolute; top:0; left:0; right:0; height:3px;
+  background: var(--accent);
+}
+.ctx-card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(0,0,0,.4); }
+.ctx-icon { font-size: 2rem; margin-bottom: 14px; }
+.ctx-card h3 { font-family: var(--font-head); font-weight: 700; margin-bottom: 8px; }
+.ctx-card p { color: var(--muted); font-size: .88rem; }
+
+/* ── CONCEPTOS ── */
+.concepts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media(max-width:900px){ .concepts-grid { grid-template-columns: 1fr; } }
+.concept-block {
+  background: var(--card); border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--radius); padding: 28px;
+}
+.concept-block h3 {
+  font-family: var(--font-head); font-weight: 700; font-size: 1.1rem;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+}
+.tag-pill { font-size: .68rem; font-weight: 700; letter-spacing: .05em; padding: 3px 10px; border-radius: 20px; }
+.concept-block ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.concept-block li {
+  padding: 10px 14px; border-radius: 9px;
+  background: rgba(255,255,255,.04); font-size: .88rem; color: var(--muted);
+  border-left: 3px solid var(--c9); transition: background .2s;
+}
+.concept-block li:hover { background: rgba(255,255,255,.08); color: var(--text); }
+.concept-block li strong { color: var(--text); }
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content:''; position:absolute; left:8px; top:0; bottom:0; width:2px;
+  background: linear-gradient(180deg, var(--c7), var(--c8), var(--c10));
+}
+.tl-item { position:relative; margin-bottom:22px; }
+.tl-dot {
+  position:absolute; left:-24px; top:5px; width:14px; height:14px;
+  border-radius:50%; background:var(--c8); border:3px solid var(--bg);
+}
+.tl-item h4 { font-family:var(--font-head); font-weight:700; margin-bottom:4px; font-size:.92rem; }
+.tl-item p { font-size:.84rem; color:var(--muted); }
+
+/* ── EJEMPLOS ── */
+.examples-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 20px; }
+.example-card {
+  border-radius: var(--radius); padding: 24px;
+  border: 1px solid rgba(255,255,255,.07);
+  transition: transform .3s;
+}
+.example-card:hover { transform: translateY(-4px); }
+.example-card .eco { font-size: 1.8rem; margin-bottom: 10px; }
+.example-card h3 { font-family:var(--font-head); font-weight:700; margin-bottom:6px; font-size:1rem; }
+.example-card p { font-size:.85rem; color:var(--muted); }
+
+/* ── EJERCICIOS ── */
+.exercise-box {
+  background: var(--card); border-radius: var(--radius);
+  padding: 28px; margin-bottom: 18px;
+  border: 1px solid rgba(255,255,255,.07);
+}
+.exercise-box h3 { font-family:var(--font-head); font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.ex-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.85rem; flex-shrink:0; }
+.answer-btn {
+  margin-top: 14px; background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.13); color: var(--text);
+  padding: 9px 20px; border-radius: 30px; cursor: pointer;
+  font-family: var(--font-body); font-size:.88rem; transition: all .2s;
+}
+.answer-btn:hover { background: rgba(255,255,255,.12); }
+.answer-reveal { display:none; margin-top:14px; padding:14px 18px; border-radius:10px; background:rgba(26,147,111,.1); border:1px solid rgba(26,147,111,.25); font-size:.87rem; color:#a8f0d2; }
+.answer-reveal.open { display:block; animation: fadeUp .35s ease; }
+
+/* ── VIDEOS ── */
+.video-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: 24px; }
+.video-card { background: var(--card); border-radius: var(--radius); overflow:hidden; border:1px solid rgba(255,255,255,.07); }
+.video-card iframe { width:100%; aspect-ratio:16/9; border:none; }
+.video-info { padding:18px 20px; }
+.video-info h3 { font-family:var(--font-head); font-weight:700; font-size:.95rem; margin-bottom:6px; }
+.video-info p { font-size:.83rem; color:var(--muted); }
+
+/* ── QUIZ ── */
+.quiz-wrap {
+  background: var(--card); border-radius: var(--radius);
+  padding: 36px; border: 1px solid rgba(255,255,255,.07);
+  max-width: 720px;
+}
+.quiz-progress-bar { height:4px; background:rgba(255,255,255,.1); border-radius:4px; margin-bottom:24px; overflow:hidden; }
+.quiz-progress-fill { height:100%; background:linear-gradient(90deg,var(--c1),var(--c8)); border-radius:4px; transition:width .4s; }
+.quiz-q { font-family:var(--font-head); font-weight:700; font-size:1.15rem; margin-bottom:22px; line-height:1.4; }
+.quiz-options { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.quiz-opt {
+  padding: 13px 18px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.13);
+  background: rgba(255,255,255,.04); color: var(--text);
+  font-family: var(--font-body); font-size:.92rem; cursor:pointer;
+  text-align:left; transition: all .2s;
+}
+.quiz-opt:hover:not(:disabled) { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.25); }
+.quiz-opt.correct { background:rgba(26,147,111,.2); border-color:var(--c5); color:#a8f0d2; }
+.quiz-opt.wrong { background:rgba(195,66,63,.2); border-color:var(--c6); color:#f8b4b4; }
+.quiz-feedback { padding:12px 16px; border-radius:10px; font-size:.88rem; margin-bottom:16px; }
+.quiz-feedback.ok { background:rgba(26,147,111,.12); border:1px solid rgba(26,147,111,.25); color:#a8f0d2; }
+.quiz-feedback.no { background:rgba(195,66,63,.12); border:1px solid rgba(195,66,63,.25); color:#f8b4b4; }
+.quiz-feedback.show { animation:fadeUp .3s ease; }
+#quiz-score-screen { display:none; text-align:center; }
+#quiz-score-screen h3 { font-family:var(--font-head); font-weight:800; font-size:2.2rem; margin-bottom:10px; }
+.score-ring { width:150px; height:150px; border-radius:50%; border:5px solid rgba(255,255,255,.1); display:flex; flex-direction:column; align-items:center; justify-content:center; margin:20px auto; background:var(--card2); }
+.score-ring span { font-size:2.2rem; font-family:var(--font-head); font-weight:800; }
+.score-ring small { font-size:.78rem; color:var(--muted); }
+.btn-prim {
+  padding:12px 30px; border-radius:50px;
+  font-family:var(--font-head); font-weight:700; font-size:.95rem;
+  cursor:pointer; border:none;
+  background:linear-gradient(135deg,var(--c1),var(--c8));
+  color:#fff; box-shadow:0 8px 28px rgba(255,107,53,.35);
+  transition:all .25s; display:inline-block;
+}
+.btn-prim:hover { transform:translateY(-2px); box-shadow:0 12px 36px rgba(255,107,53,.5); }
+.btn-outline2 {
+  padding:10px 26px; border-radius:50px;
+  font-family:var(--font-head); font-weight:700; font-size:.9rem;
+  cursor:pointer; border:1px solid rgba(255,255,255,.2);
+  background:transparent; color:var(--text); transition:all .2s;
+}
+.btn-outline2:hover { background:rgba(255,255,255,.08); }
+
+/* ── CRÉDITOS ── */
+.credits-card { background:var(--card); border-radius:var(--radius); padding:36px; border:1px solid rgba(255,255,255,.07); }
+.credits-card h3 { font-family:var(--font-head); font-weight:700; margin-bottom:14px; color:var(--c9); }
+.credits-card p, .credits-card li { font-size:.88rem; color:var(--muted); }
+.credits-card ul { list-style:disc; padding-left:18px; display:flex; flex-direction:column; gap:6px; }
+.divider { height:1px; background:rgba(255,255,255,.07); margin:22px 0; }
+
+/* =========================================
+   JUEGO 1: CAÑA DE PESCAR
+========================================= */
+#fishing-game {
+  user-select: none;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+}
+#fishing-canvas {
+  background: linear-gradient(180deg, #0a1628 0%, #0d2545 40%, #0a3d5c 70%, #0e4f72 100%);
+  border-radius: 16px;
+  border: 2px solid rgba(0,187,249,.25);
+  cursor: crosshair;
+  display: block;
+  max-width: 100%;
+}
+#fishing-info {
+  display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;
+}
+.fish-stat {
+  background: var(--card); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 10px 20px; text-align: center;
+}
+.fish-stat .fs-val { font-family:var(--font-head); font-weight:800; font-size:1.5rem; color:var(--c9); }
+.fish-stat .fs-label { font-size:.75rem; color:var(--muted); }
+#fishing-question {
+  background: var(--card2); border:1px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 14px 24px;
+  text-align: center; max-width: 600px;
+  font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+}
+#fishing-msg {
+  min-height: 28px; font-weight: 600;
+  font-size:.95rem; text-align:center;
+  transition: color .3s;
+}
+
+/* =========================================
+   JUEGO 2: RANA SALTARINA
+========================================= */
+#frog-game {
+  user-select: none;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+}
+#frog-canvas {
+  border-radius: 16px;
+  border: 2px solid rgba(26,147,111,.3);
+  display: block;
+  max-width: 100%;
+  background: #071a0d;
+}
+#frog-question {
+  background: var(--card2); border:1px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 14px 24px;
+  text-align: center; max-width: 600px;
+  font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+}
+#frog-msg { min-height: 28px; font-weight: 600; font-size:.95rem; text-align:center; }
+#frog-stats { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+/* =========================================
+   JUEGO 3: COHETE CONCEPTUAL (Avoid Wrong Asteroids)
+========================================= */
+#rocket-game {
+  user-select: none;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px;
+}
+#rocket-canvas {
+  border-radius: 16px;
+  border: 2px solid rgba(155,93,229,.3);
+  display: block;
+  max-width: 100%;
+  background: #060612;
+}
+#rocket-question {
+  background: var(--card2); border:1px solid rgba(255,255,255,.1);
+  border-radius: 12px; padding: 14px 24px;
+  text-align: center; max-width: 600px;
+  font-family: var(--font-head); font-weight: 600; font-size: 1rem;
+}
+#rocket-msg { min-height: 28px; font-weight: 600; font-size:.95rem; text-align:center; }
+#rocket-stats { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+
+/* ── WORDSEARCH (keep from original) ── */
+#ws-grid { display:grid; grid-template-columns:repeat(12,1fr); gap:3px; user-select:none; }
+.ws-cell { width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:.8rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:background .15s,color .15s; }
+.ws-cell.selected { background:rgba(241,91,181,.35);color:var(--c8);border-color:var(--c8); }
+.ws-cell.found { background:rgba(26,147,111,.3);color:#a8f0d2;border-color:var(--c5);cursor:default; }
+.ws-word-list { list-style:none; display:flex; flex-direction:column; gap:7px; }
+.ws-word-list li { font-size:.87rem; padding:7px 12px; background:rgba(255,255,255,.05); border-radius:8px; border:1px solid rgba(255,255,255,.06); transition:all .3s; }
+.ws-word-list li.found-word { text-decoration:line-through;color:var(--c5);background:rgba(26,147,111,.1); }
+.wordsearch-wrap { display:flex; gap:32px; flex-wrap:wrap; }
+.ws-words h3 { font-family:var(--font-head); font-weight:700; margin-bottom:12px; }
+
+/* ── MEMORY ── */
+.memory-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:580px;margin:0 auto 20px; }
+.mem-card { aspect-ratio:1;border-radius:12px;cursor:pointer;position:relative;transform-style:preserve-3d;transition:transform .5s; }
+.mem-card.flipped,.mem-card.matched { transform:rotateY(180deg); }
+.mem-card.matched { opacity:.55;cursor:default; }
+.mem-face { position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden;font-size:.7rem;font-weight:700;text-align:center;padding:7px;line-height:1.3; }
+.mem-back { background:linear-gradient(135deg,var(--c7),var(--c4));font-size:1.6rem; }
+.mem-front { transform:rotateY(180deg);font-size:.68rem; }
+#mem-score,.mem-stat { text-align:center;font-family:var(--font-head);font-weight:700;font-size:1.05rem;color:var(--c9);margin-bottom:14px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  #ham-btn { display: block; }
+  .page-header, .page-content { padding: 44px 22px 24px; }
+  #page-intro { padding: 70px 22px 50px; }
+  .concepts-grid { grid-template-columns: 1fr; }
+  .ws-cell { width:26px;height:26px;font-size:.7rem; }
+  #ws-grid { grid-template-columns:repeat(12,1fr);gap:2px; }
+  .wordsearch-wrap { flex-direction:column; }
+}
+#overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.5); z-index: 190;
+}
+#overlay.open { display: block; }
+</style>
+</head>
+<body>
+
+<!-- HAMBURGER -->
+<button id="ham-btn" onclick="toggleSidebar()">☰</button>
+<div id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">🧠 T. Comportamientos</div>
+    <div class="sidebar-sub">Teoría General de Sistemas · OVA</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Contenido</div>
+    <button class="nav-item active" onclick="showPage('intro')">
+      <span class="nav-icon">🏠</span> Introducción
+    </button>
+    <button class="nav-item" onclick="showPage('contexto')">
+      <span class="nav-icon">🔍</span> Contextualización
+    </button>
+    <button class="nav-item" onclick="showPage('conceptos')">
+      <span class="nav-icon">📖</span> Conceptos
+    </button>
+    <button class="nav-item" onclick="showPage('ejemplos')">
+      <span class="nav-icon">🌐</span> Ejemplos Reales
+    </button>
+    <button class="nav-item" onclick="showPage('ejercicios')">
+      <span class="nav-icon">✏️</span> Ejercicios
+    </button>
+
+    <div class="nav-section-label">Juegos</div>
+    <button class="nav-item" onclick="showPage('pesca')">
+      <span class="nav-icon">🎣</span> Pesca Conceptual
+    </button>
+    <button class="nav-item" onclick="showPage('rana')">
+      <span class="nav-icon">🐸</span> Rana Saltarina
+    </button>
+    <button class="nav-item" onclick="showPage('cohete')">
+      <span class="nav-icon">🚀</span> Cohete Espacial
+    </button>
+    <button class="nav-item" onclick="showPage('memoria')">
+      <span class="nav-icon">🃏</span> Memoria
+    </button>
+    <button class="nav-item" onclick="showPage('sopa')">
+      <span class="nav-icon">🔠</span> Sopa de Letras
+    </button>
+
+    <div class="nav-section-label">Evaluación</div>
+    <button class="nav-item" onclick="showPage('videos')">
+      <span class="nav-icon">🎬</span> Videos
+    </button>
+    <button class="nav-item" onclick="showPage('quiz')">
+      <span class="nav-icon">📝</span> Quiz Final
+    </button>
+    <button class="nav-item" onclick="showPage('creditos')">
+      <span class="nav-icon">👤</span> Créditos
+    </button>
+  </nav>
+  <div class="sidebar-footer">Universidad Simón Bolívar · 2025</div>
+</aside>
+
+<!-- MAIN -->
+<main id="main">
+
+<!-- =================== INTRO =================== -->
+<div id="page-intro" class="page active">
+  <div class="blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center">
+    <div class="intro-badge">Teoría General de Sistemas · OVA 2025</div>
+    <h1 class="intro-title">Teoría de<br><span class="grad">Comportamientos</span></h1>
+    <p class="intro-desc">Descubre cómo los sistemas exhiben patrones emergentes, adaptativos y complejos que van mucho más allá de sus partes. Una experiencia interactiva diseñada para Ingeniería de Sistemas.</p>
+
+    <div class="intro-cards">
+      <div class="intro-card" onclick="showPage('contexto')">
+        <div class="ic-icon">🔍</div>
+        <div class="ic-title">Contextualización</div>
+        <div class="ic-desc">Origen, definición e importancia en la TGS</div>
+      </div>
+      <div class="intro-card" onclick="showPage('conceptos')">
+        <div class="ic-icon">📖</div>
+        <div class="ic-title">Conceptos Clave</div>
+        <div class="ic-desc">Tipos de comportamiento y propiedades sistémicas</div>
+      </div>
+      <div class="intro-card" onclick="showPage('ejemplos')">
+        <div class="ic-icon">🌐</div>
+        <div class="ic-title">Ejemplos Reales</div>
+        <div class="ic-desc">Aplicaciones en casos del mundo real</div>
+      </div>
+      <div class="intro-card" onclick="showPage('pesca')">
+        <div class="ic-icon">🎣</div>
+        <div class="ic-title">Juego: Pesca</div>
+        <div class="ic-desc">Pesca los conceptos correctos con tu caña</div>
+      </div>
+      <div class="intro-card" onclick="showPage('rana')">
+        <div class="ic-icon">🐸</div>
+        <div class="ic-title">Juego: Rana</div>
+        <div class="ic-desc">Salta a las hojas con la definición correcta</div>
+      </div>
+      <div class="intro-card" onclick="showPage('cohete')">
+        <div class="ic-icon">🚀</div>
+        <div class="ic-title">Juego: Cohete</div>
+        <div class="ic-desc">Esquiva asteroides con respuestas incorrectas</div>
+      </div>
+      <div class="intro-card" onclick="showPage('quiz')">
+        <div class="ic-icon">📝</div>
+        <div class="ic-title">Quiz Final</div>
+        <div class="ic-desc">10 preguntas para evaluar tu conocimiento</div>
+      </div>
+      <div class="intro-card" onclick="showPage('videos')">
+        <div class="ic-icon">🎬</div>
+        <div class="ic-title">Videos</div>
+        <div class="ic-desc">Recursos audiovisuales curados</div>
+      </div>
+    </div>
+
+    <button class="intro-btn" onclick="showPage('contexto')">Comenzar a aprender 🚀</button>
+  </div>
+</div>
+
+<!-- =================== CONTEXTO =================== -->
+<div id="page-contexto" class="page">
+  <div class="page-header">
+    <div class="page-label">01 · Contextualización</div>
+    <h2 class="page-title">¿Qué es la Teoría de <span class="grad">Comportamientos</span>?</h2>
+    <p class="page-desc">La Teoría de Comportamientos estudia cómo los sistemas actúan, reaccionan y evolucionan en función de sus propiedades internas y del entorno que los rodea.</p>
+  </div>
+  <div class="page-content">
+    <div class="ctx-grid">
+      <div class="ctx-card" style="--accent:var(--c1)">
+        <div class="ctx-icon">🔍</div>
+        <h3>Definición Central</h3>
+        <p>El comportamiento de un sistema es el conjunto de respuestas observables que este manifiesta ante estímulos internos o externos, determinado por su estructura, propósito y relaciones entre sus partes.</p>
+      </div>
+      <div class="ctx-card" style="--accent:var(--c8)">
+        <div class="ctx-icon">🌐</div>
+        <h3>Importancia en la TGS</h3>
+        <p>Comprender el comportamiento sistémico permite predecir patrones, diseñar intervenciones efectivas y gestionar organizaciones complejas. Es clave para la ingeniería de sistemas, la administración y las ciencias sociales.</p>
+      </div>
+      <div class="ctx-card" style="--accent:var(--c10)">
+        <div class="ctx-icon">📡</div>
+        <h3>Origen Histórico</h3>
+        <p>Se consolidó con los trabajos de Ludwig von Bertalanffy (1950s), Norbert Wiener en cibernética y el movimiento de dinámica de sistemas de Jay Forrester en el MIT durante los años 60 y 70.</p>
+      </div>
+      <div class="ctx-card" style="--accent:var(--c5)">
+        <div class="ctx-icon">⚙️</div>
+        <h3>Aplicaciones Actuales</h3>
+        <p>Se aplica en inteligencia artificial, gestión empresarial, ecología, epidemiología y diseño de sistemas de control, siendo fundamental para ingenieros de sistemas.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== CONCEPTOS =================== -->
+<div id="page-conceptos" class="page">
+  <div class="page-header">
+    <div class="page-label">02 · Marco Conceptual</div>
+    <h2 class="page-title">Conceptos <span class="grad">Fundamentales</span></h2>
+    <p class="page-desc">Los pilares teóricos que sustentan la comprensión del comportamiento sistémico.</p>
+  </div>
+  <div class="page-content">
+    <div class="concepts-grid">
+      <div class="concept-block">
+        <h3>🔄 Tipos de Comportamiento <span class="tag-pill" style="background:rgba(155,93,229,.2);color:var(--c7)">Taxón.</span></h3>
+        <ul>
+          <li><strong>Reactivo:</strong> El sistema responde a estímulos externos sin anticipación.</li>
+          <li><strong>Proactivo:</strong> El sistema anticipa situaciones y actúa antes del estímulo.</li>
+          <li><strong>Adaptativo:</strong> Ajusta su comportamiento según la experiencia acumulada.</li>
+          <li><strong>Emergente:</strong> Surgen propiedades no presentes en partes individuales.</li>
+          <li><strong>Caótico:</strong> Alta sensibilidad a condiciones iniciales; impredecible a largo plazo.</li>
+        </ul>
+      </div>
+      <div class="concept-block">
+        <h3>🧬 Propiedades Clave <span class="tag-pill" style="background:rgba(0,187,249,.15);color:var(--c10)">Propied.</span></h3>
+        <ul>
+          <li><strong>Homeostasis:</strong> Tendencia del sistema a mantener un estado de equilibrio interno.</li>
+          <li><strong>Entropía:</strong> Grado de desorden; los sistemas tienden a aumentarla si no reciben energía.</li>
+          <li><strong>Retroalimentación:</strong> El output regula el input; positiva (amplifica) o negativa (estabiliza).</li>
+          <li><strong>Equifinalidad:</strong> Un sistema puede alcanzar el mismo estado desde condiciones iniciales distintas.</li>
+          <li><strong>Recursividad:</strong> El sistema contiene subsistemas con comportamientos similares al todo.</li>
+        </ul>
+      </div>
+      <div class="concept-block">
+        <h3>📐 Modelos de Comportamiento <span class="tag-pill" style="background:rgba(241,91,181,.15);color:var(--c8)">Modelos</span></h3>
+        <ul>
+          <li><strong>Caja Negra:</strong> Solo se observan entradas y salidas, sin conocer el mecanismo interno.</li>
+          <li><strong>Modelo Cibernético:</strong> Foco en control, regulación y retroalimentación (Wiener).</li>
+          <li><strong>Modelo de Aprendizaje:</strong> El sistema modifica su comportamiento basado en resultados anteriores.</li>
+          <li><strong>Dinámica de Sistemas:</strong> Simula comportamiento mediante stocks, flujos y retardos.</li>
+        </ul>
+      </div>
+      <div class="concept-block">
+        <h3>🕰️ Evolución Histórica <span class="tag-pill" style="background:rgba(254,228,64,.15);color:var(--c9)">Historia</span></h3>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot"></div><h4>1940s – Cibernética (Wiener)</h4><p>Establece el control y la comunicación como base del comportamiento artificial y biológico.</p></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--c1)"></div><h4>1950s – TGS (Bertalanffy)</h4><p>Formula principios universales del comportamiento de todo tipo de sistemas.</p></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--c5)"></div><h4>1960s – Dinámica de Sistemas (Forrester)</h4><p>Modela el comportamiento temporal mediante ecuaciones diferenciales y diagramas causales.</p></div>
+          <div class="tl-item"><div class="tl-dot" style="background:var(--c9)"></div><h4>1990s – Complejidad (Santa Fe)</h4><p>Estudia el comportamiento emergente en sistemas adaptativos complejos (CAS).</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== EJEMPLOS =================== -->
+<div id="page-ejemplos" class="page">
+  <div class="page-header">
+    <div class="page-label">03 · Aplicación Práctica</div>
+    <h2 class="page-title">Ejemplos en <span class="grad">Casos Reales</span></h2>
+    <p class="page-desc">El comportamiento sistémico se observa en todos los ámbitos de la vida real.</p>
+  </div>
+  <div class="page-content">
+    <div class="examples-grid">
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(155,93,229,.1),rgba(241,91,181,.06));border-color:rgba(155,93,229,.25)">
+        <div class="eco">🏢</div><h3>Organización Empresarial</h3>
+        <p>Amazon modifica precios millones de veces al día como comportamiento adaptativo. La retroalimentación continua (KPIs, encuestas) ajusta su estrategia constantemente.</p>
+      </div>
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(26,147,111,.1),rgba(0,187,249,.06));border-color:rgba(26,147,111,.25)">
+        <div class="eco">🌿</div><h3>Ecosistema Natural</h3>
+        <p>Al reintroducir lobos en Yellowstone en 1995, el comportamiento del ecosistema completo cambió, incluyendo los ríos. Comportamiento emergente a escala total.</p>
+      </div>
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(255,107,53,.1),rgba(254,228,64,.06));border-color:rgba(255,107,53,.25)">
+        <div class="eco">🤖</div><h3>Inteligencia Artificial</h3>
+        <p>Una red neuronal exhibe comportamiento emergente: no fue programada para reconocer gatos, pero lo aprende de la experiencia a través de millones de conexiones simples.</p>
+      </div>
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(0,78,137,.15),rgba(0,187,249,.06));border-color:rgba(0,78,137,.35)">
+        <div class="eco">🏥</div><h3>Sistema de Salud</h3>
+        <p>Durante COVID-19, el sistema de salud mostró comportamiento caótico: pequeñas variaciones en tasas de vacunación generaron grandes diferencias en resultados.</p>
+      </div>
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(254,228,64,.08),rgba(255,107,53,.06));border-color:rgba(254,228,64,.2)">
+        <div class="eco">🚦</div><h3>Tráfico Urbano</h3>
+        <p>El tráfico de Bogotá exhibe comportamiento emergente: sin un director central, millones de decisiones individuales crean patrones de congestión predecibles en horas pico.</p>
+      </div>
+      <div class="example-card" style="background:linear-gradient(135deg,rgba(195,66,63,.1),rgba(241,91,181,.06));border-color:rgba(195,66,63,.25)">
+        <div class="eco">💰</div><h3>Mercados Financieros</h3>
+        <p>Los mercados bursátiles muestran comportamiento adaptativo complejo: los agentes aprenden y cambian estrategias, produciendo comportamientos macro como burbujas y crashes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== EJERCICIOS =================== -->
+<div id="page-ejercicios" class="page">
+  <div class="page-header">
+    <div class="page-label">04 · Ejercicios</div>
+    <h2 class="page-title">Ejercicios con <span class="grad">Retroalimentación</span></h2>
+    <p class="page-desc">Pon a prueba tu comprensión. Analiza cada caso antes de ver la respuesta.</p>
+  </div>
+  <div class="page-content">
+    <div class="exercise-box">
+      <h3><span class="ex-num" style="background:rgba(155,93,229,.25);color:var(--c7)">1</span> Identifica el tipo de comportamiento</h3>
+      <p style="color:var(--muted)">Un termostato mide la temperatura del cuarto. Si baja de 18°C, enciende la calefacción; si sube de 22°C, la apaga. ¿Qué tipo de comportamiento y mecanismo sistémico predomina?</p>
+      <button class="answer-btn" onclick="toggleAnswer(this)">Ver respuesta 💡</button>
+      <div class="answer-reveal"><strong>Comportamiento Reactivo con Retroalimentación Negativa.</strong> El sistema responde a un estímulo (temperatura) y utiliza retroalimentación negativa para estabilizarse: cuando el output se desvía del valor deseado, la retroalimentación lo corrige. El objetivo es la homeostasis (equilibrio a 20°C). Este es el modelo cibernético clásico de Wiener.</div>
+    </div>
+    <div class="exercise-box">
+      <h3><span class="ex-num" style="background:rgba(241,91,181,.2);color:var(--c8)">2</span> Retroalimentación positiva vs negativa</h3>
+      <p style="color:var(--muted)">En una empresa de tecnología, cada vez que lanzan un producto exitoso, reinvierten todas las ganancias en desarrollo, generando más éxito y más reinversión. ¿Qué tipo de retroalimentación es? ¿Es sostenible indefinidamente?</p>
+      <button class="answer-btn" onclick="toggleAnswer(this)">Ver respuesta 💡</button>
+      <div class="answer-reveal"><strong>Retroalimentación Positiva (amplificadora).</strong> El output (ganancias) amplifica el input (inversión). <strong>No es sostenible indefinidamente:</strong> todo ciclo de retroalimentación positiva eventualmente encuentra restricciones (saturación de mercado, recursos limitados), introduciendo retroalimentación negativa que estabiliza el crecimiento.</div>
+    </div>
+    <div class="exercise-box">
+      <h3><span class="ex-num" style="background:rgba(26,147,111,.2);color:var(--c5)">3</span> Comportamiento emergente</h3>
+      <p style="color:var(--muted)">En un banco de peces, cada pez solo sigue tres reglas: no chocar con vecinos, moverse en la misma dirección, acercarse al centro del grupo. ¿Por qué el banco exhibe comportamiento emergente?</p>
+      <button class="answer-btn" onclick="toggleAnswer(this)">Ver respuesta 💡</button>
+      <div class="answer-reveal"><strong>Emergencia y Recursividad.</strong> Ningún pez tiene instrucciones para "formar un banco coordinado", pero el sistema completo exhibe ese comportamiento. Propiedades: <strong>Emergencia</strong> (el banco no existe en ningún pez individual), <strong>Recursividad</strong> (el patrón se repite en subgrupos) y <strong>Auto-organización</strong> (sin coordinación central).</div>
+    </div>
+    <div class="exercise-box">
+      <h3><span class="ex-num" style="background:rgba(254,228,64,.15);color:var(--c9)">4</span> Aplicación en Ingeniería de Sistemas</h3>
+      <p style="color:var(--muted)">Eres el arquitecto de un sistema de e-commerce. ¿Cómo aplicarías el modelo de caja negra y la retroalimentación para mejorar el comportamiento ante fallos?</p>
+      <button class="answer-btn" onclick="toggleAnswer(this)">Ver respuesta 💡</button>
+      <div class="answer-reveal"><strong>Diseño sistémico propuesto:</strong><br><br><strong>Caja Negra:</strong> Los microservicios se tratan como cajas negras con interfaces bien definidas.<br><br><strong>Retroalimentación Negativa:</strong> Circuit breakers (si un servicio falla >5 veces/minuto, se desactiva automáticamente) devuelven información al sistema para autorregularse.<br><br><strong>Comportamiento Adaptativo:</strong> Auto-scaling que aprende patrones históricos de tráfico para anticipar picos (comportamiento proactivo).</div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== JUEGO 1: PESCA =================== -->
+<div id="page-pesca" class="page">
+  <div class="page-header">
+    <div class="page-label">05 · Juego Interactivo 1</div>
+    <h2 class="page-title">🎣 Pesca <span class="grad">Conceptual</span></h2>
+    <p class="page-desc">Mueve la caña con el mouse y haz clic para lanzar el anzuelo. ¡Pesca SOLO el pez con el concepto correcto!</p>
+  </div>
+  <div class="page-content">
+    <div id="fishing-game">
+      <div id="fishing-info">
+        <div class="fish-stat"><div class="fs-val" id="fish-score">0</div><div class="fs-label">Puntos</div></div>
+        <div class="fish-stat"><div class="fs-val" id="fish-lives">❤️❤️❤️</div><div class="fs-label">Vidas</div></div>
+        <div class="fish-stat"><div class="fs-val" id="fish-level">1</div><div class="fs-label">Nivel</div></div>
+      </div>
+      <div id="fishing-question">Cargando pregunta...</div>
+      <canvas id="fishing-canvas" width="720" height="420"></canvas>
+      <div id="fishing-msg"></div>
+      <button class="btn-prim" onclick="startFishing()" style="margin-top:8px">🔄 Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== JUEGO 2: RANA =================== -->
+<div id="page-rana" class="page">
+  <div class="page-header">
+    <div class="page-label">06 · Juego Interactivo 2</div>
+    <h2 class="page-title">🐸 Rana <span class="grad">Saltarina</span></h2>
+    <p class="page-desc">La rana está en el tronco central. Haz clic en la hoja con la definición CORRECTA para que salte. ¡Cuidado con las hojas trampa!</p>
+  </div>
+  <div class="page-content">
+    <div id="frog-game">
+      <div id="frog-stats">
+        <div class="fish-stat"><div class="fs-val" id="frog-score">0</div><div class="fs-label">Puntos</div></div>
+        <div class="fish-stat"><div class="fs-val" id="frog-lives">❤️❤️❤️</div><div class="fs-label">Vidas</div></div>
+        <div class="fish-stat"><div class="fs-val" id="frog-round">1/10</div><div class="fs-label">Ronda</div></div>
+      </div>
+      <div id="frog-question">Cargando...</div>
+      <canvas id="frog-canvas" width="720" height="400"></canvas>
+      <div id="frog-msg"></div>
+      <button class="btn-prim" onclick="startFrog()" style="margin-top:8px">🔄 Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== JUEGO 3: COHETE =================== -->
+<div id="page-cohete" class="page">
+  <div class="page-header">
+    <div class="page-label">07 · Juego Interactivo 3</div>
+    <h2 class="page-title">🚀 Cohete <span class="grad">Espacial</span></h2>
+    <p class="page-desc">Mueve el cohete con el mouse (o flechas). Recoge los asteroides con la respuesta CORRECTA y esquiva los incorrectos.</p>
+  </div>
+  <div class="page-content">
+    <div id="rocket-game">
+      <div id="rocket-stats">
+        <div class="fish-stat"><div class="fs-val" id="rocket-score">0</div><div class="fs-label">Puntos</div></div>
+        <div class="fish-stat"><div class="fs-val" id="rocket-lives">❤️❤️❤️</div><div class="fs-label">Escudos</div></div>
+        <div class="fish-stat"><div class="fs-val" id="rocket-level">1</div><div class="fs-label">Nivel</div></div>
+      </div>
+      <div id="rocket-question">Cargando...</div>
+      <canvas id="rocket-canvas" width="720" height="440"></canvas>
+      <div id="rocket-msg"></div>
+      <button class="btn-prim" onclick="startRocket()" style="margin-top:8px">🔄 Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== MEMORIA =================== -->
+<div id="page-memoria" class="page">
+  <div class="page-header">
+    <div class="page-label">08 · Juego Clásico 1</div>
+    <h2 class="page-title">🃏 Juego de <span class="grad">Memoria</span></h2>
+    <p class="page-desc">Encuentra cada concepto con su definición. ¡Entrena tu memoria sistémica!</p>
+  </div>
+  <div class="page-content">
+    <div class="mem-stat" id="mem-score">Parejas encontradas: 0 / 8</div>
+    <div class="memory-grid" id="mem-grid"></div>
+    <p id="mem-msg" style="text-align:center;min-height:28px;font-size:.95rem;color:var(--c5);font-weight:600"></p>
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn-outline2" onclick="initMemory()">🔄 Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- =================== SOPA =================== -->
+<div id="page-sopa" class="page">
+  <div class="page-header">
+    <div class="page-label">09 · Juego Clásico 2</div>
+    <h2 class="page-title">🔠 Sopa de <span class="grad">Letras</span></h2>
+    <p class="page-desc">Encuentra los 8 conceptos clave ocultos en la cuadrícula.</p>
+  </div>
+  <div class="page-content">
+    <div class="wordsearch-wrap">
+      <div>
+        <div id="ws-grid"></div>
+        <p id="ws-msg" style="margin-top:12px;min-height:24px;font-size:.9rem;color:var(--c5);font-weight:600"></p>
+      </div>
+      <div class="ws-words">
+        <h3>🔎 Palabras a encontrar:</h3>
+        <ul class="ws-word-list" id="ws-word-list"></ul>
+        <div style="margin-top:18px">
+          <button class="btn-outline2" onclick="initWordSearch()">🔄 Reiniciar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== VIDEOS =================== -->
+<div id="page-videos" class="page">
+  <div class="page-header">
+    <div class="page-label">10 · Recursos Audiovisuales</div>
+    <h2 class="page-title">Videos <span class="grad">Educativos</span></h2>
+    <p class="page-desc">Recursos curados para profundizar en la Teoría de Comportamientos.</p>
+  </div>
+  <div class="page-content">
+    <div class="video-grid">
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/0R0uHFMATTA" title="Teoría General de Sistemas" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>Introducción a la Teoría General de Sistemas</h3><p>Fundamentos de la TGS y el comportamiento emergente de los sistemas.</p></div>
+      </div>
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/pNuEGaQPEso" title="Pensamiento sistémico" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>Pensamiento Sistémico y Comportamiento</h3><p>Cómo el pensamiento sistémico nos ayuda a entender el comportamiento de sistemas complejos.</p></div>
+      </div>
+      <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/5BVa4cPEdJw" title="Retroalimentación en sistemas" allowfullscreen loading="lazy"></iframe>
+        <div class="video-info"><h3>Retroalimentación y Control de Sistemas</h3><p>Explicación visual de la retroalimentación positiva y negativa con ejemplos reales.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== QUIZ =================== -->
+<div id="page-quiz" class="page">
+  <div class="page-header">
+    <div class="page-label">11 · Evaluación Final</div>
+    <h2 class="page-title">Quiz <span class="grad">Interactivo</span></h2>
+    <p class="page-desc">10 preguntas para evaluar tu dominio de la Teoría de Comportamientos. ¡Mucho éxito!</p>
+  </div>
+  <div class="page-content">
+    <div class="quiz-wrap">
+      <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpf" style="width:0%"></div></div>
+      <div id="quiz-question-wrap">
+        <p id="q-num" style="font-size:.82rem;color:var(--muted);margin-bottom:8px">Pregunta 1 de 10</p>
+        <p class="quiz-q" id="q-text"></p>
+        <div class="quiz-options" id="q-opts"></div>
+        <div class="quiz-feedback" id="q-fb"></div>
+        <button class="btn-prim" id="q-next" style="display:none" onclick="nextQuestion()">Siguiente →</button>
+      </div>
+      <div id="quiz-score-screen">
+        <h3 id="qs-title"></h3>
+        <p style="color:var(--muted)" id="qs-sub"></p>
+        <div class="score-ring"><span id="qs-score"></span><small>/ 10</small></div>
+        <p id="qs-msg" style="margin-bottom:22px;color:var(--muted)"></p>
+        <button class="btn-prim" onclick="restartQuiz()">🔄 Repetir quiz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== CRÉDITOS =================== -->
+<div id="page-creditos" class="page">
+  <div class="page-header">
+    <div class="page-label">12 · Créditos y Referencias</div>
+    <h2 class="page-title">Ficha <span class="grad">Técnica</span></h2>
+  </div>
+  <div class="page-content">
+    <div class="credits-card">
+      <h3>👤 Autoría</h3>
+      <p><strong>Estudiante:</strong> Rubio Roa Álvaro José</p>
+      <p><strong>Tema:</strong> Teoría de Comportamientos (Proyecto N° 13)</p>
+      <p><strong>Asignatura:</strong> Teoría General de Sistemas (TGS)</p>
+      <p><strong>Institución:</strong> Universidad Simón Bolívar — Ingeniería de Sistemas</p>
+      <p><strong>Herramientas utilizadas:</strong> HTML5, CSS3, JavaScript, Claude AI (asistencia en código)</p>
+      <div class="divider"></div>
+      <h3>🎯 Objetivos Alcanzados</h3>
+      <ul>
+        <li>Contextualización e importancia de la Teoría de Comportamientos en TGS.</li>
+        <li>Marco conceptual con tipología, propiedades y modelos de comportamiento.</li>
+        <li>Ejemplos reales en ingeniería, ecología, economía y tecnología.</li>
+        <li>Ejercicios con retroalimentación inmediata.</li>
+        <li>Tres juegos creativos originales: Pesca Conceptual, Rana Saltarina y Cohete Espacial.</li>
+        <li>Videos educativos curados sobre comportamiento sistémico.</li>
+        <li>Quiz de 10 preguntas con puntaje automático.</li>
+      </ul>
+      <div class="divider"></div>
+      <h3>📚 Referencias Bibliográficas</h3>
+      <ul>
+        <li>Bertalanffy, L. von (1968). <em>General System Theory.</em> George Braziller.</li>
+        <li>Wiener, N. (1948). <em>Cybernetics: Or Control and Communication in the Animal and Machine.</em> MIT Press.</li>
+        <li>Forrester, J. W. (1961). <em>Industrial Dynamics.</em> MIT Press.</li>
+        <li>Senge, P. (1990). <em>The Fifth Discipline.</em> Doubleday.</li>
+        <li>Holland, J. H. (1995). <em>Hidden Order: How Adaptation Builds Complexity.</em> Addison-Wesley.</li>
+        <li>Sterman, J. D. (2000). <em>Business Dynamics.</em> McGraw-Hill.</li>
+        <li>Checkland, P. (1981). <em>Systems Thinking, Systems Practice.</em> John Wiley & Sons.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+/* ================================================
+   NAVIGATION
+================================================ */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const btns = document.querySelectorAll('.nav-item');
+  btns.forEach(b => { if(b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + id + "'")) b.classList.add('active'); });
+  if(window.innerWidth <= 768) { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+  window.scrollTo(0, 0);
+  // init games when shown
+  if(id === 'pesca') startFishing();
+  if(id === 'rana') startFrog();
+  if(id === 'cohete') startRocket();
+  if(id === 'memoria') initMemory();
+  if(id === 'sopa') initWordSearch();
+  if(id === 'quiz') { qIdx=0; qScore=0; document.getElementById('quiz-score-screen').style.display='none'; document.getElementById('quiz-question-wrap').style.display='block'; loadQuestion(); }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+
+function toggleAnswer(btn) {
+  const r = btn.nextElementSibling;
+  r.classList.toggle('open');
+  btn.textContent = r.classList.contains('open') ? 'Ocultar ↑' : 'Ver respuesta 💡';
+}
+
+/* ================================================
+   SHARED Q&A DATA
+================================================ */
+const QA = [
+  { q:'¿Qué propiedad describe cuando el SISTEMA mantiene equilibrio interno?', correct:'Homeostasis', wrong:['Entropía','Equifinalidad','Recursividad'] },
+  { q:'¿Qué tipo de comportamiento ANTICIPA situaciones antes del estímulo?', correct:'Proactivo', wrong:['Reactivo','Caótico','Emergente'] },
+  { q:'¿Qué es la RETROALIMENTACIÓN NEGATIVA?', correct:'Estabiliza corrigiendo desviaciones', wrong:['Amplifica el efecto inicial','Produce caos','Elimina el output'] },
+  { q:'¿Cómo se llama el modelo donde SOLO se observan entradas y salidas?', correct:'Caja Negra', wrong:['Cibernético','Emergente','Recursivo'] },
+  { q:'¿Qué propiedad permite al sistema alcanzar el MISMO ESTADO desde condiciones distintas?', correct:'Equifinalidad', wrong:['Homeostasis','Entropía','Caos'] },
+  { q:'¿La RETROALIMENTACIÓN POSITIVA qué produce?', correct:'Amplifica o crece el efecto', wrong:['Estabiliza el sistema','Reduce el output','Genera equilibrio'] },
+  { q:'¿Qué son los sistemas ADAPTATIVOS COMPLEJOS (CAS)?', correct:'Aprenden y evolucionan su comportamiento', wrong:['Sistemas estáticos','Sistemas sin retroalimentación','Sistemas lineales'] },
+  { q:'¿Qué estudia la CIBERNÉTICA de Wiener?', correct:'Control y comunicación en sistemas', wrong:['Evolución biológica','Mercados financieros','Diseño de software'] },
+  { q:'¿Qué propiedad tiene un sistema que CONTIENE subsistemas similares?', correct:'Recursividad', wrong:['Homeostasis','Entropía','Emergencia'] },
+  { q:'¿El comportamiento EMERGENTE es...?', correct:'Propiedades que nacen del sistema total', wrong:['Programado explícitamente','Predecible siempre','Independiente del contexto'] },
+];
+
+/* ================================================
+   JUEGO 1: PESCA CONCEPTUAL
+================================================ */
+let fishCanvas, fishCtx, fishState = {};
+
+function startFishing() {
+  fishCanvas = document.getElementById('fishing-canvas');
+  fishCtx = fishCanvas.getContext('2d');
+  const W = fishCanvas.width, H = fishCanvas.height;
+  fishState = {
+    score: 0, lives: 3, level: 1, qIdx: 0,
+    rod: { x: W/2, angle: 0 },
+    hook: { x: W/2, y: 80, casting: false, speed: 0, landed: false },
+    fish: [], bubbles: [],
+    hookedFish: null, reeling: false,
+    animId: null, mouseX: W/2,
+    gameOver: false, showResult: false, resultTimer: 0,
+    currentQ: null
+  };
+  if(fishState.animId) cancelAnimationFrame(fishState.animId);
+  loadFishQuestion();
+  spawnBubbles();
+  fishCanvas.onmousemove = e => {
+    const rect = fishCanvas.getBoundingClientRect();
+    fishState.mouseX = (e.clientX - rect.left) * (W / rect.width);
+  };
+  fishCanvas.onclick = castHook;
+  fishLoop();
+}
+
+function loadFishQuestion() {
+  const s = fishState;
+  const q = QA[s.qIdx % QA.length];
+  s.currentQ = q;
+  document.getElementById('fishing-question').textContent = '🎣 ' + q.q;
+  s.fish = [];
+  s.hookedFish = null; s.reeling = false;
+  spawnFish();
+}
+
+function spawnFish() {
+  const s = fishState;
+  const q = s.currentQ;
+  const W = fishCanvas.width, H = fishCanvas.height;
+  const allOpts = shuffle([q.correct, ...q.wrong]);
+  const colors = ['#00bbf9','#f15bb5','#fee440','#1a936f','#ff6b35','#9b5de5'];
+  allOpts.forEach((label, i) => {
+    s.fish.push({
+      x: 60 + (i/(allOpts.length-1)) * (W-120),
+      y: 200 + Math.random()*140,
+      vx: (Math.random()-.5)*1.2,
+      vy: (Math.random()-.5)*.5,
+      label,
+      correct: label === q.correct,
+      color: colors[i % colors.length],
+      size: 44,
+      hooked: false,
+      wobble: Math.random()*Math.PI*2
+    });
+  });
+}
+
+function spawnBubbles() {
+  const s = fishState;
+  const W = fishCanvas.width, H = fishCanvas.height;
+  for(let i=0;i<18;i++) {
+    s.bubbles.push({ x:Math.random()*W, y:H-20-Math.random()*(H-150), r:2+Math.random()*4, vy:-.3-Math.random()*.5, alpha:0.2+Math.random()*.4 });
+  }
+}
+
+function castHook() {
+  const s = fishState;
+  if(s.gameOver || s.reeling || s.showResult) return;
+  s.hook.casting = true;
+  s.hook.x = s.mouseX;
+  s.hook.y = 80;
+  s.hook.speed = 4;
+  s.hook.landed = false;
+}
+
+function fishLoop() {
+  const s = fishState;
+  if(s.gameOver) { drawFish(); return; }
+  updateFish();
+  drawFish();
+  s.animId = requestAnimationFrame(fishLoop);
+}
+
+function updateFish() {
+  const s = fishState;
+  const W = fishCanvas.width, H = fishCanvas.height;
+  s.rod.angle = (s.mouseX - W/2) / W * 0.6;
+  // update bubbles
+  s.bubbles.forEach(b => { b.y += b.vy; if(b.y < 100) { b.y = H-20; b.x = Math.random()*W; } });
+  // cast hook
+  if(s.hook.casting && !s.hook.landed) {
+    s.hook.y += s.hook.speed;
+    if(s.hook.y > H - 40) { s.hook.landed = true; s.hook.casting = false; setTimeout(reelIn, 1200); }
+  }
+  // move fish
+  s.fish.forEach(f => {
+    if(f.hooked) return;
+    f.wobble += 0.08;
+    f.x += f.vx;
+    f.y += Math.sin(f.wobble)*0.4 + f.vy;
+    if(f.x < 50) f.vx = Math.abs(f.vx);
+    if(f.x > W-50) f.vx = -Math.abs(f.vx);
+    if(f.y < 160) f.vy = Math.abs(f.vy);
+    if(f.y > H-40) f.vy = -Math.abs(f.vy);
+    // check hook collision
+    if(s.hook.casting || s.hook.landed) {
+      const dx = f.x - s.hook.x, dy = f.y - s.hook.y;
+      if(Math.sqrt(dx*dx+dy*dy) < f.size) {
+        f.hooked = true;
+        s.hookedFish = f;
+        s.reeling = true;
+        s.hook.landed = false;
+        checkFishCatch(f);
+      }
+    }
+  });
+  // reel
+  if(s.reeling && s.hookedFish) {
+    s.hook.y -= 5;
+    s.hookedFish.x = s.hook.x;
+    s.hookedFish.y = s.hook.y;
+    if(s.hook.y < 85) {
+      // caught!
+      s.reeling = false;
+      nextFishQ();
+    }
+  }
+  // result timer
+  if(s.showResult) { s.resultTimer--; if(s.resultTimer<=0) s.showResult=false; }
+}
+
+function checkFishCatch(f) {
+  const s = fishState;
+  if(f.correct) {
+    s.score += 10 * s.level;
+    document.getElementById('fishing-msg').style.color = '#1a936f';
+    document.getElementById('fishing-msg').textContent = '✅ ¡Correcto! +' + (10*s.level) + ' puntos';
+  } else {
+    s.lives--;
+    document.getElementById('fishing-msg').style.color = '#c3423f';
+    document.getElementById('fishing-msg').textContent = '❌ ¡Ese no era! La respuesta era: ' + s.currentQ.correct;
+    if(s.lives <= 0) { setTimeout(() => gameOverFish(), 1000); }
+  }
+  document.getElementById('fish-score').textContent = s.score;
+  document.getElementById('fish-lives').textContent = '❤️'.repeat(Math.max(0, s.lives));
+}
+
+function reelIn() {
+  const s = fishState;
+  if(!s.reeling) { s.hook.y = 80; s.hook.landed = false; }
+}
+
+function nextFishQ() {
+  const s = fishState;
+  s.qIdx++;
+  s.level = Math.floor(s.qIdx / 3) + 1;
+  document.getElementById('fish-level').textContent = s.level;
+  setTimeout(loadFishQuestion, 800);
+}
+
+function gameOverFish() {
+  const s = fishState;
+  s.gameOver = true;
+  document.getElementById('fishing-msg').textContent = '🎮 Juego terminado. Puntaje: ' + s.score;
+  drawFish();
+}
+
+function drawFish() {
+  const s = fishState;
+  const W = fishCanvas.width, H = fishCanvas.height;
+  const ctx = fishCtx;
+  ctx.clearRect(0,0,W,H);
+
+  // water layers
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#0a1628'); grad.addColorStop(.35,'#0d2545'); grad.addColorStop(.65,'#0a3d5c'); grad.addColorStop(1,'#0e4f72');
+  ctx.fillStyle = grad; ctx.fillRect(0,0,W,H);
+
+  // water surface
+  ctx.fillStyle = 'rgba(0,187,249,.18)';
+  ctx.fillRect(0,100,W,6);
+  ctx.fillStyle = 'rgba(0,187,249,.08)';
+  ctx.fillRect(0,106,W,H-106);
+
+  // bubbles
+  s.bubbles.forEach(b => {
+    ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+    ctx.strokeStyle = `rgba(0,187,249,${b.alpha})`; ctx.lineWidth=1; ctx.stroke();
+  });
+
+  // sky
+  ctx.fillStyle = '#0a0f1c'; ctx.fillRect(0,0,W,100);
+
+  // dock platform
+  ctx.fillStyle = '#5c3d1e';
+  ctx.fillRect(W/2-60, 60, 120, 12);
+  ctx.fillStyle = '#7a5230';
+  ctx.fillRect(W/2-60, 60, 120, 4);
+
+  // rod
+  ctx.save();
+  ctx.translate(s.mouseX, 68);
+  ctx.rotate(s.rod.angle);
+  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(60,-8);
+  ctx.strokeStyle='#c8a96e'; ctx.lineWidth=4; ctx.lineCap='round'; ctx.stroke();
+  // fishing line
+  const rodTipX = s.mouseX + Math.cos(s.rod.angle)*60;
+  const rodTipY = 68 + Math.sin(s.rod.angle)*(-8);
+  ctx.restore();
+  ctx.beginPath(); ctx.moveTo(rodTipX, rodTipY);
+  ctx.lineTo(s.hook.x, s.hook.y);
+  ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // hook
+  ctx.beginPath(); ctx.arc(s.hook.x, s.hook.y, 5, 0, Math.PI*2);
+  ctx.fillStyle='#ffd700'; ctx.fill();
+
+  // fish
+  s.fish.forEach(f => {
+    if(f.hooked && !s.reeling) return;
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    if(f.vx < 0) ctx.scale(-1,1);
+    // body
+    ctx.beginPath();
+    ctx.ellipse(0,0,f.size*0.7,f.size*0.35,0,0,Math.PI*2);
+    ctx.fillStyle = f.color; ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1.5; ctx.stroke();
+    // tail
+    ctx.beginPath(); ctx.moveTo(f.size*.55,0); ctx.lineTo(f.size*.9,f.size*.3); ctx.lineTo(f.size*.9,-f.size*.3); ctx.closePath();
+    ctx.fillStyle=f.color; ctx.fill();
+    // eye
+    ctx.beginPath(); ctx.arc(-f.size*.3,-f.size*.07,4,0,Math.PI*2);
+    ctx.fillStyle='white'; ctx.fill();
+    ctx.beginPath(); ctx.arc(-f.size*.3,-f.size*.07,2,0,Math.PI*2);
+    ctx.fillStyle='#111'; ctx.fill();
+    // label
+    ctx.restore();
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    ctx.fillStyle='rgba(0,0,0,.6)';
+    const tw = ctx.measureText(f.label).width + 12;
+    ctx.fillRect(-tw/2, f.size*.4, tw, 18);
+    ctx.fillStyle='white'; ctx.font='bold 11px Syne,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(f.label.length>18?f.label.substring(0,17)+'…':f.label, 0, f.size*.4+9);
+    ctx.restore();
+  });
+
+  // game over overlay
+  if(s.gameOver) {
+    ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='white'; ctx.font='bold 36px Syne,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('🎣 ¡Juego Terminado!', W/2, H/2-30);
+    ctx.font='24px DM Sans,sans-serif'; ctx.fillStyle='#fee440';
+    ctx.fillText('Puntaje: ' + s.score, W/2, H/2+20);
+    ctx.font='16px DM Sans,sans-serif'; ctx.fillStyle='#8888aa';
+    ctx.fillText('Haz clic en "Reiniciar" para jugar de nuevo', W/2, H/2+60);
+  }
+}
+
+/* ================================================
+   JUEGO 2: RANA SALTARINA
+================================================ */
+let frogCanvas, frogCtx, frogState = {};
+let frogAnim;
+
+function startFrog() {
+  frogCanvas = document.getElementById('frog-canvas');
+  frogCtx = frogCanvas.getContext('2d');
+  if(frogAnim) cancelAnimationFrame(frogAnim);
+  frogState = {
+    score: 0, lives: 3, round: 0,
+    frog: { x: frogCanvas.width/2, y: frogCanvas.height - 60, jumping: false, targetX: 0, targetY: 0, progress: 0, startX:0, startY:0 },
+    leaves: [],
+    result: null, resultTimer: 0,
+    gameOver: false,
+    currentQ: null
+  };
+  loadFrogQuestion();
+  frogCanvas.onclick = handleFrogClick;
+  frogLoop();
+}
+
+function loadFrogQuestion() {
+  const s = frogState;
+  if(s.round >= 10) { frogWin(); return; }
+  const q = QA[s.round % QA.length];
+  s.currentQ = q;
+  document.getElementById('frog-question').textContent = '🐸 ' + q.q;
+  document.getElementById('frog-round').textContent = (s.round+1) + '/10';
+  s.leaves = [];
+  const W = frogCanvas.width;
+  const allOpts = shuffle([q.correct, ...q.wrong]);
+  const leafColors = ['#2d6a4f','#40916c','#52b788','#1b4332'];
+  allOpts.forEach((label, i) => {
+    const cols = 2, rows = 2;
+    const col = i % cols, row = Math.floor(i/cols);
+    s.leaves.push({
+      x: 130 + col * (W - 260),
+      y: 100 + row * 130,
+      rx: 80, ry: 38,
+      label,
+      correct: label === q.correct,
+      color: leafColors[i],
+      hover: false
+    });
+  });
+  s.frog.x = W/2; s.frog.y = frogCanvas.height - 70;
+  s.frog.jumping = false;
+  s.result = null;
+}
+
+function handleFrogClick(e) {
+  const s = frogState;
+  if(s.frog.jumping || s.gameOver || s.result) return;
+  const rect = frogCanvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (frogCanvas.width / rect.width);
+  const my = (e.clientY - rect.top) * (frogCanvas.height / rect.height);
+  s.leaves.forEach(leaf => {
+    const dx = (mx - leaf.x)/leaf.rx, dy = (my - leaf.y)/leaf.ry;
+    if(dx*dx + dy*dy <= 1) {
+      // jump to leaf
+      s.frog.startX = s.frog.x; s.frog.startY = s.frog.y;
+      s.frog.targetX = leaf.x; s.frog.targetY = leaf.y;
+      s.frog.jumping = true; s.frog.progress = 0;
+      s.frog.targetLeaf = leaf;
+    }
+  });
+  frogCanvas.onmousemove = ev => {
+    const r2 = frogCanvas.getBoundingClientRect();
+    const mx2 = (ev.clientX - r2.left) * (frogCanvas.width / r2.width);
+    const my2 = (ev.clientY - r2.top) * (frogCanvas.height / r2.height);
+    s.leaves.forEach(lf => {
+      const dx2=(mx2-lf.x)/lf.rx, dy2=(my2-lf.y)/lf.ry;
+      lf.hover = dx2*dx2+dy2*dy2<=1;
+    });
+  };
+}
+
+function frogLoop() {
+  updateFrog();
+  drawFrog();
+  if(!frogState.gameOver) frogAnim = requestAnimationFrame(frogLoop);
+}
+
+function updateFrog() {
+  const s = frogState;
+  if(s.frog.jumping) {
+    s.frog.progress += 0.045;
+    const t = s.frog.progress;
+    s.frog.x = s.frog.startX + (s.frog.targetX - s.frog.startX)*t;
+    const arc = -Math.sin(t*Math.PI)*80;
+    s.frog.y = s.frog.startY + (s.frog.targetY - s.frog.startY)*t + arc;
+    if(t >= 1) {
+      s.frog.jumping = false;
+      s.frog.x = s.frog.targetX; s.frog.y = s.frog.targetY;
+      const leaf = s.frog.targetLeaf;
+      if(leaf.correct) {
+        s.score += 15;
+        document.getElementById('frog-score').textContent = s.score;
+        document.getElementById('frog-msg').style.color='#1a936f';
+        document.getElementById('frog-msg').textContent='✅ ¡Hoja correcta! +15 puntos 🎉';
+        s.result = 'ok'; s.resultTimer = 90;
+        s.round++;
+        setTimeout(loadFrogQuestion, 1200);
+      } else {
+        s.lives--;
+        document.getElementById('frog-lives').textContent = '❤️'.repeat(Math.max(0,s.lives));
+        document.getElementById('frog-msg').style.color='#c3423f';
+        document.getElementById('frog-msg').textContent='❌ ¡Hoja equivocada! La correcta era: ' + s.currentQ.correct;
+        s.result = 'bad'; s.resultTimer = 90;
+        if(s.lives <= 0) { setTimeout(frogGameOver, 1000); return; }
+        setTimeout(() => { s.result=null; s.frog.x=frogCanvas.width/2; s.frog.y=frogCanvas.height-70; loadFrogQuestion(); }, 1300);
+      }
+    }
+  }
+  if(s.resultTimer > 0) s.resultTimer--;
+}
+
+function frogGameOver() { frogState.gameOver=true; document.getElementById('frog-msg').textContent='🐸 Juego terminado. Puntaje: ' + frogState.score; drawFrog(); }
+function frogWin() { frogState.gameOver=true; document.getElementById('frog-msg').textContent='🏆 ¡Completaste todos los niveles! Puntaje: ' + frogState.score; drawFrog(); }
+
+function drawFrog() {
+  const s = frogState;
+  const W = frogCanvas.width, H = frogCanvas.height;
+  const ctx = frogCtx;
+  ctx.clearRect(0,0,W,H);
+
+  // background pond
+  const gbg = ctx.createLinearGradient(0,0,0,H);
+  gbg.addColorStop(0,'#071a0d'); gbg.addColorStop(.5,'#0a2c14'); gbg.addColorStop(1,'#0d3d1c');
+  ctx.fillStyle=gbg; ctx.fillRect(0,0,W,H);
+
+  // water ripples
+  for(let i=0;i<5;i++) {
+    ctx.beginPath(); ctx.ellipse(W/2, H*.7+i*20, 100+i*60, 15+i*5, 0, 0, Math.PI*2);
+    ctx.strokeStyle=`rgba(26,147,111,${.05+i*.015})`; ctx.lineWidth=1.5; ctx.stroke();
+  }
+
+  // lily pads (leaves)
+  s.leaves.forEach(leaf => {
+    // shadow
+    ctx.beginPath(); ctx.ellipse(leaf.x+4, leaf.y+6, leaf.rx, leaf.ry*.5, 0, 0, Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fill();
+    // leaf
+    ctx.beginPath(); ctx.ellipse(leaf.x, leaf.y, leaf.rx, leaf.ry, 0, 0, Math.PI*2);
+    ctx.fillStyle = leaf.hover ? '#52b788' : leaf.color;
+    if(s.result==='ok' && leaf.correct) ctx.fillStyle='#74c69d';
+    if(s.result==='bad' && leaf.correct) ctx.fillStyle='#2d6a4f';
+    ctx.fill();
+    ctx.strokeStyle = leaf.hover ? '#95d5b2' : 'rgba(255,255,255,.1)';
+    ctx.lineWidth = leaf.hover ? 2.5 : 1; ctx.stroke();
+    // notch
+    ctx.beginPath(); ctx.moveTo(leaf.x, leaf.y); ctx.lineTo(leaf.x+leaf.rx*.15, leaf.y-leaf.ry);
+    ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1.5; ctx.stroke();
+    // text label
+    ctx.fillStyle='rgba(0,0,0,.55)';
+    const tw = Math.min(leaf.rx*2-16, 150);
+    ctx.fillRect(leaf.x-tw/2, leaf.y-10, tw, 20);
+    ctx.fillStyle='white'; ctx.font='bold 11px Syne,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    const lbl = leaf.label.length > 22 ? leaf.label.substring(0,21)+'…' : leaf.label;
+    ctx.fillText(lbl, leaf.x, leaf.y);
+    // correct indicator
+    if(s.result && leaf.correct) { ctx.font='18px sans-serif'; ctx.fillText('✓', leaf.x+leaf.rx*.6, leaf.y-leaf.ry*.6); }
+  });
+
+  // trunk/log
+  ctx.beginPath(); ctx.ellipse(W/2, H-55, 50, 22, 0, 0, Math.PI*2);
+  ctx.fillStyle='#5c3d1e'; ctx.fill();
+  ctx.strokeStyle='#7a5230'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle='#8B5E3C'; ctx.font='12px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('🪵', W/2, H-50);
+
+  // frog
+  const fx = s.frog.x, fy = s.frog.y;
+  const jumping = s.frog.jumping;
+  // shadow
+  ctx.beginPath(); ctx.ellipse(fx, fy+28, 22, 7, 0, 0, Math.PI*2);
+  ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fill();
+  // body
+  ctx.beginPath(); ctx.ellipse(fx, fy, 22, 18, 0, 0, Math.PI*2);
+  ctx.fillStyle='#2d9e4e'; ctx.fill();
+  ctx.strokeStyle='#1a6b32'; ctx.lineWidth=1.5; ctx.stroke();
+  // eyes
+  [-12,12].forEach(ox => {
+    ctx.beginPath(); ctx.arc(fx+ox, fy-14, 7, 0, Math.PI*2);
+    ctx.fillStyle='#52c472'; ctx.fill(); ctx.strokeStyle='#1a6b32'; ctx.lineWidth=1; ctx.stroke();
+    ctx.beginPath(); ctx.arc(fx+ox+1, fy-15, 4, 0, Math.PI*2);
+    ctx.fillStyle='white'; ctx.fill();
+    ctx.beginPath(); ctx.arc(fx+ox+2, fy-15, 2, 0, Math.PI*2);
+    ctx.fillStyle='#111'; ctx.fill();
+  });
+  // legs
+  if(jumping) {
+    ctx.beginPath(); ctx.moveTo(fx-18,fy+8); ctx.lineTo(fx-40,fy+30);
+    ctx.moveTo(fx+18,fy+8); ctx.lineTo(fx+40,fy+30);
+    ctx.strokeStyle='#2d9e4e'; ctx.lineWidth=5; ctx.lineCap='round'; ctx.stroke();
+  } else {
+    ctx.beginPath(); ctx.moveTo(fx-18,fy+10); ctx.lineTo(fx-32,fy+24);
+    ctx.moveTo(fx+18,fy+10); ctx.lineTo(fx+32,fy+24);
+    ctx.strokeStyle='#2d9e4e'; ctx.lineWidth=5; ctx.lineCap='round'; ctx.stroke();
+  }
+  // smile
+  ctx.beginPath(); ctx.arc(fx, fy+4, 9, 0.1, Math.PI-.1);
+  ctx.strokeStyle='#1a6b32'; ctx.lineWidth=2; ctx.stroke();
+
+  // overlay
+  if(s.gameOver) {
+    ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='white'; ctx.font='bold 34px Syne,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(s.lives<=0?'🐸 ¡Game Over!':'🏆 ¡Ganaste!', W/2, H/2-25);
+    ctx.font='22px DM Sans,sans-serif'; ctx.fillStyle='#fee440';
+    ctx.fillText('Puntaje: ' + s.score, W/2, H/2+20);
+  }
+}
+
+/* ================================================
+   JUEGO 3: COHETE ESPACIAL
+================================================ */
+let rocketCanvas, rocketCtx, rocketState = {};
+let rocketAnim;
+
+function startRocket() {
+  rocketCanvas = document.getElementById('rocket-canvas');
+  rocketCtx = rocketCanvas.getContext('2d');
+  if(rocketAnim) cancelAnimationFrame(rocketAnim);
+  const W = rocketCanvas.width, H = rocketCanvas.height;
+  rocketState = {
+    score: 0, lives: 3, level: 1, qIdx: 0,
+    rocket: { x: W/2, y: H-70, targetX: W/2 },
+    asteroids: [],
+    stars: Array.from({length:80},()=>({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5+.3, blink:Math.random()*Math.PI*2})),
+    particles: [],
+    spawnTimer: 0, spawnInterval: 80,
+    gameOver: false, currentQ: null, qLoaded: false,
+    explosions: []
+  };
+  rocketCanvas.onmousemove = e => {
+    const rect = rocketCanvas.getBoundingClientRect();
+    rocketState.rocket.targetX = (e.clientX - rect.left) * (W / rect.width);
+  };
+  rocketCanvas.ontouchmove = e => {
+    e.preventDefault();
+    const rect = rocketCanvas.getBoundingClientRect();
+    rocketState.rocket.targetX = (e.touches[0].clientX - rect.left) * (W / rect.width);
+  };
+  document.addEventListener('keydown', e => {
+    if(e.key==='ArrowLeft') rocketState.rocket.targetX -= 30;
+    if(e.key==='ArrowRight') rocketState.rocket.targetX += 30;
+  });
+  loadRocketQ();
+  rocketLoop();
+}
+
+function loadRocketQ() {
+  const s = rocketState;
+  const q = QA[s.qIdx % QA.length];
+  s.currentQ = q;
+  document.getElementById('rocket-question').textContent = '🚀 ' + q.q;
+  s.asteroids = [];
+  s.qLoaded = true;
+  s.spawnTimer = 0;
+}
+
+function rocketLoop() {
+  updateRocket();
+  drawRocket();
+  if(!rocketState.gameOver) rocketAnim = requestAnimationFrame(rocketLoop);
+}
+
+const asteroidColors = { correct: ['#1a936f','#52b788','#74c69d'], wrong: ['#c3423f','#e05c5c','#ff8080','#9b5de5','#f15bb5','#ff6b35'] };
+
+function updateRocket() {
+  const s = rocketState;
+  const W = rocketCanvas.width, H = rocketCanvas.height;
+  // move rocket
+  s.rocket.x += (s.rocket.targetX - s.rocket.x) * 0.12;
+  s.rocket.x = Math.max(30, Math.min(W-30, s.rocket.x));
+  // stars twinkle
+  s.stars.forEach(st => st.blink += 0.04);
+  // spawn asteroids
+  s.spawnTimer++;
+  if(s.spawnTimer >= s.spawnInterval && s.currentQ) {
+    const q = s.currentQ;
+    const allOpts = shuffle([q.correct, ...q.wrong]);
+    allOpts.forEach((label, i) => {
+      const isCorrect = label === q.correct;
+      const cols = asteroidColors;
+      const col = isCorrect ? cols.correct[Math.floor(Math.random()*3)] : cols.wrong[Math.floor(Math.random()*cols.wrong.length)];
+      s.asteroids.push({
+        x: 60 + Math.random() * (W-120),
+        y: -50 - i*90,
+        vy: 1.2 + s.level*0.4 + Math.random()*.6,
+        vx: (Math.random()-.5)*.5,
+        r: 38 + Math.random()*10,
+        label, isCorrect, color: col,
+        rot: Math.random()*Math.PI*2, rotSpeed: (Math.random()-.5)*.04,
+        hit: false
+      });
+    });
+    s.spawnTimer = 0;
+    s.spawnInterval = Math.max(55, 80 - s.level*6);
+  }
+  // update asteroids
+  s.asteroids.forEach(ast => {
+    if(ast.hit) return;
+    ast.x += ast.vx; ast.y += ast.vy;
+    ast.rot += ast.rotSpeed;
+    if(ast.x < ast.r || ast.x > W-ast.r) ast.vx *= -1;
+    // collision with rocket
+    const dx = ast.x - s.rocket.x, dy = ast.y - (H-70);
+    if(Math.sqrt(dx*dx+dy*dy) < ast.r + 22) {
+      ast.hit = true;
+      spawnExplosion(ast.x, ast.y, ast.color);
+      if(ast.isCorrect) {
+        s.score += 20 * s.level;
+        document.getElementById('rocket-score').textContent = s.score;
+        document.getElementById('rocket-msg').style.color='#1a936f';
+        document.getElementById('rocket-msg').textContent='✅ ¡Correcto! +' + (20*s.level) + ' puntos';
+        s.qIdx++;
+        s.level = Math.floor(s.qIdx/3)+1;
+        document.getElementById('rocket-level').textContent=s.level;
+        s.asteroids = [];
+        setTimeout(loadRocketQ, 600);
+      } else {
+        s.lives--;
+        document.getElementById('rocket-lives').textContent='❤️'.repeat(Math.max(0,s.lives));
+        document.getElementById('rocket-msg').style.color='#c3423f';
+        document.getElementById('rocket-msg').textContent='💥 ¡Asteroide incorrecto! Cuidado: ' + s.currentQ.correct;
+        if(s.lives<=0) { setTimeout(rocketGameOver,800); }
+      }
+    }
+    // miss (wrong goes off screen → no penalty)
+  });
+  s.asteroids = s.asteroids.filter(a => a.y < H+80 && !a.hit);
+  // explosions
+  s.explosions.forEach(ex => { ex.t++; ex.particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; p.vy+=.12; p.alpha-=.025; }); });
+  s.explosions = s.explosions.filter(ex => ex.t < 50);
+}
+
+function spawnExplosion(x,y,color) {
+  const particles = Array.from({length:14},()=>({
+    x,y, vx:(Math.random()-.5)*6, vy:(Math.random()-.5)*6,
+    r:2+Math.random()*4, alpha:1, color
+  }));
+  rocketState.explosions.push({t:0,particles});
+}
+
+function rocketGameOver() { rocketState.gameOver=true; document.getElementById('rocket-msg').textContent='🚀 Nave destruida. Puntaje: '+rocketState.score; drawRocket(); }
+
+function drawRocket() {
+  const s = rocketState;
+  const W = rocketCanvas.width, H = rocketCanvas.height;
+  const ctx = rocketCtx;
+  ctx.clearRect(0,0,W,H);
+
+  // deep space
+  ctx.fillStyle='#060612'; ctx.fillRect(0,0,W,H);
+
+  // stars
+  s.stars.forEach(st => {
+    const alpha = .4 + .5*Math.abs(Math.sin(st.blink));
+    ctx.beginPath(); ctx.arc(st.x,st.y,st.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${alpha})`; ctx.fill();
+  });
+
+  // nebula
+  const neb = ctx.createRadialGradient(W*.7,H*.3,0,W*.7,H*.3,200);
+  neb.addColorStop(0,'rgba(155,93,229,.06)'); neb.addColorStop(1,'transparent');
+  ctx.fillStyle=neb; ctx.fillRect(0,0,W,H);
+
+  // asteroids
+  s.asteroids.forEach(ast => {
+    ctx.save(); ctx.translate(ast.x,ast.y); ctx.rotate(ast.rot);
+    // shadow glow
+    ctx.shadowColor = ast.isCorrect ? '#1a936f' : '#c3423f';
+    ctx.shadowBlur = 12;
+    // rocky shape
+    ctx.beginPath();
+    const sides = 7;
+    for(let i=0;i<sides;i++) {
+      const a = (i/sides)*Math.PI*2;
+      const r2 = ast.r * (.75 + .25*Math.sin(i*3.1+ast.rot*2));
+      i===0 ? ctx.moveTo(Math.cos(a)*r2, Math.sin(a)*r2) : ctx.lineTo(Math.cos(a)*r2, Math.sin(a)*r2);
+    }
+    ctx.closePath();
+    ctx.fillStyle = ast.color; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.shadowBlur=0;
+    // correct glow ring
+    if(ast.isCorrect) {
+      ctx.beginPath(); ctx.arc(0,0,ast.r+6,0,Math.PI*2);
+      ctx.strokeStyle='rgba(26,147,111,.5)'; ctx.lineWidth=2; ctx.stroke();
+    }
+    ctx.restore();
+    // label
+    ctx.fillStyle = ast.isCorrect ? 'rgba(26,60,35,.85)' : 'rgba(60,20,20,.85)';
+    const tw = Math.min(ctx.measureText(ast.label).width+16, ast.r*1.8);
+    ctx.fillRect(ast.x-tw/2, ast.y-9, tw, 18);
+    ctx.fillStyle='white'; ctx.font='bold 10px Syne,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    const lbl = ast.label.length>20?ast.label.substring(0,19)+'…':ast.label;
+    ctx.fillText(lbl, ast.x, ast.y);
+    if(ast.isCorrect) { ctx.font='13px sans-serif'; ctx.fillText('✦', ast.x + tw/2-2, ast.y-9); }
+  });
+
+  // explosions
+  s.explosions.forEach(ex => {
+    ex.particles.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=p.color.replace(')',`,${p.alpha})`).replace('rgb','rgba');
+      ctx.globalAlpha=p.alpha; ctx.fill(); ctx.globalAlpha=1;
+    });
+  });
+
+  // rocket
+  const rx = s.rocket.x, ry = H-70;
+  // exhaust flame
+  const flame = ctx.createLinearGradient(rx,ry+20,rx,ry+55);
+  flame.addColorStop(0,'rgba(255,165,0,.9)'); flame.addColorStop(.5,'rgba(255,60,0,.7)'); flame.addColorStop(1,'transparent');
+  ctx.beginPath(); ctx.moveTo(rx-12,ry+22); ctx.quadraticCurveTo(rx, ry+52, rx+12, ry+22);
+  ctx.fillStyle=flame; ctx.fill();
+  // body
+  ctx.beginPath(); ctx.roundRect(rx-14,ry-38,28,50,6);
+  ctx.fillStyle='#e0e0f8'; ctx.fill();
+  ctx.strokeStyle='rgba(155,93,229,.6)'; ctx.lineWidth=1.5; ctx.stroke();
+  // nose cone
+  ctx.beginPath(); ctx.moveTo(rx-14,ry-38); ctx.lineTo(rx,ry-64); ctx.lineTo(rx+14,ry-38); ctx.closePath();
+  ctx.fillStyle='#f15bb5'; ctx.fill();
+  // window
+  ctx.beginPath(); ctx.arc(rx,ry-18,8,0,Math.PI*2);
+  ctx.fillStyle='#00bbf9'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.4)'; ctx.lineWidth=1.5; ctx.stroke();
+  // fins
+  ctx.beginPath(); ctx.moveTo(rx-14,ry+12); ctx.lineTo(rx-26,ry+25); ctx.lineTo(rx-14,ry+25); ctx.closePath();
+  ctx.fillStyle='#9b5de5'; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(rx+14,ry+12); ctx.lineTo(rx+26,ry+25); ctx.lineTo(rx+14,ry+25); ctx.closePath();
+  ctx.fillStyle='#9b5de5'; ctx.fill();
+
+  if(s.gameOver) {
+    ctx.fillStyle='rgba(0,0,0,.75)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='white'; ctx.font='bold 34px Syne,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('💥 ¡Nave Destruida!', W/2, H/2-25);
+    ctx.font='22px DM Sans,sans-serif'; ctx.fillStyle='#fee440';
+    ctx.fillText('Puntaje: ' + s.score, W/2, H/2+20);
+  }
+}
+
+/* ================================================
+   MEMORIA
+================================================ */
+const memPairs = [
+  {term:'Homeostasis',def:'Equilibrio interno del sistema'},
+  {term:'Emergencia',def:'Propiedades no presentes en partes individuales'},
+  {term:'Retroalimentación',def:'Output que regula el input del sistema'},
+  {term:'Entropía',def:'Tendencia al desorden en sistemas cerrados'},
+  {term:'Equifinalidad',def:'Mismo estado final desde condiciones distintas'},
+  {term:'Caja Negra',def:'Solo entradas y salidas son observables'},
+  {term:'Cibernética',def:'Control y comunicación en sistemas (Wiener)'},
+  {term:'Recursividad',def:'Subsistemas con comportamientos similares al todo'},
+];
+let memFlipped=[], memLocked=false, memMatched=0;
+function initMemory() {
+  memFlipped=[]; memLocked=false; memMatched=0;
+  document.getElementById('mem-score').textContent='Parejas encontradas: 0 / 8';
+  document.getElementById('mem-msg').textContent='';
+  const items = [];
+  memPairs.forEach((p,i) => {
+    items.push({id:i,side:'term',text:p.term,pair:i});
+    items.push({id:i+8,side:'def',text:p.def,pair:i});
+  });
+  shuffle(items);
+  const grid = document.getElementById('mem-grid');
+  grid.innerHTML='';
+  const colors=['#FF6B35','#F15BB5','#9B5DE5','#00BBF9','#1A936F','#FEE440','#C3423F','#004E89'];
+  items.forEach(item => {
+    const card = document.createElement('div'); card.className='mem-card';
+    card.innerHTML=`<div class="mem-face mem-back">🧠</div><div class="mem-face mem-front" style="background:${colors[item.pair]}22;color:${colors[item.pair]};border:2px solid ${colors[item.pair]}44">${item.text}</div>`;
+    card.onclick=()=>flipMem(card,item);
+    grid.appendChild(card);
+  });
+}
+function flipMem(card,item) {
+  if(memLocked||card.classList.contains('flipped')||card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  memFlipped.push({card,item});
+  if(memFlipped.length===2) {
+    memLocked=true;
+    const [a,b]=memFlipped;
+    if(a.item.pair===b.item.pair && a.item.side!==b.item.side) {
+      a.card.classList.add('matched'); b.card.classList.add('matched');
+      memMatched++;
+      document.getElementById('mem-score').textContent=`Parejas encontradas: ${memMatched} / 8`;
+      if(memMatched===8) document.getElementById('mem-msg').textContent='🎉 ¡Encontraste todas las parejas!';
+      memFlipped=[]; memLocked=false;
+    } else {
+      setTimeout(()=>{ a.card.classList.remove('flipped'); b.card.classList.remove('flipped'); memFlipped=[]; memLocked=false; }, 900);
+    }
+  }
+}
+
+/* ================================================
+   SOPA DE LETRAS
+================================================ */
+const wsWords=['HOMEOSTASIS','EMERGENCIA','RETROALIMENTACION','ENTROPIA','EQUIFINALIDAD','CIBERNETICA','RECURSIVIDAD','ADAPTATIVO'];
+let wsGrid=[], wsFoundWords=[], wsSelecting=false, wsStartCell=null, wsSelected=[];
+function initWordSearch() {
+  wsFoundWords=[]; wsSelecting=false; wsSelected=[];
+  document.getElementById('ws-msg').textContent='';
+  const R=12,C=12;
+  wsGrid=Array.from({length:R},()=>Array(C).fill(''));
+  const placed=[];
+  const dirs=[[0,1],[1,0],[1,1],[0,-1],[-1,0],[-1,-1],[1,-1],[-1,1]];
+  wsWords.forEach(word=>{
+    let ok=false,tries=0;
+    while(!ok&&tries<200){
+      const dir=dirs[Math.floor(Math.random()*dirs.length)];
+      const sr=Math.floor(Math.random()*R),sc=Math.floor(Math.random()*C);
+      let fits=true;
+      for(let i=0;i<word.length;i++){
+        const nr=sr+dir[0]*i,nc=sc+dir[1]*i;
+        if(nr<0||nr>=R||nc<0||nc>=C||(wsGrid[nr][nc]&&wsGrid[nr][nc]!==word[i])){fits=false;break;}
+      }
+      if(fits){
+        for(let i=0;i<word.length;i++) wsGrid[sr+dir[0]*i][sc+dir[1]*i]=word[i];
+        placed.push(word); ok=true;
+      }
+      tries++;
+    }
+  });
+  const alpha='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(let r=0;r<R;r++) for(let c=0;c<C;c++) if(!wsGrid[r][c]) wsGrid[r][c]=alpha[Math.floor(Math.random()*26)];
+  const cont=document.getElementById('ws-grid'); cont.innerHTML='';
+  for(let r=0;r<R;r++) for(let c=0;c<C;c++){
+    const cell=document.createElement('div'); cell.className='ws-cell'; cell.textContent=wsGrid[r][c];
+    cell.dataset.r=r; cell.dataset.c=c;
+    cell.addEventListener('mousedown',e=>{e.preventDefault();wsStartSelect(e,cell);});
+    cell.addEventListener('mousemove',e=>{if(wsSelecting)wsMoveSelect(e,cell);});
+    cell.addEventListener('mouseup',wsEndSelect);
+    cell.addEventListener('touchstart',e=>{e.preventDefault();wsStartSelect(e,cell);},{passive:false});
+    cell.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0];const el=document.elementFromPoint(t.clientX,t.clientY);if(el&&el.classList.contains('ws-cell'))wsMoveSelect(e,el);},{passive:false});
+    cell.addEventListener('touchend',wsEndSelect);
+    cont.appendChild(cell);
+  }
+  const ul=document.getElementById('ws-word-list'); ul.innerHTML='';
+  wsWords.forEach(w=>{const li=document.createElement('li');li.textContent=w;li.dataset.word=w;ul.appendChild(li);});
+}
+function wsStartSelect(e,cell){wsSelecting=true;wsStartCell=cell;wsSelected=[cell];cell.classList.add('selected');}
+function wsMoveSelect(e,cell){
+  if(!wsSelecting)return;
+  document.querySelectorAll('.ws-cell.selected:not(.found)').forEach(c=>c.classList.remove('selected'));
+  const r0=+wsStartCell.dataset.r,c0=+wsStartCell.dataset.c,r1=+cell.dataset.r,c1=+cell.dataset.c;
+  const dr=r1-r0,dc=c1-c0;
+  const steps=Math.max(Math.abs(dr),Math.abs(dc));
+  if(steps===0){wsStartCell.classList.add('selected');wsSelected=[wsStartCell];return;}
+  const dirR=Math.round(dr/steps),dirC=Math.round(dc/steps);
+  if(!((dirR===0||Math.abs(dirR)===1)&&(dirC===0||Math.abs(dirC)===1)))return;
+  wsSelected=[];
+  for(let i=0;i<=steps;i++){const nr=r0+dirR*i,nc=c0+dirC*i;const el=document.querySelector(`.ws-cell[data-r="${nr}"][data-c="${nc}"]`);if(el){el.classList.add('selected');wsSelected.push(el);}}
+}
+function wsEndSelect(){
+  if(!wsSelecting)return;wsSelecting=false;
+  const word=wsSelected.map(c=>c.textContent).join('');
+  const rev=word.split('').reverse().join('');
+  const match=wsWords.find(w=>(w===word||w===rev)&&!wsFoundWords.includes(w));
+  if(match){
+    wsFoundWords.push(match);
+    wsSelected.forEach(c=>{c.classList.remove('selected');c.classList.add('found');});
+    const li=document.querySelector(`#ws-word-list li[data-word="${match}"]`);
+    if(li)li.classList.add('found-word');
+    document.getElementById('ws-msg').textContent=`✅ ¡Encontraste: ${match}!`;
+    if(wsFoundWords.length===wsWords.length)setTimeout(()=>document.getElementById('ws-msg').textContent='🎉 ¡Encontraste todas las palabras!',400);
+  } else {
+    document.querySelectorAll('.ws-cell.selected:not(.found)').forEach(c=>c.classList.remove('selected'));
+    document.getElementById('ws-msg').textContent='';
+  }
+  wsSelected=[];
+}
+document.addEventListener('mouseup',wsEndSelect);
+
+/* ================================================
+   QUIZ
+================================================ */
+const quizData=[
+  {q:'¿Qué describe el comportamiento EMERGENTE de un sistema?',opts:['Conductas programadas explícitamente','Propiedades que surgen del sistema completo pero no existen en sus partes','Respuestas directas a estímulos externos','La tendencia del sistema al desorden'],ans:1,exp:'La emergencia es una de las propiedades más fascinantes: el sistema exhibe comportamientos que ninguna parte individual posee.'},
+  {q:'La HOMEOSTASIS en un sistema se refiere a:',opts:['La tendencia al caos y desorden','El crecimiento exponencial sin límite','La capacidad de mantener un estado de equilibrio interno','La suma de todos los comportamientos de sus partes'],ans:2,exp:'La homeostasis describe la autorregulación para mantener el equilibrio. Concepto adoptado por la TGS desde la biología.'},
+  {q:'En un sistema con RETROALIMENTACIÓN NEGATIVA:',opts:['El output amplifica el input indefinidamente','El output corrige desviaciones para estabilizar el sistema','El sistema entra en caos','No existe relación entre input y output'],ans:1,exp:'La retroalimentación negativa es la base de sistemas de control como termostatos, hormonas y sistemas de gestión.'},
+  {q:'¿Qué es el modelo de CAJA NEGRA?',opts:['Un sistema sin entradas ni salidas','Un sistema donde solo se observan entradas y salidas sin conocer el mecanismo interno','Un sistema completamente transparente','Un sistema que siempre falla'],ans:1,exp:'El modelo de caja negra es fundamental en ingeniería: permite trabajar con sistemas complejos sin comprender su funcionamiento interno.'},
+  {q:'La RETROALIMENTACIÓN POSITIVA en un sistema produce:',opts:['Estabilidad y equilibrio','Reducción del output','Amplificación o crecimiento del efecto inicial','Comportamiento predecible siempre'],ans:2,exp:'La retroalimentación positiva amplifica: el éxito genera más éxito. Ejemplos: burbujas financieras, viralidad en redes.'},
+  {q:'¿Qué propiedad sistémica establece que un sistema puede alcanzar el mismo estado final desde condiciones iniciales diferentes?',opts:['Homeostasis','Entropía','Equifinalidad','Recursividad'],ans:2,exp:'La equifinalidad (von Bertalanffy) diferencia los sistemas abiertos de las máquinas: múltiples caminos pueden llevar al mismo objetivo.'},
+  {q:'En la Teoría de Comportamientos, ¿qué significa que un sistema sea ADAPTATIVO?',opts:['Que nunca cambia su comportamiento','Que modifica su conducta basándose en experiencias pasadas para mejorar su desempeño','Que tiene comportamiento completamente aleatorio','Que depende exclusivamente del entorno'],ans:1,exp:'Los sistemas adaptativos complejos (CAS), como el cerebro, ecosistemas y mercados, aprenden y evolucionan su comportamiento.'},
+  {q:'¿Cuál es un ejemplo de comportamiento CAÓTICO en sistemas?',opts:['Un termostato regulando temperatura','El tráfico de una ciudad en horas pico con alta sensibilidad a condiciones iniciales','Un algoritmo de ordenamiento','La contracción del corazón en reposo'],ans:1,exp:'El tráfico urbano muestra caos determinista: pequeñas variaciones pueden causar congestión masiva impredecible.'},
+  {q:'¿Quién desarrolló la Cibernética, que estudia el control y comportamiento de sistemas?',opts:['Ludwig von Bertalanffy','Jay Forrester','Norbert Wiener','Peter Senge'],ans:2,exp:'Norbert Wiener publicó "Cybernetics" en 1948, estableciendo los fundamentos del comportamiento controlado mediante retroalimentación.'},
+  {q:'La RECURSIVIDAD en un sistema significa que:',opts:['El sistema nunca puede dividirse','El sistema contiene subsistemas que exhiben comportamientos similares al sistema completo','Solo existe un nivel de organización','El comportamiento es siempre lineal'],ans:1,exp:'La recursividad aparece en fractales naturales, estructuras organizacionales y código de software (funciones recursivas).'},
+];
+let qIdx=0, qScore=0;
+function loadQuestion(){
+  const d=quizData[qIdx];
+  document.getElementById('q-num').textContent=`Pregunta ${qIdx+1} de ${quizData.length}`;
+  document.getElementById('q-text').textContent=d.q;
+  document.getElementById('qpf').style.width=`${(qIdx/quizData.length)*100}%`;
+  const optsDiv=document.getElementById('q-opts'); optsDiv.innerHTML='';
+  d.opts.forEach((opt,i)=>{const btn=document.createElement('button');btn.className='quiz-opt';btn.textContent=opt;btn.onclick=()=>selectAnswer(i);optsDiv.appendChild(btn);});
+  document.getElementById('q-fb').className='quiz-feedback';
+  document.getElementById('q-fb').textContent='';
+  document.getElementById('q-next').style.display='none';
+}
+function selectAnswer(i){
+  const d=quizData[qIdx];
+  const opts=document.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.disabled=true);
+  opts[d.ans].classList.add('correct');
+  const fb=document.getElementById('q-fb');
+  if(i===d.ans){qScore++;opts[i].classList.add('correct');fb.className='quiz-feedback ok show';fb.textContent='✅ ¡Correcto! '+d.exp;}
+  else{opts[i].classList.add('wrong');fb.className='quiz-feedback no show';fb.textContent='❌ Incorrecto. '+d.exp;}
+  document.getElementById('q-next').style.display='inline-block';
+}
+function nextQuestion(){qIdx++;if(qIdx<quizData.length)loadQuestion();else showScore();}
+function showScore(){
+  document.getElementById('quiz-question-wrap').style.display='none';
+  const sc=document.getElementById('quiz-score-screen'); sc.style.display='block';
+  document.getElementById('qpf').style.width='100%';
+  document.getElementById('qs-score').textContent=qScore;
+  const pct=(qScore/quizData.length)*100;
+  let title,sub,msg;
+  if(pct>=90){title='🏆 ¡Excelente!';sub='Dominas la Teoría de Comportamientos';msg='Resultados sobresalientes. Estás listo para sustentar con confianza.';}
+  else if(pct>=70){title='👍 ¡Muy bien!';sub='Buen dominio del tema';msg='Repasa los conceptos donde fallaste y estarás perfecto.';}
+  else if(pct>=50){title='📖 En progreso';sub='Hay oportunidad de mejorar';msg='Revisa el marco conceptual y los ejemplos. ¡Inténtalo de nuevo!';}
+  else{title='💪 ¡Sigue estudiando!';sub='Necesitas repasar el tema';msg='Empieza desde Conceptos y usa los juegos de repaso.';}
+  document.getElementById('qs-title').textContent=title;
+  document.getElementById('qs-sub').textContent=sub;
+  document.getElementById('qs-msg').textContent=msg;
+}
+function restartQuiz(){qIdx=0;qScore=0;document.getElementById('quiz-score-screen').style.display='none';document.getElementById('quiz-question-wrap').style.display='block';loadQuestion();}
+loadQuestion();
+
+/* ================================================
+   UTILITIES
+================================================ */
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+// Init static games on load
+initMemory();
+initWordSearch();
+</script>
+</body>
+</html>

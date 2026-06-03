@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OVA - Objeto Virtual de Aprendizaje sobre Teoría General de Sistemas">
+    <meta name="author" content="Estudiante Universitario">
+    <title>Teoría General de Sistemas - OVA Interactivo</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Loader removed -->
+
+    <nav>
+        <div class="navbar">
+            <a href="#inicio" class="logo">
+                <i class="fas fa-network-wired"></i>
+                TGS OVA
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conceptos.html">Conceptos</a></li>
+                <li><a href="ejemplos.html">Ejemplos</a></li>
+                <li><a href="juegos.html">Juegos</a></li>
+                <li><a href="quiz.html">Quiz</a></li>
+                <li><a href="videos.html">Videos</a></li>
+                <li><a href="referencias.html">Referencias</a></li>
+            </ul>
+
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <button class="theme-toggle"> Claro</button>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="inicio" class="hero">
+        <h1>Teoría General de Sistemas</h1>
+        <p>Descubre cómo funcionan los sistemas en la naturaleza, la tecnología y la sociedad. Un viaje interactivo por los principios fundamentales que rigen nuestro universo.</p>
+        <button class="btn btn-primary" onclick="window.location.href='conceptos.html'">
+            Comenzar Aprendizaje
+        </button>
+        <div style="margin-top: 50px; text-align: center; font-size: 4rem;">
+        </div>
+    </section>
+
+    <section id="explora">
+        <h2 class="section-title">Explora el contenido</h2>
+        <div class="concepts-grid">
+            <a class="concept-card" href="conceptos.html"><div class="concept-icon"><i class="fas fa-layer-group"></i></div><h3>Conceptos</h3><p>Conceptos fundamentales de la TGS.</p></a>
+            <a class="concept-card" href="ejemplos.html"><div class="concept-icon"><i class="fas fa-sitemap"></i></div><h3>Ejemplos</h3><p>Sistemas aplicados en la vida real.</p></a>
+            <a class="concept-card" href="juegos.html"><div class="concept-icon"><i class="fas fa-gamepad"></i></div><h3>Juegos</h3><p>Actividades interactivas para aprender.</p></a>
+            <a class="concept-card" href="quiz.html"><div class="concept-icon"><i class="fas fa-question-circle"></i></div><h3>Quiz</h3><p>Evalúa tu conocimiento con preguntas.</p></a>
+            <a class="concept-card" href="videos.html"><div class="concept-icon"><i class="fas fa-video"></i></div><h3>Videos</h3><p>Recursos multimedia seleccionados.</p></a>
+            <a class="concept-card" href="referencias.html"><div class="concept-icon"><i class="fas fa-book"></i></div><h3>Referencias</h3><p>Bibliografía y créditos académicos.</p></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-text">
+                <strong><i class="fas fa-globe"></i> Teoría General de Sistemas - OVA v1.0</strong>
+            </div>
+            <div class="footer-text">
+                Plataforma Educativa Interactiva Moderna
+            </div>
+            <div class="footer-text">
+                © 2026 - Todos los derechos reservados
+            </div>
+            <div class="footer-social">
+                <a href="#" class="social-link"><i class="fas fa-envelope"></i> Contacto</a>
+                <a href="#" class="social-link"><i class="fas fa-book-open"></i> Más Recursos</a>
+                <a href="#" class="social-link"><i class="fas fa-share-alt"></i> Compartir</a>
+            </div>
+            <div class="footer-text" style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+                Creado para estudiantes que quieren comprender cómo funcionan los sistemas del universo.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

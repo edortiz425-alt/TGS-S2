@@ -1,0 +1,269 @@
+:root {
+    --bg-app: #f0fdf4; /* Fondo verde muy suave */
+    --primary: #10b981; /* Verde esmeralda */
+    --primary-dark: #065f46; /* Verde bosque profundo */
+    --text-dark: #064e3b;
+    --text-slate: #374151;
+    --border-subtle: #d1fae5;
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    --radius-premium: 20px;
+    --radius-button: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-dark);
+}
+
+/* --- TABS / NAVEGACIÓN --- */
+.tabs-container {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--border-subtle);
+    position: sticky;
+    top: 0; z-index: 100;
+}
+
+.tabs-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    overflow-x: auto;
+}
+
+.tab-link {
+    background: transparent;
+    border: none;
+    color: var(--text-slate);
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-button);
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.tab-link.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* --- HERO SECTION (INICIO) --- */
+.hero-section {
+    text-align: center;
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+    color: white;
+    border-radius: var(--radius-premium);
+    margin-bottom: 30px;
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+}
+
+.hero-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.text-highlight { color: #d1fae5; }
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 30px;
+}
+
+.btn-primary {
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover { transform: scale(1.05); }
+
+/* --- CONTENIDO --- */
+.container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+
+.tab-content { display: none; }
+.tab-content.show { display: block; animation: fadeIn 0.5s ease; }
+
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: var(--radius-premium);
+    box-shadow: var(--card-shadow);
+    margin-bottom: 25px;
+    border: 1px solid #e2e8f0;
+}
+
+.hero-card { border-left: 6px solid var(--primary); }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+h2 { font-size: 1.8rem; margin-bottom: 15px; }
+
+.video-container {
+    margin-top: 15px;
+    position: relative; padding-bottom: 56.25%; height: 0;
+    border-radius: 12px; overflow: hidden;
+}
+.video-container iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+
+.iframe-game-wrapper {
+    position: relative; padding-bottom: 80%; height: 0;
+    border-radius: 12px; overflow: hidden;
+}
+.iframe-game-wrapper iframe { position: absolute; top:0; left:0; width:100%; height:100%; }
+
+/* --- QUIZ Y REFERENCIAS --- */
+.option-btn {
+    width: 100%; text-align: left; padding: 15px; margin-bottom: 10px;
+    border: 1px solid #d1fae5; background: #f0fdf4; border-radius: 10px;
+    cursor: pointer; transition: 0.2s;
+}
+.option-btn:hover { background: #d1fae5; }
+
+.ref-list { list-style: none; margin-top: 15px; }
+.ref-list li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+.ref-list li::before { content: "📚"; position: absolute; left: 0; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- ESTILOS PARA LOS NUEVOS ELEMENTOS DE TEORÍA --- */
+.mt-4 { margin-top: 25px; }
+
+.pros-cons-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+.pro-box, .con-box {
+    flex: 1;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.pro-box { background: #ecfdf5; border: 1px solid #a7f3d0; }
+.con-box { background: #fef2f2; border: 1px solid #fecaca; }
+
+.pro-box h4 { color: #059669; margin-bottom: 10px; font-size: 0.95rem; }
+.con-box h4 { color: #dc2626; margin-bottom: 10px; font-size: 0.95rem; }
+
+.pro-box ul, .con-box ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.pro-box ul li, .con-box ul li {
+    margin-bottom: 6px;
+    padding-left: 15px;
+    position: relative;
+    color: var(--text-slate);
+}
+
+.pro-box ul li::before { content: "•"; color: #10b981; position: absolute; left: 0; font-weight: bold; }
+.con-box ul li::before { content: "•"; color: #ef4444; position: absolute; left: 0; font-weight: bold; }
+
+/* Estilo para el bloque de código */
+.code-card {
+    border-left: 6px solid #22b948; /* Azul para destacar que es código */
+}
+
+.code-snippet {
+    background: #0f172a; /* Fondo oscuro estilo terminal/IDE */
+    color: #e2e8f0;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.code-snippet pre {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.code-snippet code { color: #34d399; } /* Color verde neón para el texto del código */
+.my-4 { margin: 20px 0; }
+.music-card { border-left: 6px solid #10b981; background: #f9fbf9; }
+
+.system-breakdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin: 20px 0;
+}
+
+.breakdown-item {
+    background: white;
+    border: 2px solid var(--primary);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    width: 80%;
+    text-align: center;
+}
+
+.breakdown-arrow {
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+}
+
+/* Enlaces de referencias */
+.ref-list a {
+    color: var(--primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+.ref-list a:hover {
+    text-decoration: underline;
+}
+
+.quiz-scroll-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Diseñar la barra de desplazamiento interna del quiz */
+.quiz-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+.quiz-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary);
+    border-radius: 10px;
+}

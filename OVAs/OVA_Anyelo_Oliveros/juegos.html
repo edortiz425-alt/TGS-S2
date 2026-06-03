@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Juegos · TGS OVA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Loader removed -->
+  <nav>
+    <div class="navbar">
+      <a href="index.html" class="logo"><i class="fas fa-network-wired"></i> TGS OVA</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="conceptos.html">Conceptos</a></li>
+        <li><a href="ejemplos.html">Ejemplos</a></li>
+        <li><a href="juegos.html">Juegos</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="referencias.html">Referencias</a></li>
+      </ul>
+      <div style="display:flex; gap:15px; align-items:center;"><button class="theme-toggle"> Claro</button><div class="menu-toggle"><span></span><span></span><span></span></div></div>
+    </div>
+  </nav>
+
+  <section id="juegos">
+    <h2 class="section-title">Juegos Interactivos</h2>
+    <div class="games-container">
+      <div class="game-box scroll-animation">
+        <h3>Juego 1: Asociación de Conceptos</h3>
+        <p>Relaciona cada concepto con su definición. Haz clic en los términos para emparejar.</p>
+        <div id="game1"></div>
+      </div>
+
+      <div class="game-box scroll-animation">
+        <h3>Juego 2: Clasificación de Sistemas</h3>
+        <p>Arrastra cada sistema a la categoría correcta.</p>
+        <div id="game2"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-content"><div class="footer-text"><strong>Teoría General de Sistemas - OVA v1.0</strong></div></div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

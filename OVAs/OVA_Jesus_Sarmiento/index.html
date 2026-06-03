@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoría de la Información – OVA | Jesús Sarmiento Ortiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1525;
+    --bg3: #141c30;
+    --accent: #00e5ff;
+    --accent2: #7c4dff;
+    --accent3: #ff6b6b;
+    --accent4: #69ff94;
+    --text: #e8eaf6;
+    --text2: #90a4ae;
+    --text3: #546e7a;
+    --border: rgba(0,229,255,0.15);
+    --glow: 0 0 20px rgba(0,229,255,0.2);
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --card-r: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(10,14,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { font-family: var(--mono); color: var(--accent); font-size: 13px; letter-spacing: 2px; text-transform:uppercase; }
+  .nav-links { display: flex; gap: 1.5rem; }
+  .nav-links a { color: var(--text2); text-decoration:none; font-size: 13px; letter-spacing:1px; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid {
+    position: absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,77,255,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%,-50%);
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 18px; border-radius: 2px;
+    margin-bottom: 2rem;
+    position: relative; z-index:1;
+  }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--text);
+    position: relative; z-index:1;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--text2);
+    max-width: 600px;
+    position: relative; z-index:1;
+    margin-bottom: 3rem;
+  }
+  .hero-stats {
+    display: flex; gap: 3rem;
+    position: relative; z-index:1;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num { font-family: var(--mono); font-size: 2rem; color: var(--accent); }
+  .hero-stat .lbl { font-size: 12px; color: var(--text3); letter-spacing: 1px; text-transform:uppercase; }
+  .scroll-cue {
+    position: absolute; bottom: 2rem; left:50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--text3); font-size: 11px; letter-spacing:2px;
+    animation: bounce 2s infinite;
+  }
+  .scroll-cue::after {
+    content: ''; display: block; width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  h2.section-title {
+    font-family: var(--mono); font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; color: var(--text);
+    margin-bottom: 3rem;
+    line-height: 1.2;
+  }
+  h2.section-title span { color: var(--accent2); }
+
+  /* ── CONTEXTUALIZACIÓN ── */
+  .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .ctx-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--card-r);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .ctx-card::before {
+    content: '';
+    position: absolute; top:0; left:0; right:0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .ctx-card h3 { font-family: var(--mono); font-size: 1rem; color: var(--accent); margin-bottom: 1rem; }
+  .ctx-card p { color: var(--text2); font-size: 0.95rem; }
+  .portrait-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--card-r);
+    padding: 2rem; display: flex; align-items: center; gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .portrait-avatar {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 1.5rem; color: #fff; flex-shrink: 0;
+  }
+
+  /* ── CONCEPTUAL ── */
+  .theory-block {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2.5rem; margin-bottom: 2rem;
+  }
+  .theory-block h3 { font-family: var(--mono); font-size: 1.1rem; color: var(--accent4); margin-bottom: 1rem; }
+  .theory-block p { color: var(--text2); margin-bottom: 1rem; }
+  .formula-box {
+    background: var(--bg3); border-left: 3px solid var(--accent);
+    padding: 1rem 1.5rem; border-radius: 0 8px 8px 0;
+    font-family: var(--mono); color: var(--accent); font-size: 1.1rem;
+    margin: 1rem 0;
+  }
+  .ref-tag {
+    display: inline-block; font-size: 11px; font-family: var(--mono);
+    background: rgba(124,77,255,0.15); color: var(--accent2);
+    border: 1px solid rgba(124,77,255,0.3);
+    padding: 2px 8px; border-radius: 3px; margin-left: 6px;
+  }
+  .concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+  .concept-card {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 1.5rem;
+    transition: border-color .3s, transform .3s;
+  }
+  .concept-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .concept-card .icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .concept-card h4 { font-family: var(--mono); font-size: 0.9rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .concept-card p { font-size: 0.85rem; color: var(--text2); }
+
+  /* ── EJEMPLOS ── */
+  .examples-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 1px;
+    padding: 8px 18px; border: 1px solid var(--border);
+    background: transparent; color: var(--text2); cursor: pointer;
+    border-radius: 4px; transition: all .2s;
+  }
+  .tab-btn.active, .tab-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .example-box {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2rem;
+  }
+  .example-box h3 { font-family: var(--mono); font-size: 1rem; color: var(--accent3); margin-bottom: 1rem; }
+  .example-box p { color: var(--text2); margin-bottom: 1rem; }
+  .example-visual {
+    display: flex; gap: 1rem; align-items: center;
+    margin: 1.5rem 0; flex-wrap: wrap;
+  }
+  .bit-block {
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 1.2rem; font-weight: 700;
+    border-radius: 6px; border: 1px solid;
+  }
+  .bit-1 { background: rgba(0,229,255,0.1); border-color: var(--accent); color: var(--accent); }
+  .bit-0 { background: rgba(255,107,107,0.1); border-color: var(--accent3); color: var(--accent3); }
+
+  /* ── EJERCICIOS ── */
+  .exercise-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2rem; margin-bottom: 1.5rem;
+  }
+  .exercise-card h3 { font-family: var(--mono); font-size: 0.95rem; color: var(--accent2); margin-bottom: 1rem; }
+  .exercise-card p { color: var(--text2); margin-bottom: 1rem; }
+  .ex-input {
+    width: 100%; padding: 10px 14px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text); font-family: var(--mono);
+    font-size: 1rem; outline: none;
+    transition: border-color .2s;
+    margin-bottom: 0.75rem;
+  }
+  .ex-input:focus { border-color: var(--accent); }
+  .ex-btn {
+    font-family: var(--mono); font-size: 13px; letter-spacing: 1px;
+    padding: 10px 22px; border: 1px solid var(--accent);
+    background: transparent; color: var(--accent); cursor: pointer;
+    border-radius: 6px; transition: all .2s;
+  }
+  .ex-btn:hover { background: var(--accent); color: var(--bg); }
+  .feedback {
+    margin-top: 1rem; padding: 1rem 1.5rem;
+    border-radius: 6px; font-size: 0.9rem; display: none;
+  }
+  .feedback.correct { background: rgba(105,255,148,0.1); border: 1px solid var(--accent4); color: var(--accent4); }
+  .feedback.wrong { background: rgba(255,107,107,0.1); border: 1px solid var(--accent3); color: var(--accent3); }
+
+  /* ── JUEGOS ── */
+  .game-container { margin-bottom: 3rem; }
+  .game-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .game-title { font-family: var(--mono); font-size: 1.1rem; color: var(--accent); }
+  .score-display {
+    font-family: var(--mono); font-size: 0.9rem; color: var(--text2);
+    background: var(--bg3); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 6px;
+  }
+
+  /* Juego 1: Clasificador de Bits */
+  #game1-area {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2rem;
+  }
+  .cipher-display {
+    font-family: var(--mono); font-size: 2rem; text-align: center;
+    color: var(--accent); margin: 1.5rem 0;
+    letter-spacing: 4px;
+    min-height: 60px;
+  }
+  .game-options { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .game-opt {
+    font-family: var(--mono); font-size: 0.9rem; letter-spacing: 1px;
+    padding: 12px 24px; border-radius: 6px; cursor: pointer; transition: all .2s;
+    border: 1px solid var(--border); background: var(--bg3); color: var(--text2);
+  }
+  .game-opt:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.05); }
+  .game-opt.correct-anim { border-color: var(--accent4); color: var(--accent4); background: rgba(105,255,148,0.1); }
+  .game-opt.wrong-anim { border-color: var(--accent3); color: var(--accent3); background: rgba(255,107,107,0.1); }
+
+  /* Juego 2: Drag & Drop codificación */
+  #game2-area {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2rem;
+  }
+  .drag-zone {
+    display: flex; gap: 0.75rem; flex-wrap: wrap; min-height: 60px;
+    background: var(--bg3); border: 1px dashed var(--border);
+    border-radius: 8px; padding: 1rem;
+    margin: 1rem 0;
+    align-items: center;
+  }
+  .drag-item {
+    font-family: var(--mono); font-size: 0.85rem;
+    background: var(--bg2); border: 1px solid var(--accent2);
+    color: var(--accent2); padding: 8px 14px; border-radius: 6px;
+    cursor: grab; user-select: none; transition: all .2s;
+  }
+  .drag-item:hover { background: rgba(124,77,255,0.15); }
+  .drag-target {
+    min-width: 80px; min-height: 44px;
+    border: 1px dashed var(--text3); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 0.85rem; color: var(--text3);
+    transition: border-color .2s; padding: 4px;
+  }
+  .drag-target.drag-over { border-color: var(--accent); background: rgba(0,229,255,0.05); }
+
+  /* Juego 3: Quiz binario visual */
+  #game3-area {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--card-r); padding: 2rem;
+  }
+  .channel-display {
+    display: flex; gap: 0.5rem; justify-content: center;
+    margin: 1.5rem 0; flex-wrap: wrap;
+  }
+  .channel-bit {
+    width: 44px; height: 44px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 1.2rem; font-weight: 700;
+    cursor: pointer; transition: all .2s;
+  }
+  .channel-bit.unknown {
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text3);
+  }
+  .channel-bit.set-1 { background: rgba(0,229,255,0.15); border: 1px solid var(--accent); color: var(--accent); }
+  .channel-bit.set-0 { background: rgba(255,107,107,0.15); border: 1px solid var(--accent3); color: var(--accent3); }
+  .channel-bit.noise { animation: flicker .15s infinite; }
+  @keyframes flicker { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  /* ── QUIZ ── */
+  #quiz-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--card-r); padding: 2.5rem; }
+  .quiz-progress-bar-wrap { background: var(--bg3); border-radius: 4px; height: 4px; margin-bottom: 2rem; }
+  .quiz-progress-bar { height: 4px; background: var(--accent); border-radius: 4px; transition: width .4s; }
+  .question-block { display: none; }
+  .question-block.active { display: block; }
+  .question-num { font-family: var(--mono); font-size: 11px; letter-spacing: 2px; color: var(--text3); margin-bottom: 0.5rem; }
+  .question-text { font-size: 1.1rem; color: var(--text); margin-bottom: 1.5rem; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .quiz-opt {
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.25rem;
+    cursor: pointer; text-align: left;
+    font-size: 0.9rem; color: var(--text2); transition: all .2s;
+  }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--accent2); color: var(--text); }
+  .quiz-opt.selected-correct { border-color: var(--accent4); background: rgba(105,255,148,0.08); color: var(--accent4); }
+  .quiz-opt.selected-wrong { border-color: var(--accent3); background: rgba(255,107,107,0.08); color: var(--accent3); }
+  .quiz-opt.reveal-correct { border-color: var(--accent4); }
+  .quiz-opt.disabled { cursor: default; pointer-events: none; }
+  .quiz-explanation { margin-top: 1rem; padding: 1rem; background: var(--bg3); border-radius: 8px; font-size: 0.875rem; color: var(--text2); display: none; }
+  .quiz-nav { display: flex; justify-content: flex-end; margin-top: 1.5rem; gap: 0.75rem; }
+  .q-btn {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 1px;
+    padding: 10px 22px; border-radius: 6px; cursor: pointer; transition: all .2s;
+    border: 1px solid var(--accent); background: transparent; color: var(--accent);
+  }
+  .q-btn:hover { background: var(--accent); color: var(--bg); }
+  .quiz-result {
+    display: none; text-align: center; padding: 3rem 0;
+  }
+  .result-score { font-family: var(--mono); font-size: 4rem; color: var(--accent); margin-bottom: 1rem; }
+  .result-msg { font-size: 1.1rem; color: var(--text2); }
+  .result-bar-wrap { margin: 2rem auto; max-width: 300px; background: var(--bg3); border-radius: 8px; height: 12px; }
+  .result-bar { height: 12px; border-radius: 8px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1s ease; }
+
+  /* ── VIDEOS ── */
+  .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .video-card {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--card-r);
+    overflow: hidden; transition: transform .3s, border-color .3s;
+  }
+  .video-card:hover { transform: translateY(-4px); border-color: rgba(0,229,255,0.4); }
+  .video-thumb {
+    height: 160px; background: var(--bg3);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .video-thumb .play-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(0,229,255,0.15); border: 2px solid var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 1.5rem;
+  }
+  .video-thumb-img {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(10,14,26,0.8), rgba(124,77,255,0.3));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .video-info { padding: 1.25rem; }
+  .video-tag { font-family: var(--mono); font-size: 10px; color: var(--accent2); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .video-info h4 { font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.4; }
+  .video-info p { font-size: 0.8rem; color: var(--text3); }
+  .video-link { display: block; text-decoration: none; color: inherit; }
+
+  /* ── CRÉDITOS ── */
+  .credits-section { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--card-r); padding: 3rem; margin-top: 2rem; }
+  .credits-section h3 { font-family: var(--mono); color: var(--accent); margin-bottom: 1rem; }
+  .credits-section p, .credits-section li { color: var(--text2); font-size: 0.9rem; }
+  .credits-section ul { padding-left: 1.5rem; }
+  .credits-section li { margin-bottom: 0.5rem; }
+  .ref-list { list-style: none; padding: 0; }
+  .ref-list li { padding: 0.75rem 0; border-bottom: 1px solid var(--border); color: var(--text2); font-size: 0.875rem; }
+  .ref-list li:last-child { border-bottom: none; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--text3); font-size: 0.85rem; font-family: var(--mono);
+  }
+  footer span { color: var(--accent); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .context-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 2rem; }
+    .quiz-options { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    .portrait-card { flex-direction: column; text-align: center; }
+  }
+
+  /* ── ANIMATION ── */
+  .fade-in {
+    opacity: 0; transform: translateY(24px);
+    animation: fadeIn .7s ease forwards;
+  }
+  @keyframes fadeIn { to { opacity:1; transform: translateY(0); } }
+  .delay-1 { animation-delay: .1s; }
+  .delay-2 { animation-delay: .2s; }
+  .delay-3 { animation-delay: .3s; }
+  .delay-4 { animation-delay: .4s; }
+
+  /* Entropy animation */
+  .entropy-canvas-wrap { text-align: center; margin: 2rem 0; }
+  #entropy-canvas { border: 1px solid var(--border); border-radius: 8px; }
+
+  /* Shannon diagram */
+  .shannon-diagram {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin: 2rem 0; overflow-x: auto; padding: 1rem;
+    background: var(--bg3); border-radius: 8px;
+    flex-wrap: nowrap;
+  }
+  .sh-block {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.75rem 1.2rem; text-align: center;
+    min-width: 100px; flex-shrink: 0;
+  }
+  .sh-block.highlight { border-color: var(--accent); }
+  .sh-block .sh-label { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 4px; }
+  .sh-block .sh-name { font-size: 0.8rem; color: var(--text2); }
+  .sh-arrow { color: var(--text3); font-size: 1.5rem; flex-shrink: 0; }
+  .noise-badge { background: rgba(255,107,107,0.1); border: 1px solid var(--accent3); border-radius: 6px; padding: 4px 10px; font-family: var(--mono); font-size: 10px; color: var(--accent3); align-self: flex-start; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">OVA #14 &mdash; TGS</div>
+  <div class="nav-links">
+    <a href="#contexto">Contexto</a>
+    <a href="#teoria">Teoría</a>
+    <a href="#ejemplos">Ejemplos</a>
+    <a href="#ejercicios">Ejercicios</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#videos">Videos</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#creditos">Créditos</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="badge">Objeto Virtual de Aprendizaje · TGS · Tema 14</div>
+  <h1 class="fade-in">Teoría de la<br><span>Información</span></h1>
+  <p class="hero-sub fade-in delay-1">Descubre cómo Shannon cambió para siempre nuestra comprensión de la comunicación, los datos y el conocimiento.</p>
+  <div class="hero-stats fade-in delay-2">
+    <div class="hero-stat">
+      <div class="num">1948</div>
+      <div class="lbl">Año de origen</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">H(X)</div>
+      <div class="lbl">Entropía de Shannon</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num">∞</div>
+      <div class="lbl">Aplicaciones</div>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</div>
+
+<!-- CONTEXTO -->
+<section id="contexto">
+  <p class="section-label">01 — Contextualización</p>
+  <h2 class="section-title">¿Por qué importa la <span>información</span>?</h2>
+
+  <div class="portrait-card">
+    <div class="portrait-avatar">CS</div>
+    <div>
+      <h3 style="font-family:var(--mono);color:var(--text);margin-bottom:0.5rem;">Claude Elwood Shannon (1916–2001)</h3>
+      <p style="color:var(--text2);font-size:0.95rem;">Matemático e ingeniero eléctrico del MIT, Shannon publicó en 1948 "A Mathematical Theory of Communication" en los Bell System Technical Journal, dando nacimiento formal a la Teoría de la Información como disciplina científica. Su trabajo transformó la forma en que entendemos la transmisión, almacenamiento y compresión de datos.</p>
+    </div>
+  </div>
+
+  <div class="context-grid">
+    <div class="ctx-card fade-in">
+      <h3>Importancia histórica</h3>
+      <p>Antes de Shannon, "información" era un concepto intuitivo. Shannon la formalizó matemáticamente, estableciendo que la información tiene una medida precisa: los <strong style="color:var(--accent)">bits</strong>. Esto sentó las bases de toda la era digital: internet, celulares, streaming, IA.</p>
+    </div>
+    <div class="ctx-card fade-in delay-1">
+      <h3>Relevancia en TGS</h3>
+      <p>La Teoría General de Sistemas estudia cómo interactúan los sistemas. La información es el "flujo vital" de cualquier sistema: es lo que se procesa, transforma y transmite entre subsistemas. Sin entender la información, no se puede comprender ningún sistema complejo.</p>
+    </div>
+    <div class="ctx-card fade-in delay-2">
+      <h3>Impacto en el mundo actual</h3>
+      <p>El 90% de los datos del mundo se generaron en los últimos dos años. La codificación JPEG, los códigos QR, WhatsApp, Netflix y las memorias USB, todos funcionan gracias a los principios de Shannon sobre compresión y redundancia.</p>
+    </div>
+    <div class="ctx-card fade-in delay-3">
+      <h3>Conexión interdisciplinar</h3>
+      <p>La Teoría de la Información tiene aplicaciones en física (termodinámica), biología (ADN como canal de información), economía, criptografía, lingüística, neurociencia y aprendizaje automático — confirmando su naturaleza verdaderamente sistémica.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEORÍA -->
+<section id="teoria" style="padding-top:2rem;">
+  <p class="section-label">02 — Marco Teórico</p>
+  <h2 class="section-title">Fundamentos <span>conceptuales</span></h2>
+
+  <div class="theory-block">
+    <h3>Definición de información</h3>
+    <p>En el sentido técnico de Shannon, la <strong style="color:var(--accent4)">información</strong> es la reducción de incertidumbre que produce un mensaje. Un evento que siempre ocurre no aporta información; uno inesperado aporta mucha. Se mide en <em>bits</em> (dígitos binarios).</p>
+    <div class="formula-box">I(x) = −log₂ P(x)</div>
+    <p style="color:var(--text3);font-size:0.85rem;">Donde P(x) es la probabilidad del evento. Si P=0.5, I = 1 bit. Si P=0.25, I = 2 bits. A menor probabilidad, mayor información.</p>
+    <span class="ref-tag">Shannon, 1948</span>
+  </div>
+
+  <div class="theory-block">
+    <h3>Entropía de Shannon — H(X)</h3>
+    <p>La <strong style="color:var(--accent4)">entropía</strong> es la medida del promedio de incertidumbre o aleatoriedad de una fuente de información. Cuanta más entropía tiene una fuente, más impredecible es y más información puede transmitir por símbolo.</p>
+    <div class="formula-box">H(X) = −∑ P(xᵢ) · log₂ P(xᵢ)</div>
+    <p style="color:var(--text3);font-size:0.85rem;">La entropía es máxima cuando todos los eventos son igualmente probables, y mínima (0) cuando un evento es certero.</p>
+    <span class="ref-tag">Shannon, 1948</span> <span class="ref-tag">Cover & Thomas, 2006</span>
+  </div>
+
+  <div class="theory-block">
+    <h3>El Modelo de Comunicación de Shannon</h3>
+    <p>Shannon propuso un modelo universal de comunicación compuesto por cinco componentes principales, más la fuente de ruido:</p>
+    <div class="shannon-diagram">
+      <div class="sh-block highlight">
+        <div class="sh-label">FUENTE</div>
+        <div class="sh-name">Origen del mensaje</div>
+      </div>
+      <div class="sh-arrow">→</div>
+      <div class="sh-block">
+        <div class="sh-label">TRANSMISOR</div>
+        <div class="sh-name">Codifica señal</div>
+      </div>
+      <div class="sh-arrow">→</div>
+      <div class="noise-badge">⚡ Ruido</div>
+      <div class="sh-arrow">→</div>
+      <div class="sh-block">
+        <div class="sh-label">RECEPTOR</div>
+        <div class="sh-name">Decodifica señal</div>
+      </div>
+      <div class="sh-arrow">→</div>
+      <div class="sh-block highlight">
+        <div class="sh-label">DESTINO</div>
+        <div class="sh-name">Recibe mensaje</div>
+      </div>
+    </div>
+    <p style="color:var(--text3);font-size:0.85rem;">El ruido es cualquier perturbación que distorsiona la señal entre transmisor y receptor.</p>
+  </div>
+
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="icon">📡</div>
+      <h4>Capacidad del canal</h4>
+      <p>Cantidad máxima de información que puede transmitirse con una tasa de error cercana a cero. Definida por el Teorema de Shannon-Hartley: C = B · log₂(1 + S/N).</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">🗜️</div>
+      <h4>Compresión sin pérdidas</h4>
+      <p>Reducir el tamaño de los datos sin eliminar información. El límite teórico es la entropía de la fuente (Teorema de Shannon sobre compresión).</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">🔒</div>
+      <h4>Redundancia</h4>
+      <p>Información extra añadida para detectar y corregir errores. Sin redundancia, cualquier error de transmisión sería irreparable. Los códigos QR usan hasta 30% de redundancia.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">🎲</div>
+      <h4>Entropía máxima</h4>
+      <p>Se alcanza cuando todos los eventos son equiprobables. Una moneda justa tiene entropía = 1 bit. Un dado justo tiene entropía = log₂(6) ≈ 2.58 bits.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">🔁</div>
+      <h4>Información mutua</h4>
+      <p>Cuánta información comparten dos variables aleatorias. Mide la dependencia estadística entre fuente y receptor tras la transmisión.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">📈</div>
+      <h4>Teorema de Nyquist</h4>
+      <p>Para reconstruir una señal sin aliasing, debe muestrearse a al menos el doble de la frecuencia máxima. Base del audio digital y las telecomunicaciones modernas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EJEMPLOS -->
+<section id="ejemplos" style="padding-top:2rem;">
+  <p class="section-label">03 — Ejemplos prácticos</p>
+  <h2 class="section-title">Casos <span>reales</span></h2>
+
+  <div class="examples-tabs">
+    <button class="tab-btn active" onclick="showTab('t1',this)">Comunicación digital</button>
+    <button class="tab-btn" onclick="showTab('t2',this)">Código QR</button>
+    <button class="tab-btn" onclick="showTab('t3',this)">DNA e Información</button>
+    <button class="tab-btn" onclick="showTab('t4',this)">Criptografía</button>
+  </div>
+
+  <div id="t1" class="tab-content active">
+    <div class="example-box">
+      <h3>📱 WhatsApp y compresión de información</h3>
+      <p>Cuando envías un mensaje de texto por WhatsApp, el texto se codifica en UTF-8 (hasta 4 bytes por carácter), se comprime usando técnicas basadas en la entropía de Shannon, se encripta (cifrado de extremo a extremo) y se envía por un canal con corrección de errores. Cada paso aplica principios de la Teoría de la Información.</p>
+      <p>Ejemplo: La letra "e" en español tiene probabilidad ≈12.5%, por lo que necesita pocos bits para representarse. La letra "w" tiene probabilidad ≈0.02%, necesitando más bits. Los algoritmos de compresión como Huffman aprovechan exactamente esto.</p>
+      <div class="example-visual">
+        <div class="bit-block bit-1">1</div>
+        <div class="bit-block bit-0">0</div>
+        <div class="bit-block bit-1">1</div>
+        <div class="bit-block bit-1">1</div>
+        <div class="bit-block bit-0">0</div>
+        <div class="bit-block bit-0">0</div>
+        <div class="bit-block bit-1">1</div>
+        <div class="bit-block bit-0">0</div>
+        <span style="color:var(--text2);margin-left:0.5rem;">= 'H' en ASCII (72 decimal)</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="t2" class="tab-content">
+    <div class="example-box">
+      <h3>📦 Código QR: redundancia e información</h3>
+      <p>Un código QR aplica los códigos Reed-Solomon para corrección de errores — una aplicación directa de la Teoría de la Información. Existen 4 niveles de corrección:</p>
+      <ul style="color:var(--text2);padding-left:1.5rem;margin-bottom:1rem;">
+        <li>Nivel L: corrige hasta 7% de error</li>
+        <li>Nivel M: corrige hasta 15% de error</li>
+        <li>Nivel Q: corrige hasta 25% de error</li>
+        <li>Nivel H: corrige hasta 30% de error</li>
+      </ul>
+      <p>Esto significa que incluso si el 30% de un código QR está dañado (rasguñado, sucio), ¡el receptor puede recuperar el 100% de la información original! Esto es el poder de la redundancia planificada.</p>
+    </div>
+  </div>
+
+  <div id="t3" class="tab-content">
+    <div class="example-box">
+      <h3>🧬 El ADN como canal de información biológico</h3>
+      <p>El ADN es, literalmente, un sistema de información. Utiliza 4 "letras" (bases nitrogenadas: A, T, C, G) en lugar de 2 (0 y 1). Esto se llama sistema cuaternario.</p>
+      <p>Cada par de bases puede almacenar log₂(4) = <strong style="color:var(--accent)">2 bits</strong> de información. El genoma humano tiene ~3 mil millones de pares de bases, equivalente a unos <strong style="color:var(--accent)">750 MB</strong> de datos digitales — comparable a un CD de música.</p>
+      <p>La ARN polimerasa actúa como el "transmisor" de Shannon, copiando y enviando información del ADN. Las mutaciones son el "ruido del canal". El mecanismo de reparación del ADN es el sistema de corrección de errores.</p>
+    </div>
+  </div>
+
+  <div id="t4" class="tab-content">
+    <div class="example-box">
+      <h3>🔐 Criptografía: entropía como seguridad</h3>
+      <p>Un sistema criptográfico seguro tiene entropía máxima: la clave es completamente aleatoria e impredecible. Shannon demostró que el único sistema criptográfico perfectamente seguro es el <em>One-Time Pad</em> (libreta de un solo uso), donde la clave tiene la misma longitud que el mensaje y se usa solo una vez.</p>
+      <p>Las contraseñas seguras deben tener alta entropía. Una contraseña de 8 caracteres en minúsculas tiene: log₂(26⁸) ≈ <strong style="color:var(--accent)">37.6 bits</strong> de entropía. Añadir mayúsculas, números y símbolos la sube a ~52 bits.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios" style="padding-top:2rem;">
+  <p class="section-label">04 — Ejercicios</p>
+  <h2 class="section-title">Practica y <span>retroalimenta</span></h2>
+
+  <div class="exercise-card">
+    <h3>Ejercicio 1 — Cálculo de información</h3>
+    <p>Una moneda justa tiene probabilidad P(cara) = 0.5. Calcula la información en bits del evento "sale cara". Redondea a 1 decimal si es necesario.</p>
+    <input class="ex-input" id="ex1" type="number" step="0.1" placeholder="Tu respuesta en bits...">
+    <button class="ex-btn" onclick="checkEx(1)">Verificar respuesta</button>
+    <div class="feedback" id="fb1"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Ejercicio 2 — Entropía de un dado</h3>
+    <p>Un dado justo de 6 caras. Si todos los resultados son equiprobables (P = 1/6 cada uno), ¿cuál es la entropía H(X) del dado? Usa log₂(6) ≈ 2.585. Redondea a 2 decimales.</p>
+    <input class="ex-input" id="ex2" type="number" step="0.01" placeholder="H(X) = ? bits">
+    <button class="ex-btn" onclick="checkEx(2)">Verificar respuesta</button>
+    <div class="feedback" id="fb2"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Ejercicio 3 — Identificar componentes del modelo de Shannon</h3>
+    <p>En la siguiente situación, identifica el componente del modelo de Shannon que actúa como "ruido": <em>"Un estudiante envía un audio de voz por WhatsApp. La llamada entra en una zona sin cobertura y el mensaje llega distorsionado."</em></p>
+    <p style="color:var(--text3);font-size:0.85rem;">Opciones: (a) La voz del estudiante, (b) La falta de cobertura celular, (c) El teléfono del receptor, (d) El mensaje de voz original.</p>
+    <input class="ex-input" id="ex3" type="text" placeholder="Escribe: a, b, c o d">
+    <button class="ex-btn" onclick="checkEx(3)">Verificar respuesta</button>
+    <div class="feedback" id="fb3"></div>
+  </div>
+
+  <div class="exercise-card">
+    <h3>Ejercicio 4 — Redundancia y corrección de errores</h3>
+    <p>Si un código QR de nivel H puede corregir hasta el 30% de errores, y el código tiene 100 módulos (cuadros), ¿cuántos módulos pueden estar dañados y el código aún ser legible?</p>
+    <input class="ex-input" id="ex4" type="number" placeholder="¿Cuántos módulos?">
+    <button class="ex-btn" onclick="checkEx(4)">Verificar respuesta</button>
+    <div class="feedback" id="fb4"></div>
+  </div>
+</section>
+
+<!-- JUEGOS -->
+<section id="juegos" style="padding-top:2rem;">
+  <p class="section-label">05 — Juegos interactivos</p>
+  <h2 class="section-title">Aprender <span>jugando</span></h2>
+
+  <!-- JUEGO 1 -->
+  <div class="game-container">
+    <div class="game-header">
+      <div class="game-title">🎯 Juego 1 — Decodificador ASCII</div>
+      <div class="score-display" id="g1score">Puntos: 0 / 5</div>
+    </div>
+    <p style="color:var(--text2);margin-bottom:1.5rem;font-size:0.9rem;">Se mostrará una secuencia binaria. Selecciona a qué tipo de dato corresponde. ¡5 preguntas!</p>
+    <div id="game1-area">
+      <div style="font-size:0.85rem;color:var(--text3);margin-bottom:0.5rem;" id="g1-instruction">¿Qué tipo de dato representa esta secuencia binaria?</div>
+      <div class="cipher-display" id="g1-display">01001000</div>
+      <div class="game-options" id="g1-opts"></div>
+      <div style="margin-top:1rem;color:var(--text2);font-size:0.9rem;min-height:24px;" id="g1-msg"></div>
+    </div>
+    <button class="ex-btn" style="margin-top:1rem;" onclick="initGame1()">🔄 Reiniciar juego</button>
+  </div>
+
+  <!-- JUEGO 2 -->
+  <div class="game-container">
+    <div class="game-header">
+      <div class="game-title">🧩 Juego 2 — Construye el Modelo de Shannon</div>
+      <div class="score-display" id="g2-status">Ordenar los bloques</div>
+    </div>
+    <p style="color:var(--text2);margin-bottom:1.5rem;font-size:0.9rem;">Arrastra cada componente a su posición correcta en el modelo de comunicación de Shannon.</p>
+    <div id="game2-area">
+      <p style="color:var(--text3);font-size:0.8rem;margin-bottom:0.5rem;">BANCO DE COMPONENTES — arrastra desde aquí:</p>
+      <div class="drag-zone" id="g2-bank"></div>
+      <p style="color:var(--text3);font-size:0.8rem;margin:1rem 0 0.5rem;">POSICIONES EN EL MODELO:</p>
+      <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;">
+        <div class="drag-target" id="slot0" data-correct="Fuente" ondragover="allowDrop(event)" ondrop="dropItem(event,'slot0')">1. ?</div>
+        <span style="color:var(--text3)">→</span>
+        <div class="drag-target" id="slot1" data-correct="Transmisor" ondragover="allowDrop(event)" ondrop="dropItem(event,'slot1')">2. ?</div>
+        <span style="color:var(--text3)">→ [ruido] →</span>
+        <div class="drag-target" id="slot2" data-correct="Receptor" ondragover="allowDrop(event)" ondrop="dropItem(event,'slot2')">3. ?</div>
+        <span style="color:var(--text3)">→</span>
+        <div class="drag-target" id="slot3" data-correct="Destino" ondragover="allowDrop(event)" ondrop="dropItem(event,'slot3')">4. ?</div>
+      </div>
+      <button class="ex-btn" onclick="checkGame2()">Verificar orden</button>
+      <div class="feedback" id="g2-feedback"></div>
+    </div>
+  </div>
+
+  <!-- JUEGO 3 -->
+  <div class="game-container">
+    <div class="game-header">
+      <div class="game-title">⚡ Juego 3 — Canal con Ruido</div>
+      <div class="score-display" id="g3-score">Ronda 1 / 5</div>
+    </div>
+    <p style="color:var(--text2);margin-bottom:1.5rem;font-size:0.9rem;">El canal introduce errores en la transmisión. Identifica cuántos bits llegaron corrompidos (cambiaron de 0 a 1 o viceversa). ¡Aplica tus conocimientos de redundancia!</p>
+    <div id="game3-area">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
+        <div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:0.5rem;">MENSAJE ORIGINAL</div>
+          <div class="channel-display" id="g3-original"></div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-bottom:0.5rem;">MENSAJE RECIBIDO (con errores)</div>
+          <div class="channel-display" id="g3-received"></div>
+        </div>
+      </div>
+      <p style="color:var(--text2);font-size:0.9rem;margin-bottom:0.75rem;">¿Cuántos bits están corrompidos?</p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;" id="g3-opts"></div>
+      <div style="margin-top:1rem;color:var(--text2);font-size:0.9rem;min-height:24px;" id="g3-msg"></div>
+    </div>
+    <button class="ex-btn" style="margin-top:1rem;" onclick="initGame3()">🔄 Reiniciar juego</button>
+  </div>
+</section>
+
+<!-- VIDEOS -->
+<section id="videos" style="padding-top:2rem;">
+  <p class="section-label">06 — Videos de apoyo</p>
+  <h2 class="section-title">Aprende con <span>recursos</span> curados</h2>
+  <p style="color:var(--text2);margin-bottom:2rem;">Selección de videos académicos de alta calidad sobre Teoría de la Información:</p>
+  <div class="videos-grid">
+    <a class="video-link" href="https://www.youtube.com/watch?v=AgtOCNCejQ8" target="_blank">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-thumb-img">
+            <div class="play-icon">▶</div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-tag">Fundamentos</div>
+          <h4>Teoría de la Información — Introducción completa</h4>
+          <p>Canal: 3Blue1Brown (subtítulos en español disponibles) · ~20 min</p>
+        </div>
+      </div>
+    </a>
+    <a class="video-link" href="https://www.youtube.com/watch?v=R4OlXb9aTvQ" target="_blank">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-thumb-img">
+            <div class="play-icon">▶</div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-tag">Entropía</div>
+          <h4>¿Qué es la entropía de Shannon? Explicación visual</h4>
+          <p>Canal: Veritasium (subtítulos en español) · ~18 min</p>
+        </div>
+      </div>
+    </a>
+    <a class="video-link" href="https://www.youtube.com/watch?v=0GyfFnGr7C0" target="_blank">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-thumb-img">
+            <div class="play-icon">▶</div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-tag">Aplicaciones</div>
+          <h4>Comprimir datos: cómo funciona la compresión de información</h4>
+          <p>Canal: Computerphile · ~15 min</p>
+        </div>
+      </div>
+    </a>
+    <a class="video-link" href="https://www.youtube.com/watch?v=IkhmkEosnS0" target="_blank">
+      <div class="video-card">
+        <div class="video-thumb">
+          <div class="video-thumb-img">
+            <div class="play-icon">▶</div>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-tag">Historia</div>
+          <h4>Claude Shannon: el padre de la era de la información</h4>
+          <p>Documental · Shannon y el nacimiento de los bits · ~12 min</p>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" style="padding-top:2rem;">
+  <p class="section-label">07 — Evaluación</p>
+  <h2 class="section-title">Quiz <span>interactivo</span></h2>
+  <p style="color:var(--text2);margin-bottom:2rem;">10 preguntas de selección múltiple. Se mostrará explicación tras cada respuesta.</p>
+
+  <div id="quiz-section">
+    <div class="quiz-progress-bar-wrap">
+      <div class="quiz-progress-bar" id="quiz-progress" style="width:10%"></div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question-block active" id="q1">
+      <div class="question-num">Pregunta 01 de 10</div>
+      <div class="question-text">¿En qué año publicó Claude Shannon "A Mathematical Theory of Communication"?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q1',false,'wrong')">1944</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q1',true,'correct')">1948</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q1',false,'wrong')">1952</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q1',false,'wrong')">1960</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q1">Shannon publicó su trabajo seminal en 1948 en el Bell System Technical Journal, estableciendo formalmente la Teoría de la Información.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q1','q2')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-block" id="q2">
+      <div class="question-num">Pregunta 02 de 10</div>
+      <div class="question-text">¿Qué mide la entropía H(X) en la Teoría de la Información?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q2',false,'wrong')">La velocidad de transmisión de datos</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q2',false,'wrong')">El número de errores en un canal</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q2',true,'correct')">La incertidumbre promedio de una fuente</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q2',false,'wrong')">La cantidad de bits usados</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q2">La entropía H(X) mide el promedio de incertidumbre o aleatoriedad de una fuente de información. Es máxima cuando todos los eventos son equiprobables.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q2','q3')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-block" id="q3">
+      <div class="question-num">Pregunta 03 de 10</div>
+      <div class="question-text">Una moneda justa tiene P(cara)=0.5. ¿Cuántos bits de información aporta el evento "cara"?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q3',false,'wrong')">0.5 bits</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q3',true,'correct')">1 bit</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q3',false,'wrong')">2 bits</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q3',false,'wrong')">0 bits</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q3">I(x) = −log₂(0.5) = −log₂(1/2) = 1 bit. Cuando la probabilidad es 0.5, el evento aporta exactamente 1 bit de información.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q3','q4')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-block" id="q4">
+      <div class="question-num">Pregunta 04 de 10</div>
+      <div class="question-text">En el modelo de Shannon, ¿cuál es la función del "transmisor"?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q4',false,'wrong')">Crear el mensaje original</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q4',false,'wrong')">Recibir el mensaje final</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q4',true,'correct')">Codificar el mensaje para transmitirlo por el canal</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q4',false,'wrong')">Eliminar el ruido del canal</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q4">El transmisor codifica el mensaje de la fuente en una señal apta para ser enviada por el canal de comunicación (convierte voz en señal eléctrica, por ejemplo).</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q4','q5')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-block" id="q5">
+      <div class="question-num">Pregunta 05 de 10</div>
+      <div class="question-text">¿Qué es la "redundancia" en el contexto de la Teoría de la Información?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q5',false,'wrong')">Información duplicada innecesaria</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q5',true,'correct')">Información extra añadida para detectar y corregir errores</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q5',false,'wrong')">La capacidad máxima del canal</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q5',false,'wrong')">El número de bits perdidos</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q5">La redundancia es información adicional planificada que permite al receptor detectar y corregir errores de transmisión. Los códigos QR usan hasta 30% de redundancia.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q5','q6')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-block" id="q6">
+      <div class="question-num">Pregunta 06 de 10</div>
+      <div class="question-text">¿Cuándo es máxima la entropía de una fuente de información?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q6',false,'wrong')">Cuando un evento tiene probabilidad 1</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q6',false,'wrong')">Cuando la fuente no emite señales</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q6',true,'correct')">Cuando todos los eventos son equiprobables</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q6',false,'wrong')">Cuando la tasa de error es 0</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q6">La entropía es máxima cuando todos los posibles eventos tienen la misma probabilidad. En ese caso, la incertidumbre es máxima y cada evento aporta la mayor cantidad posible de información.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q6','q7')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-block" id="q7">
+      <div class="question-num">Pregunta 07 de 10</div>
+      <div class="question-text">El ADN utiliza 4 bases nitrogenadas (A, T, C, G). ¿Cuántos bits de información almacena cada par de bases?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q7',false,'wrong')">1 bit</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q7',true,'correct')">2 bits</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q7',false,'wrong')">4 bits</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q7',false,'wrong')">8 bits</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q7">log₂(4) = 2 bits. Con 4 posibles estados equiprobables, cada par de bases almacena exactamente 2 bits de información.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q7','q8')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-block" id="q8">
+      <div class="question-num">Pregunta 08 de 10</div>
+      <div class="question-text">La unidad básica de información en la Teoría de Shannon se llama:</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q8',false,'wrong')">Byte</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q8',false,'wrong')">Nibble</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q8',true,'correct')">Bit</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q8',false,'wrong')">Baudio</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q8">El "bit" (binary digit = dígito binario) es la unidad mínima de información en la teoría de Shannon. Representa una elección entre dos opciones igualmente probables.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q8','q9')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-block" id="q9">
+      <div class="question-num">Pregunta 09 de 10</div>
+      <div class="question-text">¿Cuál de las siguientes es una aplicación directa de la Teoría de la Información?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q9',true,'correct')">La compresión de archivos ZIP</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q9',false,'wrong')">El diseño de circuitos eléctricos simples</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q9',false,'wrong')">La mecánica newtoniana</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q9',false,'wrong')">La óptica geométrica</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q9">La compresión de archivos (ZIP, JPEG, MP3) está basada directamente en los principios de Shannon: eliminar redundancia y aprovechar la distribución de probabilidad de los símbolos.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="nextQuestion('q9','q10')">Siguiente →</button></div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-block" id="q10">
+      <div class="question-num">Pregunta 10 de 10</div>
+      <div class="question-text">¿Qué ocurre con la información de una fuente cuando la probabilidad de un evento se acerca a 1?</div>
+      <div class="quiz-options">
+        <div class="quiz-opt" onclick="selectAnswer(this,'q10',false,'wrong')">La información aumenta al máximo</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q10',false,'wrong')">La información permanece constante</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q10',true,'correct')">La información del evento tiende a 0 (evento cierto)</div>
+        <div class="quiz-opt" onclick="selectAnswer(this,'q10',false,'wrong')">La entropía se vuelve máxima</div>
+      </div>
+      <div class="quiz-explanation" id="exp-q10">Si P(x)→1, entonces I(x) = −log₂(1) = 0. Un evento que siempre ocurre no aporta ninguna información nueva al sistema.</div>
+      <div class="quiz-nav"><button class="q-btn" onclick="finishQuiz()">Ver resultados ✓</button></div>
+    </div>
+
+    <!-- RESULTADO -->
+    <div class="quiz-result" id="quiz-result">
+      <div class="result-score" id="result-score">0/10</div>
+      <div class="result-bar-wrap"><div class="result-bar" id="result-bar" style="width:0%"></div></div>
+      <div class="result-msg" id="result-msg"></div>
+      <button class="ex-btn" style="margin-top:2rem;" onclick="resetQuiz()">🔄 Volver a intentar</button>
+    </div>
+  </div>
+</section>
+
+<!-- CRÉDITOS -->
+<section id="creditos" style="padding-top:2rem;">
+  <p class="section-label">08 — Créditos y referencias</p>
+  <h2 class="section-title">Ficha <span>técnica</span></h2>
+
+  <div class="credits-section">
+    <h3>Autoría</h3>
+    <p><strong style="color:var(--text)">Autor:</strong> Sarmiento Ortiz Jesús David</p>
+    <p><strong style="color:var(--text)">Asignatura:</strong> Teoría General de Sistemas (TGS)</p>
+    <p><strong style="color:var(--text)">Institución:</strong> Universidad Simón Bolívar — Sede Cúcuta</p>
+    <p><strong style="color:var(--text)">Proyecto OVA N°:</strong> 14 — Teoría de la Información</p>
+    <p><strong style="color:var(--text)">Herramientas usadas:</strong> HTML5, CSS3, JavaScript, Claude AI</p>
+  </div>
+
+  <div class="credits-section" style="margin-top:1.5rem;">
+    <h3>Referencias bibliográficas</h3>
+    <ul class="ref-list">
+      <li>Shannon, C. E. (1948). A Mathematical Theory of Communication. <em>Bell System Technical Journal</em>, 27(3), 379–423. https://doi.org/10.1002/j.1538-7305.1948.tb01338.x</li>
+      <li>Cover, T. M., & Thomas, J. A. (2006). <em>Elements of Information Theory</em> (2nd ed.). Wiley-Interscience.</li>
+      <li>Gleick, J. (2011). <em>The Information: A History, a Theory, a Flood</em>. Pantheon Books.</li>
+      <li>Mackay, D. J. C. (2003). <em>Information Theory, Inference, and Learning Algorithms</em>. Cambridge University Press. Disponible en: https://www.inference.org.uk/mackay/itila/</li>
+      <li>von Bertalanffy, L. (1968). <em>General System Theory: Foundations, Development, Applications</em>. George Braziller.</li>
+      <li>Wiener, N. (1948). <em>Cybernetics: Or Control and Communication in the Animal and the Machine</em>. MIT Press.</li>
+      <li>Richardson, G. P. (1999). <em>Feedback Thought in Social Science and Systems Theory</em>. Pegasus Communications.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>OVA #14 — <span>Teoría de la Información</span> · Universidad Simón Bolívar Cúcuta</p>
+  <p style="margin-top:0.5rem;font-size:0.75rem;">Jesús David Sarmiento Ortiz · TGS 2024–2025</p>
+</footer>
+
+<script>
+// TABS
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// EJERCICIOS
+const answers = {
+  1: { correct: v => Math.abs(parseFloat(v) - 1.0) < 0.05, ok: 'Correcto ✓ I(cara) = −log₂(0.5) = 1 bit. La moneda justa aporta exactamente 1 bit de información.', fail: 'Incorrecto. Usa la fórmula I(x) = −log₂(P(x)) = −log₂(0.5) = 1 bit.' },
+  2: { correct: v => Math.abs(parseFloat(v) - 2.585) < 0.02, ok: 'Correcto ✓ H(X) = −6 × (1/6) × log₂(1/6) = log₂(6) ≈ 2.585 bits.', fail: 'Incorrecto. Para eventos equiprobables: H = log₂(n). H = log₂(6) ≈ 2.585 bits.' },
+  3: { correct: v => v.trim().toLowerCase() === 'b', ok: 'Correcto ✓ La falta de cobertura celular es el "ruido del canal": perturba la señal entre transmisor y receptor.', fail: 'Incorrecto. La respuesta es (b): la falta de cobertura es el ruido que distorsiona la señal en el canal.' },
+  4: { correct: v => parseInt(v) === 30, ok: 'Correcto ✓ 30% de 100 módulos = 30 módulos pueden estar dañados y el código QR nivel H aún es legible.', fail: 'Incorrecto. 30% × 100 = 30 módulos. El nivel H tolera hasta el 30% de errores.' }
+};
+function checkEx(n) {
+  const val = document.getElementById('ex'+n).value;
+  const fb = document.getElementById('fb'+n);
+  fb.style.display = 'block';
+  if (answers[n].correct(val)) {
+    fb.className = 'feedback correct';
+    fb.textContent = answers[n].ok;
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = answers[n].fail;
+  }
+}
+
+// JUEGO 1 — Decodificador ASCII
+const g1Questions = [
+  { bits: '01001000', options: ["Letra 'H'", "Número 8", "Letra 'A'", "Símbolo '$'"], correct: 0, explain: "01001000 = 72 decimal = 'H' en ASCII" },
+  { bits: '00110001', options: ["Letra 'a'", "Número '1'", "Letra 'A'", "Número '3'"], correct: 1, explain: "00110001 = 49 decimal = '1' en ASCII" },
+  { bits: '01100001', options: ["Letra 'A'", "Letra 'b'", "Letra 'a'", "Símbolo '@'"], correct: 2, explain: "01100001 = 97 decimal = 'a' en ASCII (minúscula)" },
+  { bits: '01000001', options: ["Letra 'a'", "Letra 'A'", "Número '65'", "Letra 'B'"], correct: 1, explain: "01000001 = 65 decimal = 'A' en ASCII (mayúscula)" },
+  { bits: '00100000', options: ["Cero binario", "Espacio en blanco", "Nulo", "Tab"], correct: 1, explain: "00100000 = 32 decimal = espacio en blanco en ASCII" }
+];
+let g1idx = 0, g1pts = 0, g1answered = false;
+function initGame1() {
+  g1idx = 0; g1pts = 0; g1answered = false;
+  document.getElementById('g1score').textContent = 'Puntos: 0 / 5';
+  renderG1();
+}
+function renderG1() {
+  if (g1idx >= g1Questions.length) {
+    document.getElementById('g1-display').textContent = '¡Terminado!';
+    document.getElementById('g1-opts').innerHTML = '';
+    document.getElementById('g1-msg').textContent = `Puntuación final: ${g1pts}/5`;
+    document.getElementById('g1-instruction').textContent = '¡Juego completado!';
+    return;
+  }
+  g1answered = false;
+  const q = g1Questions[g1idx];
+  document.getElementById('g1-display').textContent = q.bits;
+  document.getElementById('g1-instruction').textContent = '¿Qué valor representa esta secuencia binaria?';
+  document.getElementById('g1-msg').textContent = '';
+  const opts = document.getElementById('g1-opts');
+  opts.innerHTML = '';
+  q.options.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'game-opt';
+    btn.textContent = o;
+    btn.onclick = () => {
+      if (g1answered) return;
+      g1answered = true;
+      document.querySelectorAll('#g1-opts .game-opt').forEach(b => b.style.pointerEvents='none');
+      if (i === q.correct) {
+        btn.classList.add('correct-anim');
+        g1pts++;
+        document.getElementById('g1-msg').innerHTML = `✓ Correcto! ${q.explain}`;
+        document.getElementById('g1score').textContent = `Puntos: ${g1pts} / 5`;
+      } else {
+        btn.classList.add('wrong-anim');
+        document.getElementById('g1-opts').querySelectorAll('.game-opt')[q.correct].classList.add('correct-anim');
+        document.getElementById('g1-msg').innerHTML = `✗ Incorrecto. ${q.explain}`;
+      }
+      setTimeout(() => { g1idx++; renderG1(); }, 1800);
+    };
+    opts.appendChild(btn);
+  });
+}
+initGame1();
+
+// JUEGO 2 — Drag & Drop Shannon
+const g2items = ['Fuente','Transmisor','Receptor','Destino'];
+function initGame2() {
+  const bank = document.getElementById('g2-bank');
+  bank.innerHTML = '';
+  g2items.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.draggable = true;
+    el.textContent = item;
+    el.id = 'drag-'+item;
+    el.addEventListener('dragstart', e => { e.dataTransfer.setData('text', item); });
+    bank.appendChild(el);
+  });
+  ['slot0','slot1','slot2','slot3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.textContent = el.getAttribute('data-correct').replace(/./, c => `${el.id.slice(-1)*1+1}. ?`);
+    el.textContent = `${parseInt(id.slice(-1))+1}. ?`;
+    el.innerHTML = `<span style="color:var(--text3)">${parseInt(id.slice(-1))+1}. ?</span>`;
+  });
+  document.getElementById('g2-feedback').style.display='none';
+}
+function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dropItem(e, slotId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const item = e.dataTransfer.getData('text');
+  const slot = document.getElementById(slotId);
+  if (slot.dataset.filled) {
+    document.getElementById('g2-bank').appendChild(document.getElementById('drag-'+slot.dataset.filled));
+  }
+  slot.innerHTML = '';
+  const el = document.getElementById('drag-'+item);
+  el.style.cursor='default'; el.draggable=false;
+  slot.appendChild(el);
+  slot.dataset.filled = item;
+}
+function checkGame2() {
+  const slots = ['slot0','slot1','slot2','slot3'];
+  let ok = true;
+  slots.forEach(id => {
+    const slot = document.getElementById(id);
+    if (slot.dataset.filled !== slot.dataset.correct) ok = false;
+  });
+  const fb = document.getElementById('g2-feedback');
+  fb.style.display = 'block';
+  if (ok) {
+    fb.className = 'feedback correct';
+    fb.textContent = '¡Correcto! El orden es: Fuente → Transmisor → [ruido] → Receptor → Destino. ¡Modelo de Shannon completado!';
+    document.getElementById('g2-status').textContent = '✓ Completado';
+  } else {
+    fb.className = 'feedback wrong';
+    fb.textContent = 'Algunas posiciones son incorrectas. Recuerda: la fuente origina el mensaje, el transmisor lo codifica, el receptor lo decodifica y el destino lo recibe.';
+  }
+}
+initGame2();
+
+// JUEGO 3 — Canal con ruido
+let g3round = 0, g3pts3 = 0;
+function initGame3() { g3round = 0; g3pts3 = 0; document.getElementById('g3-score').textContent = 'Ronda 1 / 5'; nextRound3(); }
+function nextRound3() {
+  if (g3round >= 5) {
+    document.getElementById('g3-original').innerHTML = '';
+    document.getElementById('g3-received').innerHTML = '';
+    document.getElementById('g3-opts').innerHTML = '';
+    document.getElementById('g3-msg').textContent = `¡Juego terminado! Respuestas correctas: ${g3pts3}/5`;
+    return;
+  }
+  const len = 8;
+  const original = Array.from({length:len}, () => Math.random() > 0.5 ? 1 : 0);
+  const errors = Math.floor(Math.random() * 4);
+  const received = [...original];
+  const positions = [];
+  while (positions.length < errors) {
+    const p = Math.floor(Math.random()*len);
+    if (!positions.includes(p)) { positions.push(p); received[p] = 1-received[p]; }
+  }
+  renderBits('g3-original', original, []);
+  renderBits('g3-received', received, positions);
+  const opts = document.getElementById('g3-opts');
+  opts.innerHTML = '';
+  const choices = [...new Set([errors, (errors+1)%5, (errors+2)%5, Math.abs(errors-1)])].slice(0,4);
+  choices.sort(() => Math.random()-0.5);
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'game-opt';
+    btn.textContent = c + ' bit' + (c !== 1 ? 's' : '');
+    btn.onclick = () => {
+      document.querySelectorAll('#g3-opts .game-opt').forEach(b => b.style.pointerEvents='none');
+      if (c === errors) {
+        btn.classList.add('correct-anim');
+        g3pts3++;
+        document.getElementById('g3-msg').textContent = `✓ Correcto! ${errors} bit${errors!==1?'s':''} corrompido${errors!==1?'s':''}.`;
+      } else {
+        btn.classList.add('wrong-anim');
+        document.getElementById('g3-msg').textContent = `✗ Eran ${errors} bits corrompidos.`;
+      }
+      g3round++;
+      document.getElementById('g3-score').textContent = `Ronda ${Math.min(g3round+1,5)} / 5`;
+      setTimeout(nextRound3, 1800);
+    };
+    opts.appendChild(btn);
+  });
+}
+function renderBits(containerId, bits, errorPositions) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  bits.forEach((b, i) => {
+    const el = document.createElement('div');
+    el.className = 'channel-bit ' + (errorPositions.includes(i) ? 'noise' : (b ? 'set-1' : 'set-0'));
+    el.textContent = b;
+    c.appendChild(el);
+  });
+}
+initGame3();
+
+// QUIZ
+let quizScore = 0;
+let questionAnswered = {};
+function selectAnswer(el, qid, isCorrect, type) {
+  if (questionAnswered[qid]) return;
+  questionAnswered[qid] = true;
+  const allOpts = el.closest('.quiz-options').querySelectorAll('.quiz-opt');
+  allOpts.forEach(o => o.classList.add('disabled'));
+  if (isCorrect) { el.classList.add('selected-correct'); quizScore++; }
+  else {
+    el.classList.add('selected-wrong');
+    allOpts.forEach(o => {
+      if (o.onclick && o.onclick.toString().includes('true')) o.classList.add('reveal-correct');
+    });
+  }
+  document.getElementById('exp-'+qid).style.display='block';
+}
+function nextQuestion(current, next) {
+  document.getElementById(current).classList.remove('active');
+  document.getElementById(next).classList.add('active');
+  const qNum = parseInt(next.replace('q',''));
+  document.getElementById('quiz-progress').style.width = (qNum*10)+'%';
+}
+function finishQuiz() {
+  document.getElementById('q10').classList.remove('active');
+  const res = document.getElementById('quiz-result');
+  res.style.display='block';
+  document.getElementById('result-score').textContent = quizScore + '/10';
+  document.getElementById('quiz-progress').style.width='100%';
+  const pct = quizScore*10;
+  setTimeout(() => { document.getElementById('result-bar').style.width = pct+'%'; }, 100);
+  const msgs = [
+    [0,3,'Sigue estudiando los fundamentos de la Teoría de la Información. ¡Puedes mejorar!'],
+    [4,6,'Buen intento. Repasa los conceptos de entropía y el modelo de Shannon.'],
+    [7,8,'¡Bien! Tienes una comprensión sólida de la Teoría de la Información.'],
+    [9,10,'¡Excelente! Dominas los conceptos fundamentales de Shannon. ¡Resultado perfecto!']
+  ];
+  for (const [lo,hi,msg] of msgs) {
+    if (quizScore >= lo && quizScore <= hi) { document.getElementById('result-msg').textContent = msg; break; }
+  }
+}
+function resetQuiz() {
+  quizScore = 0; questionAnswered = {};
+  document.getElementById('quiz-result').style.display='none';
+  document.querySelectorAll('.question-block').forEach(q => q.classList.remove('active'));
+  document.getElementById('q1').classList.add('active');
+  document.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('selected-correct','selected-wrong','reveal-correct','disabled');
+  });
+  document.querySelectorAll('.quiz-explanation').forEach(e => e.style.display='none');
+  document.getElementById('quiz-progress').style.width='10%';
+}
+</script>
+</body>
+</html>

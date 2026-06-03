@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA - Teoría del Caos y Sistemas Dinámicos</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="main-header">
+        <h1>Caos en los Sistemas (TGS)</h1>
+        <p>Objeto Virtual de Aprendizaje (OVA) • Ingeniería de Sistemas</p>
+    </header>
+
+    <nav class="tab-container">
+<button class="tab-btn active" onclick="cambiarModulo('mod-introduccion', this)">Módulo 1</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-teoria', this)">2. Núcleo Teórico</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-laboratorio', this)">3. Laboratorio y Juegos</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-practica', this)">4. Práctica</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-aplicaciones', this)">5. Aplicaciones</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-evaluacion', this)">6. Evaluación</button>
+        <button class="tab-btn" onclick="cambiarModulo('mod-creditos', this)">7. Créditos</button>
+    </nav>
+
+    <main class="content-wrapper">
+
+       <!-- MÓDULO 1: INTRODUCCIÓN Y ENFOQUE SISTÉMICO -->
+        <section id="mod-introduccion" class="tab-content active">
+            <h2>1. Introducción y Enfoque Sistémico</h2>
+            
+            <div class="mod1-grid">
+                <!-- COLUMNA IZQUIERDA: MARCO TEÓRICO Y SELECTORES -->
+                <div class="mod1-left">
+                    <div class="justificacion-box">
+                        <h3>Justificación del Entorno</h3>
+                        <p>La Teoría General de Sistemas (TGS) y la dinámica no lineal rompen con el paradigma reduccionista tradicional. Este entorno virtual ha sido diseñado para explorar cómo la interacción de componentes genera comportamientos emergentes globales, analizando desde la estabilidad homeostática hasta la impredecibilidad del caos determinista.</p>
+                    </div>
+                    
+                    <!-- BOTONES DE NAVEGACIÓN INTERNA -->
+                    <div class="video-controls">
+                        <button class="vid-btn active" onclick="switchVideo(1, this)">
+                            🎬 Recurso 1: Esta ecuación cambiará tu modo de ver el mundo
+                        </button>
+                        <button class="vid-btn" onclick="switchVideo(2, this)">
+                            🎬 Recurso 2: Qué son la teoría del caos y el efecto mariposa y cómo nos ayudan a entender mejor el universo
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- COLUMNA DERECHA: PANELES MULTIMEDIA ASOCIADOS -->
+                <div class="mod1-right">
+                    
+                    <!-- PANEL VIDEO 1 (ACTIVO POR DEFECTO) -->
+                    <div id="video-panel-1" class="video-panel active">
+                        <div class="video-wrapper">
+<iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/EOvLhZPevm0" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen>
+</iframe>                        </div>
+                        <a href="https://youtu.be/EOvLhZPevm0?si=O2ViQ8RZQGmyjvj-" target="_blank" rel="noopener noreferrer" class="emergency-btn">
+                            🚨 ¿Bloqueo de red? Abrir "Esta ecuación cambiará tu modo de ver el mundo" directo en YouTube
+                        </a>
+                    </div>
+                    
+                    <!-- PANEL VIDEO 2 (OCULTO HASTA INVOCACIÓN) -->
+                    <div id="video-panel-2" class="video-panel">
+                        <div class="video-wrapper">
+<iframe 
+    width="560" 
+    height="315" 
+    src="https://www.youtube.com/embed/-_2LYenA9ak" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allowfullscreen>
+</iframe>                        </div>
+                        <a href="https://youtu.be/-_2LYenA9ak?si=CUctZPdtpjA_l379" target="_blank" rel="noopener noreferrer" class="emergency-btn">
+                            🚨 ¿Bloqueo de red? Abrir "Qué son la teoría del caos... directo en YouTube
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="mod-teoria" class="tab-content">
+            <h2>2. Fundamentos Conceptuales del Caos</h2>
+            <blockquote class="academic-quote">
+                "El caos es el comportamiento aperiódico determinista en un sistema dinámico no lineal que exhibe una sensibilidad extrema a las condiciones iniciales." 
+                <cite>— Edward Lorenz (1963)</cite>
+            </blockquote>
+
+            <p>Haz clic en cada pilar matemático para desplegar su desarrollo conceptual:</p>
+
+            <div class="accordion-group">
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">✦ Sensibilidad a Condiciones Iniciales (Efecto Mariposa)</button>
+                    <div class="accordion-body">
+                        <p>Establece que una alteración infinitesimal en los inputs de un sistema abierto no lineal puede amplificarse exponencialmente a través de bucles de retroalimentación positiva, generando configuraciones de outputs radicalmente distintas a las proyectadas.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">✦ No Linealidad Dinámica</button>
+                    <div class="accordion-body">
+                        <p>A diferencia de los sistemas lineales mecánicos donde el todo es igual a la suma de sus partes (principio de superposición), en los sistemas no lineales las relaciones causa-efecto son proporcionales y multifactoriales, dando origen a la emergencia sistémica.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">✦ Atractores Extraños y Fractales</button>
+                    <div class="accordion-body">
+                        <p>Un atractor representa la trayectoria geométrica hacia la cual tiende un sistema dinámico en el tiempo. Mientras los sistemas estables caen en puntos fijos, los sistemas caóticos orbitan en atractores extraños: trayectorias infinitas con propiedades fractales que demuestran que el caos posee límites ordenados internos.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header" onclick="toggleAccordion(this)">✦ Transiciones Críticas (Bifurcaciones)</button>
+                    <div class="accordion-body">
+                        <p>Representa el punto de inflexión estructural donde un sistema, al sufrir modificaciones en sus parámetros de control externos, experimenta una división de sus estados de equilibrio estables, forzándolo a reorganizarse o colapsar de forma abrupta.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mod-laboratorio" class="tab-content">
+            <h2>3. Laboratorio de Simulación y Zona de Juegos</h2>
+            
+            <div class="simulator-box">
+                <h3>Simulador del Mapa Logístico [ X_(n+1) = r * X_n * (1 - X_n) ]</h3>
+                <p>Modifica el parámetro de control inicial. Observa cómo la mínima diferencia de +0.0001 (Línea Roja) causa que los dos sistemas se separen drásticamente tras pocas iteraciones.</p>
+                <div class="slider-control">
+                    <label for="slider">Parámetro de Entrada (X₀): <span id="slider-value">0.400</span></label>
+                    <input type="range" id="slider" min="0.1" max="0.9" step="0.001" value="0.400">
+                </div>
+                <div class="canvas-container">
+                    <canvas id="graficoCaos"></canvas>
+                </div>
+            </div>
+
+            <div class="juegos-nav" style="display: flex; gap: 15px; margin-top: 30px; margin-bottom: 25px; flex-wrap: wrap;">
+    <button class="btn-action" onclick="toggleJuego('panel-juego1')">🎮 Ver Juego 1: El Estabilizador</button>
+    <button class="btn-action" onclick="toggleJuego('panel-juego2')">🧠 Ver Juego 2: Clasificador</button>
+    <button class="btn-action" onclick="toggleJuego('panel-juego3')">👾 Ver Juego 3: Atrapa-Bugs</button>
+</div>
+
+<div class="juegos-paneles-container">
+    
+    <div id="panel-juego1" class="game-card" style="max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; margin-bottom: 20px;">
+        <h3>🕹️ Juego 1: El Estabilizador Homeostático</h3>
+        <p>El sistema experimenta fuerzas caóticas externas. Mueve el slider de compensación en tiempo real para mantener el indicador en la zona segura (entre 35 y 65) durante 15 segundos.</p>
+        <div class="game-display">
+            Valor del Sistema: <span id="g1-valor">50</span>
+            <div id="g1-status">Estado: En espera</div>
+        </div>
+        <input type="range" id="g1-slider" min="-12" max="12" value="0" style="width: 100%; margin: 15px 0;">
+        <button class="btn-action" onclick="iniciarJuego1()">Iniciar Simulación Dinámica</button>
+    </div>
+
+    <div id="panel-juego2" class="game-card" style="max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; margin-bottom: 20px;">
+        <h3>🕹️ Juego 2: Clasificador de Comportamientos</h3>
+        <p>Analiza la firma dinámica del enunciado y cataloga el tipo de sistema antes de que agotes los intentos.</p>
+        <div id="g2-enunciado" class="enunciado-caja">Cargando escenario...</div>
+        <div id="g2-opciones" class="btn-group-vertical" style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;"></div>
+        <div id="g2-feedback" style="margin-top:10px; font-weight:bold;"></div>
+    </div>
+
+    <div id="panel-juego3" class="game-card" style="max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease;">
+        <h3>🕹️ Juego 3: Bug Whacker (El Atrapa-Bugs)</h3>
+        <p>¡Los bugs están corrompiendo la estabilidad del software! Haz clic directo sobre el bicho (🐛) antes de que cambie de posición. ¡Tienes 30 segundos!</p>
+        
+        <div class="game-display" style="display: flex; justify-content: space-around; padding: 10px; margin-bottom: 15px; font-weight: bold;">
+            <div>Bugs Eliminados: <span id="g3-score" style="color: #34d399;">0</span></div>
+            <div>Tiempo: <span id="g3-time" style="color: #22d3ee;">30s</span></div>
+        </div>
+
+        <div class="bug-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 280px; margin: 0 auto 20px auto;">
+            <div class="grid-hole" onclick="golpearBug(0)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(1)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(2)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(3)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(4)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(5)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(6)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(7)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+            <div class="grid-hole" onclick="golpearBug(8)" style="aspect-ratio: 1; background: rgba(0,0,0,0.15); border: 2px solid #22d3ee; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer; user-select: none; height: 80px;"></div>
+        </div>
+
+        <button class="btn-action" onclick="iniciarJuego3()" style="width: 100%;">Iniciar Cacería de Bugs</button>
+    </div>
+
+</div>
+        </section>
+
+        <section id="mod-practica" class="tab-content">
+            <h2>4. Casos Prácticos y Retos de Análisis</h2>
+            <p>Evalúa el comportamiento de los siguientes sistemas complejos reales. Diseña mentalmente tu solución y despliega la retroalimentación institucional:</p>
+
+            <div class="practice-item">
+                <h4>Caso Operacional A: Efecto Mariposa Corporativo</h4>
+                <p>Una planta manufacturera detecta que una variación de apenas 0.5 milímetros en el empaque de origen asiático provocó, 6 meses después, atascos masivos en las bandas transportadoras automatizadas en Europa. ¿Cómo se corrige desde el enfoque de TGS?</p>
+                <button class="btn-toggle" onclick="toggleRetroalimentacion('p1')">Desplegar Análisis Técnico</button>
+                <div id="p1" class="retro-box">
+                    <strong>Solución de Control:</strong> El sistema adolecía de bucles de retroalimentación negativa de acción tardía. Para contrarrestar la sensibilidad a condiciones iniciales, la arquitectura informática del sistema debe implementar sensores de monitoreo preventivo en tiempo real (inputs tempranos) en lugar de auditorías de lotes (outputs tardíos).
+                </div>
+            </div>
+
+            <div class="practice-item">
+                <h4>Caso Operacional B: Ruptura por Bifurcación en Redes viales</h4>
+                <p>Al incrementar el número de vehículos en una autopista automatizada de forma lineal, el flujo de tráfico se mantiene predecible. Sin embargo, al cruzar un umbral exacto, la red colapsa súbitamente deteniendo los autos por completo sin causa aparente. Explicación:</p>
+                <button class="btn-toggle" onclick="toggleRetroalimentacion('p2')">Desplegar Análisis Técnico</button>
+                <div id="p2" class="retro-box">
+                    <strong>Solución de Control:</strong> El sistema alcanzó un punto de bifurcación crítica inducido por no linealidad. Al saturarse el canal, las micro-frenadas individuales actuaron como bucles de alimentación positiva que se propagaron hacia atrás, cambiando el estado global de la red desde un atractor dinámico libre a un atractor estático trabado.
+                </div>
+            </div>
+        </section>
+
+        <section id="mod-aplicaciones" class="tab-content">
+            <h2>5. Aplicaciones Interdisciplinares del Caos</h2>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">🌦️</div>
+                    <h3>Meteorología Dinámica</h3>
+                    <p>Los modelos computacionales climáticos utilizan ecuaciones diferenciales interconectadas. Debido al efecto mariposa, las predicciones climáticas confiables pierden efectividad matemática total más allá de los 4 a 7 días de proyección futura.</p>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">❤️</div>
+                    <h3>Cardiología Médica</h3>
+                    <p>El ritmo cardíaco de un corazón humano sano no es rítmico ni periódico; presenta oscilaciones micro-caóticas complejas gobernadas por un atractor extraño. La pérdida de esta firma caótica y el paso a un ritmo excesivamente lineal es un indicador clínico de infarto inminente.</p>
+                </div>
+                <div class="app-card">
+                    <div class="app-icon">📈</div>
+                    <h3>Mercados Financieros</h3>
+                    <p>Las bolsas de valores operan como sistemas dinámicos abiertos propensos a caídas masivas repentinas. La especulación y los algoritmos automáticos configuran redes no lineales complejas donde pequeñas noticias provocan fluctuaciones macroeconómicas masivas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mod-evaluacion" class="tab-content">
+            <h2>6. Evaluación Formativa Automatizada</h2>
+            <p>Antes de arrancar la prueba académica, ingresa tu identificador de acceso para personalizar el registro central de puntuación final:</p>
+
+            <div id="quiz-welcome" class="name-register-box">
+                <label for="student-name">Nombre de Identificación del Usuario:</label>
+                <input type="text" id="student-name" placeholder="Ej. Usuario Técnico" autocomplete="off">
+            </div>
+
+            <div class="quiz-container">
+                <div id="quiz-header">
+                    <span id="quiz-step" class="badge">Pregunta 1 de 5</span>
+                </div>
+                <h3 id="quiz-question">Cargando pregunta evaluativa...</h3>
+                <div class="quiz-options-group">
+                    <button id="btn-opt-a" class="btn-option" onclick="evaluarSeleccion('A')">Opción A</button>
+                    <button id="btn-opt-b" class="btn-option" onclick="evaluarSeleccion('B')">Opción B</button>
+                </div>
+                <p id="quiz-feedback" class="feedback-text"></p>
+                <button id="btn-next" class="btn-action" style="display: none;" onclick="siguientePregunta()">Confirmar y Siguiente Pregunta ➜</button>
+            </div>
+        </section>
+
+      <section id="mod-creditos" class="tab-content">
+            <h2>7. Soporte Académico e Identidad Institucional</h2>
+            
+            <div class="accordion-item" style="border: 1px solid var(--neon-green); margin-bottom: 25px; box-shadow: 0 0 10px rgba(52, 211, 153, 0.15);">
+                <button class="accordion-header" onclick="toggleAccordion(this)" style="color: var(--neon-green); font-size: 1.15rem;">
+                    🪪 Desplegar Ficha Técnica de Autoría y Metadatos
+                </button>
+                <div class="accordion-body" style="background-color: var(--bg-card-alt); padding: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <p><strong>Autor del OVA:</strong> Samuel Leal</p>
+                        <p><strong>Universidad:</strong> Universidad Simón Bolívar</p>
+                        <p><strong>Programa:</strong> Ingeniería de Sistemas</p>
+                        <p><strong>Asignatura:</strong> Teoría General de Sistemas (TGS)</p>
+                        <p><strong>Entorno de Desarrollo:</strong> HTML5, CSS3 Nativo y JavaScript V8</p>
+                        <p><strong>Año de Edición:</strong> 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Glosario de Soporte Sistémico (Ampliado)</h3>
+            <dl class="glossary-list">
+                <dt>Homeostasis</dt>
+                <dd>Propiedad de un sistema dinámico para autorregularse y mantener un estado interno constante y equilibrado (estado estacionario) frente a las perturbaciones del entorno.</dd>
+                
+                <dt>Determinismo</dt>
+                <dd>Principio físico-matemático que sostiene que el estado futuro de un sistema está estrictamente determinado y fijado de forma unívoca por sus condiciones y variables anteriores.</dd>
+                
+                <dt>Emergencia Sistémica</dt>
+                <dd>Aparición de propiedades, estructuras o comportamientos globales en un sistema complejo que surgen de la interacción no lineal de sus componentes, y que no son deducibles analizando las partes de forma aislada.</dd>
+
+                <dt>Retroalimentación Positiva (Feedback)</dt>
+                <dd>Mecanismo de control donde el output de un sistema amplifica o incrementa la desviación de los inputs iniciales, rompiendo la estabilidad y empujando al sistema hacia bifurcaciones o al caos.</dd>
+
+                <dt>Retroalimentación Negativa</dt>
+                <dd>Bucle de control que busca contrarrestar las desviaciones del output respecto a un objetivo preestablecido, actuando como el principal motor de estabilidad y supervivencia sistémica.</dd>
+
+                <dt>No Linealidad</dt>
+                <dd>Relación dinámica donde los efectos no son proporcionales a las causas. Invalida el principio de superposición clásica y da lugar a comportamientos impredecibles a largo plazo.</dd>
+                
+                <dt>Entropía</dt>
+                <dd>Medida del desorden físico o de la incertidumbre informacional en un sistema. Los sistemas abiertos importan neguentropía (energía regulada) del entorno para combatir su tendencia natural al desgaste.</dd>
+            </dl>
+
+            <hr class="separator">
+
+            <h3>Referencias Bibliográficas (Formato IEEE/APA)</h3>
+            <ul class="bibliography-list">
+                <li>[1] L. von Bertalanffy, <em>Teoría General de los Sistemas: Fundamentos, desarrollo, aplicaciones</em>. Madrid, España: Fondo de Cultura Económica, 1986.</li>
+                <li>[2] E. N. Lorenz, "Deterministic nonperiodic flow," <em>Journal of the Atmospheric Sciences</em>, vol. 20, no. 2, pp. 130-141, 1963.</li>
+                <li>[3] I. Prigogine y I. Stengers, <em>La nueva alianza: metamorfosis de la ciencia</em>. Madrid, España: Alianza Editorial, 1997.</li>
+            </ul>
+
+            <div class="credits-footer">
+                <p>Prototipo Académico de Ingeniería de Sistemas • Entorno Protegido contra Failsafes de Almacenamiento Caché.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

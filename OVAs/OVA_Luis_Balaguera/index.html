@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OVA · Tipos de Sistemas | TGS</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">⬡ TGS · OVA</span>
+  <a href="#contexto">Contexto</a>
+  <a href="#tipos">Tipos</a>
+  <a href="#comparativa">Comparativa</a>
+  <a href="#ejemplos">Ejemplos</a>
+  <a href="#ejercicios">Ejercicios</a>
+  <a href="#juegos">Juegos</a>
+  <a href="#videos">Videos</a>
+  <a href="#quiz">Quiz</a>
+  <a href="#credits">Créditos</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">TEORÍA GENERAL DE SISTEMAS</div>
+    <h1 class="hero-title">Tipos de<br>Sistemas</h1>
+    <p class="hero-sub">Explora la diversidad y complejidad de los sistemas: dinámicos, estáticos, adaptativos, abiertos y más. Una OVA interactiva para comprender cómo funciona el mundo que nos rodea.</p>
+    <div class="hero-tags">
+      <span class="tag">⚡ Dinámicos</span>
+      <span class="tag">🏗️ Estáticos</span>
+      <span class="tag">🔄 Adaptativos</span>
+      <span class="tag">🌐 Abiertos</span>
+      <span class="tag">🔒 Cerrados</span>
+      <span class="tag">🎯 Deterministas</span>
+      <span class="tag">🎲 Probabilísticos</span>
+    </div>
+    <p class="scroll-hint">↓ DESPLÁZATE PARA EXPLORAR ↓</p>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONTEXTUALIZACIÓN -->
+<section id="contexto">
+  <div class="container">
+    <span class="sec-label">// 01 · CONTEXTUALIZACIÓN</span>
+    <h2 class="sec-title">¿Por qué importa clasificar los sistemas?</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">La Teoría General de Sistemas (TGS), formulada por Ludwig von Bertalanffy en la década de 1940, propone un enfoque interdisciplinario para comprender fenómenos complejos. Clasificar los sistemas nos permite aplicar los modelos correctos, predecir comportamientos y diseñar soluciones eficientes en ingeniería, biología, administración y tecnología.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <div class="card-title">Base Científica</div>
+        <div class="card-body">Von Bertalanffy (1968) estableció que los sistemas comparten principios universales independientemente del dominio en que se estudien: física, biología, ingeniería o ciencias sociales.</div>
+        <span class="chip">Bertalanffy, 1968</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Utilidad Práctica</div>
+        <div class="card-body">Conocer el tipo de sistema permite seleccionar herramientas de análisis adecuadas: ecuaciones diferenciales para sistemas dinámicos, modelos de estados para adaptativos, termodinámica para sistemas abiertos.</div>
+        <span class="chip blue">Ingeniería de Sistemas</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">Aplicación Universal</div>
+        <div class="card-body">Desde el clima global hasta una empresa multinacional, pasando por el cuerpo humano o un algoritmo de IA, todos son sistemas clasificables. La taxonomía facilita el análisis interdisciplinario.</div>
+        <span class="chip teal">Interdisciplinario</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- TIPOS DE SISTEMAS -->
+<section id="tipos">
+  <div class="container">
+    <span class="sec-label">// 02 · MARCO CONCEPTUAL</span>
+    <h2 class="sec-title">Tipos de Sistemas</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">Existen múltiples criterios de clasificación. A continuación se presentan los más importantes según la TGS, con sus características, fundamentos teóricos y ejemplos concretos.</p>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Sistema Dinámico</div>
+        <div class="card-body">Sus variables de estado cambian en el tiempo. Responde a entradas, procesa información y genera salidas que evolucionan. Puede describirse mediante ecuaciones diferenciales (tiempo continuo) o en diferencias (tiempo discreto). La retroalimentación es clave en su comportamiento.</div>
+        <span class="chip">dx/dt ≠ 0</span>&nbsp;<span class="chip blue">Tiempo-dependiente</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏛️</div>
+        <div class="card-title">Sistema Estático</div>
+        <div class="card-body">Sus variables de estado no cambian con el tiempo bajo condiciones normales. La relación entre entrada y salida es constante. Útil como línea base o estado de equilibrio de referencia. Gobernado por ecuaciones algebraicas.</div>
+        <span class="chip">dx/dt = 0</span>&nbsp;<span class="chip teal">Equilibrio</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">Sistema Adaptativo</div>
+        <div class="card-body">Modifica su estructura o parámetros internos en respuesta al ambiente para mantener o mejorar su desempeño. Son la base de la inteligencia artificial, los ecosistemas y los organismos vivos. Aprenden del entorno (Ashby, 1956).</div>
+        <span class="chip">Auto-organización</span>&nbsp;<span class="chip blue">Homeostasis</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">Sistema Abierto</div>
+        <div class="card-body">Intercambia materia, energía e información con su entorno. Tiende a estados de equilibrio dinámico (homeostasis). Bertalanffy (1968) los contrapone a los sistemas cerrados y los relaciona con la vida y la organización social.</div>
+        <span class="chip">Entropía negativa</span>&nbsp;<span class="chip teal">Negentropía</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">Sistema Cerrado</div>
+        <div class="card-body">No intercambia materia con el entorno, aunque puede intercambiar energía. Tiende al aumento de entropía y al equilibrio termodinámico. Usado como modelo teórico ideal en física y termodinámica clásica (2.ª Ley de Termodinámica).</div>
+        <span class="chip">Entropía máxima</span>&nbsp;<span class="chip blue">Termodinámica</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">Sistema Determinista</div>
+        <div class="card-body">Dado el estado inicial y las entradas, el estado futuro puede calcularse con exactitud. No hay incertidumbre en la transición de estados. Ejemplos clásicos: mecánica newtoniana, circuitos eléctricos, autómatas finitos.</div>
+        <span class="chip">f(x₀) → xₜ exacto</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎲</div>
+        <div class="card-title">Sistema Probabilístico</div>
+        <div class="card-body">El comportamiento futuro solo puede describirse en términos de distribuciones de probabilidad. La incertidumbre es inherente. Base de las cadenas de Markov, la teoría de colas, los mercados financieros y los modelos climáticos.</div>
+        <span class="chip">P(xₜ | x₀)</span>&nbsp;<span class="chip teal">Estocástico</span>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧩</div>
+        <div class="card-title">Sistema Complejo</div>
+        <div class="card-body">Tiene muchos componentes con interacciones no lineales que generan comportamientos emergentes no previsibles desde las partes. Los sistemas simples tienen pocas interacciones predecibles (Holland, 1998).</div>
+        <span class="chip">Emergencia</span>&nbsp;<span class="chip blue">No-linealidad</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- COMPARATIVA -->
+<section id="comparativa">
+  <div class="container">
+    <span class="sec-label">// 03 · ANÁLISIS COMPARATIVO</span>
+    <h2 class="sec-title">Tabla Comparativa</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">Contraste rápido de las principales características de cada tipo de sistema.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Cambio Temporal</th>
+            <th>Intercambio Ambiental</th>
+            <th>Predecibilidad</th>
+            <th>Auto-modificación</th>
+            <th>Ejemplo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="dot dot-b"></span><strong>Dinámico</strong></td><td>✅ Sí</td><td>Variable</td><td>Media-alta</td><td>❌ No</td><td>Péndulo, mercado</td></tr>
+          <tr><td><span class="dot dot-t"></span><strong>Estático</strong></td><td>❌ No</td><td>Ninguno</td><td>Alta</td><td>❌ No</td><td>Puente (carga fija)</td></tr>
+          <tr><td><span class="dot dot-g"></span><strong>Adaptativo</strong></td><td>✅ Sí</td><td>✅ Alta</td><td>Baja-media</td><td>✅ Sí</td><td>Organismo vivo, IA</td></tr>
+          <tr><td><span class="dot dot-b"></span><strong>Abierto</strong></td><td>✅ Sí</td><td>✅ Alta</td><td>Variable</td><td>Parcial</td><td>Empresa, ecosistema</td></tr>
+          <tr><td><span class="dot dot-r"></span><strong>Cerrado</strong></td><td>Variable</td><td>Solo energía</td><td>Alta</td><td>❌ No</td><td>Gas en contenedor</td></tr>
+          <tr><td><span class="dot dot-g"></span><strong>Determinista</strong></td><td>Variable</td><td>Variable</td><td>✅ Exacta</td><td>❌ No</td><td>Circuito digital</td></tr>
+          <tr><td><span class="dot dot-t"></span><strong>Probabilístico</strong></td><td>Variable</td><td>Variable</td><td>Estadística</td><td>Parcial</td><td>Bolsa de valores</td></tr>
+          <tr><td><span class="dot dot-b"></span><strong>Complejo</strong></td><td>✅ Sí</td><td>✅ Sí</td><td>Baja</td><td>✅ Sí</td><td>Cerebro, internet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- EJEMPLOS PRÁCTICOS -->
+<section id="ejemplos">
+  <div class="container">
+    <span class="sec-label">// 04 · EJEMPLOS PRÁCTICOS</span>
+    <h2 class="sec-title">Casos del Mundo Real</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">Veamos cómo se manifiestan estos tipos de sistemas en contextos reales de la vida cotidiana, la tecnología y la naturaleza.</p>
+    <div class="examples-grid">
+      <div class="ex-card"><span class="ex-type">SISTEMA DINÁMICO</span><div class="ex-title">🌦️ El Clima Global</div><div class="ex-desc">La atmósfera es un sistema dinámico no lineal: temperatura, presión y humedad cambian continuamente. Los modelos climáticos usan ecuaciones diferenciales parciales para simular su evolución temporal.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA ESTÁTICO</span><div class="ex-title">🏗️ Estructura de un Edificio</div><div class="ex-desc">Bajo cargas constantes, un edificio se comporta como sistema estático: las fuerzas se equilibran sin cambio temporal. Los ingenieros civiles analizan el equilibrio estático de fuerzas y momentos.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA ADAPTATIVO</span><div class="ex-title">🧠 Red Neuronal Artificial</div><div class="ex-desc">Una red neuronal ajusta sus pesos sinápticos durante el entrenamiento para minimizar el error de predicción, adaptándose al patrón de los datos. Ejemplo clásico de sistema adaptativo complejo.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA ABIERTO</span><div class="ex-title">🏭 Una Empresa</div><div class="ex-desc">La empresa intercambia capital, información, talento humano y productos con su entorno. Su supervivencia depende de mantener flujos de entrada (recursos) y salida (bienes/servicios) en equilibrio dinámico.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA CERRADO</span><div class="ex-title">🧪 Reacción en Recipiente Sellado</div><div class="ex-desc">Una reacción química en un recipiente adiabático sellado es un sistema cerrado: no intercambia materia (ni calor) con el exterior. La entropía interna solo puede aumentar o permanecer constante.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA DETERMINISTA</span><div class="ex-title">🤖 Autómata de Fábrica</div><div class="ex-desc">Un brazo robótico industrial ejecuta secuencias exactamente programadas: dada la posición inicial y los comandos, el estado futuro es perfectamente calculable sin incertidumbre alguna.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA PROBABILÍSTICO</span><div class="ex-title">📈 Mercado de Valores</div><div class="ex-desc">El precio de una acción no puede predecirse con exactitud. Los modelos financieros (Black-Scholes, Monte Carlo) usan distribuciones de probabilidad para estimar rangos de precios futuros.</div></div>
+      <div class="ex-card"><span class="ex-type">SISTEMA COMPLEJO</span><div class="ex-title">🐜 Colonia de Hormigas</div><div class="ex-desc">Cada hormiga sigue reglas simples, pero la colonia exhibe comportamiento emergente sofisticado: construcción de estructuras, logística de alimento, defensa coordinada. Nadie "diseña" el comportamiento global.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios">
+  <div class="container">
+    <span class="sec-label">// 05 · EJERCICIOS CON RETROALIMENTACIÓN</span>
+    <h2 class="sec-title">Pon a Prueba tu Comprensión</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">Responde cada ejercicio y recibe retroalimentación inmediata con la explicación conceptual.</p>
+
+    <div class="exercise">
+      <span class="ex-num">EJERCICIO 01</span>
+      <p class="ex-q">Un termostato hogareño detecta que la temperatura bajó de 20°C y enciende la calefacción hasta volver al set-point. ¿Qué tipo de sistema es principalmente?</p>
+      <div class="options" id="ex1">
+        <div class="opt" onclick="checkEx(1,'a')"><span class="opt-letter">A</span>Sistema estático, ya que mantiene una temperatura fija.</div>
+        <div class="opt" onclick="checkEx(1,'b')"><span class="opt-letter">B</span>Sistema dinámico con retroalimentación negativa (bucle de control).</div>
+        <div class="opt" onclick="checkEx(1,'c')"><span class="opt-letter">C</span>Sistema cerrado porque no intercambia materia con el exterior.</div>
+        <div class="opt" onclick="checkEx(1,'d')"><span class="opt-letter">D</span>Sistema probabilístico porque la temperatura varía aleatoriamente.</div>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <div class="exercise">
+      <span class="ex-num">EJERCICIO 02</span>
+      <p class="ex-q">El sistema solar puede modelarse como un sistema determinista clásico. ¿Qué implica esto para la predicción de posiciones planetarias?</p>
+      <div class="options" id="ex2">
+        <div class="opt" onclick="checkEx(2,'a')"><span class="opt-letter">A</span>Solo podemos calcular posiciones con distribuciones de probabilidad.</div>
+        <div class="opt" onclick="checkEx(2,'b')"><span class="opt-letter">B</span>Las posiciones futuras son imposibles de calcular sin supercómputo.</div>
+        <div class="opt" onclick="checkEx(2,'c')"><span class="opt-letter">C</span>Conocidas posiciones y velocidades iniciales, podemos calcular estados futuros con precisión usando leyes de Newton.</div>
+        <div class="opt" onclick="checkEx(2,'d')"><span class="opt-letter">D</span>El sistema se adapta y cambia sus propios parámetros con el tiempo.</div>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="exercise">
+      <span class="ex-num">EJERCICIO 03</span>
+      <p class="ex-q">¿Cuál es la diferencia fundamental entre un sistema abierto y uno cerrado según la TGS de Bertalanffy?</p>
+      <div class="options" id="ex3">
+        <div class="opt" onclick="checkEx(3,'a')"><span class="opt-letter">A</span>El sistema abierto intercambia materia, energía e información con su entorno; el cerrado no intercambia materia (modelo teórico).</div>
+        <div class="opt" onclick="checkEx(3,'b')"><span class="opt-letter">B</span>El sistema abierto tiene más variables que el cerrado.</div>
+        <div class="opt" onclick="checkEx(3,'c')"><span class="opt-letter">C</span>El sistema cerrado es siempre más complejo que el abierto.</div>
+        <div class="opt" onclick="checkEx(3,'d')"><span class="opt-letter">D</span>No hay diferencia real; ambos conceptos son equivalentes en TGS.</div>
+      </div>
+      <div class="feedback" id="fb3"></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- JUEGOS -->
+<section id="juegos">
+  <div class="container">
+    <span class="sec-label">// 06 · JUEGOS INTERACTIVOS</span>
+    <h2 class="sec-title">Aprende Jugando</h2>
+    <div class="sec-line"></div>
+
+    <!-- JUEGO 1: CRUCIGRAMA -->
+    <div class="game-box">
+      <div class="game-title">🧩 Juego 1 · Crucigrama de Sistemas</div>
+      <div class="game-sub">Completa el crucigrama con los términos clave de los tipos de sistemas. Haz clic en una pista para resaltar las celdas.</div>
+      <div class="crossword-area">
+        <div class="cw-grid-wrap">
+          <div class="crossword-grid" id="cwGrid"></div>
+        </div>
+        <div class="cw-clues">
+          <h4>→ HORIZONTALES</h4>
+          <div class="cw-clue" data-n="1" onclick=""><b>1.</b> Tipo de sistema cuyas variables cambian en el tiempo.</div>
+          <div class="cw-clue" data-n="3" onclick=""><b>3.</b> Sus variables NO cambian con el tiempo.</div>
+          <div class="cw-clue" data-n="4" onclick=""><b>4.</b> Intercambia materia, energía e información con el entorno.</div>
+          <div class="cw-clue" data-n="5" onclick=""><b>5.</b> No intercambia materia con el exterior (modelo teórico).</div>
+          <div class="cw-clue" data-n="7" onclick=""><b>7.</b> Propiedad: el todo es más que la suma de sus partes.</div>
+          <h4>↓ VERTICALES</h4>
+          <div class="cw-clue" data-n="2" onclick=""><b>2.</b> Sistema que modifica su estructura ante cambios del entorno.</div>
+          <div class="cw-clue" data-n="6" onclick=""><b>6.</b> Medida del desorden; crece en sistemas aislados.</div>
+        </div>
+      </div>
+      <div class="game-score" id="cwScore"></div>
+      <button class="game-btn" id="cw-check-btn" onclick="checkCrossword()">✔ Verificar</button>
+      <button class="game-btn" onclick="resetCrossword()" style="background:rgba(0,119,255,.3);border:1px solid var(--blue);">↺ Limpiar</button>
+      <button class="game-btn" onclick="solveCrossword()" style="background:rgba(0,201,167,.2);border:1px solid var(--teal);">💡 Ver solución</button>
+    </div>
+
+    <!-- JUEGO 2: UNE CON LÍNEAS -->
+    <div class="game-box">
+      <div class="game-title">🔗 Juego 2 · Une con Líneas</div>
+      <div class="game-sub">Haz clic en un tipo de sistema (izquierda) y luego en su descripción correcta (derecha). Se trazará una línea al conectar correctamente.</div>
+      <div class="match-wrap" id="matchWrap">
+        <svg id="match-svg-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="match-area">
+          <div class="match-col" id="matchLeft"></div>
+          <div class="match-col" id="matchRight"></div>
+        </div>
+      </div>
+      <div id="match-result" class="game-score"></div>
+      <button class="game-btn" onclick="resetMatch()">↺ Reiniciar</button>
+    </div>
+
+    <!-- JUEGO 3: AHORCADO -->
+    <div class="game-box">
+      <div class="game-title">🎯 Juego 3 · Ahorcado de Conceptos TGS</div>
+      <div class="game-sub">Adivina el término de la Teoría General de Sistemas antes de quedarte sin intentos. ¡Tienes 7 errores máximo!</div>
+      <div class="hangman-area">
+        <div class="hangman-svg-wrap" id="hmSVG"></div>
+        <div class="hangman-right">
+          <div class="hangman-hint" id="hmHint">Presiona "Nueva palabra" para comenzar.</div>
+          <div class="hangman-errors" id="hmErrors"></div>
+          <div class="hangman-word" id="hmWord"></div>
+          <div class="hangman-keyboard" id="hmKeyboard"></div>
+          <div class="hangman-status" id="hmStatus"></div>
+        </div>
+      </div>
+      <button class="game-btn" id="hmStartBtn" onclick="startHangman()">▶ Nueva palabra</button>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- VIDEOS -->
+<section id="videos">
+  <div class="container">
+    <span class="sec-label">// 07 · RECURSOS AUDIOVISUALES</span>
+    <h2 class="sec-title">Videos Recomendados</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">Recursos audiovisuales verificados en YouTube para profundizar en cada tipo de sistema. Haz clic en cualquier tarjeta para ver el video directamente.</p>
+    <div class="videos-grid">
+
+      <!-- VIDEO 1 — TGS Resumen Animado (verificado) -->
+      <a class="vid-card" href="https://www.youtube.com/watch?v=QbBy20GPlqc" target="_blank" rel="noopener">
+        <div class="vid-thumb">
+          <img src="https://img.youtube.com/vi/QbBy20GPlqc/hqdefault.jpg" alt="TGS Bertalanffy resumen animado">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="vid-info">
+          <span class="vid-label">TGS · INTRODUCCIÓN ANIMADA</span>
+          <div class="vid-title">Teoría General de Sistemas de Bertalanffy — Resumen Animado</div>
+          <div class="vid-source">YouTube · Animaciones Académicas</div>
+        </div>
+      </a>
+
+      <!-- VIDEO 2 — Tipos: Abierto, Cerrado, Aislado (verificado) -->
+      <a class="vid-card" href="https://www.youtube.com/watch?v=As-5aUhY7LY" target="_blank" rel="noopener">
+        <div class="vid-thumb">
+          <img src="https://img.youtube.com/vi/As-5aUhY7LY/hqdefault.jpg" alt="Tipos de Sistemas Abierto Cerrado Aislado">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="vid-info">
+          <span class="vid-label">TIPOS DE SISTEMAS</span>
+          <div class="vid-title">Tipos de Sistemas: Abiertos, Cerrados y Aislados</div>
+          <div class="vid-source">YouTube · Física y Química</div>
+        </div>
+      </a>
+
+      <!-- VIDEO 3 — Sistemas Abiertos y Cerrados Termodinámica (verificado) -->
+      <a class="vid-card" href="https://www.youtube.com/watch?v=8f7E6H171EI" target="_blank" rel="noopener">
+        <div class="vid-thumb">
+          <img src="https://img.youtube.com/vi/8f7E6H171EI/hqdefault.jpg" alt="Sistemas Abiertos y Cerrados Termodinámica">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="vid-info">
+          <span class="vid-label">SISTEMAS ABIERTOS Y CERRADOS</span>
+          <div class="vid-title">Sistemas Abiertos y Cerrados — Termodinámica Fácil y Rápido</div>
+          <div class="vid-source">YouTube · Termodinámica en Español</div>
+        </div>
+      </a>
+
+      <!-- VIDEO 4 — Equilibrio Estático y Dinámico (verificado) -->
+      <a class="vid-card" href="https://www.youtube.com/watch?v=FxwSsNcK0aA" target="_blank" rel="noopener">
+        <div class="vid-thumb">
+          <img src="https://img.youtube.com/vi/FxwSsNcK0aA/hqdefault.jpg" alt="Sistemas Equilibrio Estático y Dinámico">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="vid-info">
+          <span class="vid-label">ESTÁTICO vs DINÁMICO</span>
+          <div class="vid-title">Sistemas en Equilibrio Estático y Dinámico</div>
+          <div class="vid-source">YouTube · Física Aplicada</div>
+        </div>
+      </a>
+
+      <!-- VIDEO 5 — TGS Resumen Castellanos (verificado) -->
+      <a class="vid-card" href="https://www.youtube.com/watch?v=h8jfnNKVNtg" target="_blank" rel="noopener">
+        <div class="vid-thumb">
+          <img src="https://img.youtube.com/vi/h8jfnNKVNtg/hqdefault.jpg" alt="TGS Resumen Completo">
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="vid-info">
+          <span class="vid-label">TGS · RESUMEN COMPLETO</span>
+          <div class="vid-title">Teoría General de los Sistemas — Resumen Completo</div>
+          <div class="vid-source">YouTube · Castellanos · UNAM</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- QUIZ FINAL -->
+<section id="quiz">
+  <div class="container">
+    <span class="sec-label">// 08 · EVALUACIÓN INTERACTIVA</span>
+    <h2 class="sec-title">Quiz Final</h2>
+    <div class="sec-line"></div>
+    <p class="sec-desc">10 preguntas con puntaje automático. Necesitas ≥ 7/10 para aprobar. ¡Éxito!</p>
+    <div class="quiz-wrap">
+      <div id="quiz-container">
+        <div class="quiz-progress"><div class="quiz-bar" id="qbar" style="width:10%"></div></div>
+        <span class="quiz-q-num" id="qnum">Pregunta 1 de 10</span>
+        <p class="quiz-q-text" id="qtext"></p>
+        <div class="quiz-opts" id="qopts"></div>
+        <button class="quiz-next" id="qnext" onclick="nextQ()" style="display:none">Siguiente →</button>
+      </div>
+      <div id="quiz-result">
+        <div class="result-score" id="qrscore"></div>
+        <div class="result-stars" id="qrstars"></div>
+        <div class="result-msg" id="qrmsg"></div>
+        <div class="result-detail" id="qrdetail"></div>
+        <button class="retry-btn" onclick="resetQuiz()">↺ Intentar de nuevo</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CRÉDITOS -->
+<section id="credits">
+  <div class="container">
+    <span class="sec-label">// 09 · CRÉDITOS Y REFERENCIAS</span>
+    <h2 class="sec-title">Autoría y Bibliografía</h2>
+    <div class="sec-line"></div>
+    <div class="credits-grid">
+      <div class="cred-card">
+        <span class="cred-label">AUTOR / ESTUDIANTE</span>
+        <div class="cred-val">Estudiante de Ingeniería<br>Universidad Simón Bolívar<br>Cúcuta, Colombia</div>
+      </div>
+      <div class="cred-card">
+        <span class="cred-label">ASIGNATURA</span>
+        <div class="cred-val">Teoría General de Sistemas (TGS)<br>Segundo Semestre<br>Ingeniería de Sistemas</div>
+      </div>
+      <div class="cred-card">
+        <span class="cred-label">TEMA OVA</span>
+        <div class="cred-val">Tipos de Sistemas:<br>Dinámicos, Estáticos, Adaptativos,<br>Abiertos, Cerrados, etc.</div>
+      </div>
+      <div class="cred-card">
+        <span class="cred-label">AÑO ACADÉMICO</span>
+        <div class="cred-val">2025 – 2026<br>Proyecto Final de Corte<br>OVA Interactiva HTML/CSS/JS</div>
+      </div>
+    </div>
+    <span class="sec-label">REFERENCIAS BIBLIOGRÁFICAS</span>
+    <ul class="refs-list">
+      <li>Bertalanffy, L. von (1968). <em>General System Theory: Foundations, Development, Applications.</em> George Braziller. Nueva York.</li>
+      <li>Ashby, W. R. (1956). <em>An Introduction to Cybernetics.</em> Chapman &amp; Hall. Londres.</li>
+      <li>Holland, J. H. (1998). <em>Emergence: From Chaos to Order.</em> Addison-Wesley. Reading, MA.</li>
+      <li>Checkland, P. (1981). <em>Systems Thinking, Systems Practice.</em> John Wiley &amp; Sons. Chichester.</li>
+      <li>Strogatz, S. H. (1994). <em>Nonlinear Dynamics and Chaos.</em> Perseus Books. Cambridge, MA.</li>
+      <li>García, R. (2006). <em>Sistemas complejos: conceptos, método y fundamentación epistemológica.</em> Gedisa. Barcelona.</li>
+      <li>Forrester, J. W. (1961). <em>Industrial Dynamics.</em> MIT Press. Cambridge, MA.</li>
+    </ul>
+    <p class="footer-line">Desarrollado con ❤️ · Universidad <span>Simón Bolívar Cúcuta</span> · TGS OVA 2025 · <span>Tipos de Sistemas</span></p>
+  </div>
+</section>
+
+<script src="scripts.js"></script>
+</body>
+</html>

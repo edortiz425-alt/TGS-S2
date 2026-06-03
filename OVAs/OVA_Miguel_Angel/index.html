@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="es" class="select-none scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA: Teoría de Colas y Juegos - Universidad Simón Bolívar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/dist/solid.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#08090f',
+                            panel: '#0f111e',
+                            primary: '#39ff14', // Verde neón
+                            secondary: '#00f0ff', // Cian neón
+                            accent: '#9d00ff', // Púrpura neón
+                            alert: '#ff3131', // Rojo neón
+                            warning: '#fffb00', // Amarillo neón
+                            text: '#d1d5db',
+                            card: '#16192b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos personalizados para barras de desplazamiento industriales */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08090f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1a1d30;
+            border-radius: 6px;
+            border: 2px solid #08090f;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #39ff14;
+        }
+
+        /* Capa de líneas de exploración retro futuristas */
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 999;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Brillos de Neón Iluminados */
+        .glow-green { box-shadow: 0 0 20px rgba(57, 255, 20, 0.5); }
+        .glow-cyan { box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); }
+        .glow-purple { box-shadow: 0 0 20px rgba(157, 0, 255, 0.5); }
+        .glow-red { box-shadow: 0 0 20px rgba(255, 49, 49, 0.5); }
+        .glow-yellow { box-shadow: 0 0 20px rgba(255, 251, 0, 0.5); }
+
+        .text-glow-green { text-shadow: 0 0 10px rgba(57, 255, 20, 0.6); }
+        .text-glow-cyan { text-shadow: 0 0 10px rgba(0, 240, 255, 0.6); }
+        .text-glow-purple { text-shadow: 0 0 10px rgba(157, 0, 255, 0.6); }
+
+        /* Transiciones suaves de portales */
+        .portal-transition {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Animación pulsante del halo de atención obligatoria del restaurante */
+        @keyframes target-pulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(255, 251, 0, 0.4); border-color: rgba(255, 251, 0, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(255, 251, 0, 0.9); border-color: #fffb00; transform: scale(1.03); }
+        }
+        .active-target-table {
+            animation: target-pulse 1.8s infinite ease-in-out;
+            background-color: rgba(255, 251, 0, 0.05) !important;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-cyber-bg text-cyber-text min-h-screen overflow-x-hidden font-sans relative flex flex-col">
+
+    <div class="scanlines"></div>
+
+    <canvas id="systems-canvas" class="fixed inset-0 w-full h-full object-cover z-0 opacity-25 pointer-events-none"></canvas>
+
+    <div id="toast-container" class="fixed top-20 right-4 md:right-8 z-[2000] flex flex-col space-y-3 pointer-events-none"></div>
+
+    <div id="custom-alert" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[1000] hidden bg-cyber-panel border-2 border-cyber-secondary p-5 rounded-2xl shadow-2xl max-w-lg w-11/12 portal-transition">
+        <div class="flex items-start space-x-4">
+            <div class="text-cyber-secondary text-3xl" id="alert-icon">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="flex-1">
+                <h4 class="font-extrabold text-white text-lg" id="alert-title">Notificación del Sistema</h4>
+                <p class="text-sm text-gray-300 mt-2 leading-relaxed" id="alert-message"></p>
+            </div>
+        </div>
+        <div class="mt-5 flex justify-end">
+            <button onclick="closeAlert()" class="px-5 py-2 bg-cyber-secondary text-cyber-bg font-extrabold rounded-lg hover:bg-white transition-colors duration-200 text-xs uppercase tracking-wider">ENTENDIDO</button>
+        </div>
+    </div>
+
+    <div class="relative z-10 w-full flex-1 flex flex-col justify-between">
+
+        <header class="bg-cyber-panel border-b border-cyber-card px-4 md:px-8 py-5 flex justify-between items-center shadow-2xl sticky top-0 z-50">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-cyber-accent flex items-center justify-center glow-purple flex-shrink-0">
+                    <i class="fa-solid fa-network-wired text-white text-lg md:text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-black text-white text-lg md:text-xl leading-none uppercase tracking-widest text-glow-purple">TEORÍA DE GENERAL DE SISTEMAS</h1>
+                    <p class="text-[10px] md:text-xs text-cyber-secondary font-semibold tracking-wider mt-1">TEORÍAS DE COLAS Y JUEGOS</p>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="bg-cyber-bg border border-cyber-card px-4 py-2 rounded-xl flex items-center space-x-3">
+                    <span class="w-3 h-3 rounded-full bg-cyber-primary animate-pulse shadow-[0_0_10px_#39ff14]"></span>
+                    <span class="text-xs text-gray-300 font-mono tracking-wide">ALUMNO: <span id="header-user-name" class="text-cyber-primary font-black">Sin Identificar</span></span>
+                </div>
+                <div class="text-xs text-gray-500 font-mono">EN LÍNEA</div>
+            </div>
+        </header>
+
+        <main class="flex-1 w-full px-4 py-8 md:px-10 flex flex-col items-center justify-start relative">
+
+            <section id="section-0" class="w-full max-w-4xl bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden portal-transition my-auto">
+                <div class="absolute top-0 right-0 p-6 opacity-5">
+                    <i class="fa-solid fa-rocket text-9xl"></i>
+                </div>
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-cyber-accent/10 border-2 border-cyber-accent mb-6 animate-pulse-slow glow-purple">
+                        <i class="fa-solid fa-satellite-dish text-cyber-accent text-4xl"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-black text-white uppercase tracking-wider mb-6 text-glow-purple">ENTORNO VIRTUAL DE APRENDIZAJE DE T.G.S</h2>
+                    <p id="narrator-intro" class="text-sm md:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8 text-justify">
+                        "Bienvenido! Sumérgete en este entorno interactivo para dominar la lógica detrás de los sistemas complejos, donde exploraremos el arte de la fluidez mediante la Teoría de Colas y el pensamiento estratégico de la Teoría de Juegos. Aquí, la matemática da paso a la práctica: a través de nuestras simulaciones y juegos interactivos, experimentarás en tiempo real cómo tomar decisiones efectivas y optimizar el comportamiento de cualquier sistema"
+                    </p>
+                    
+                    <div class="max-w-md mx-auto bg-cyber-bg border border-cyber-card p-6 rounded-2xl shadow-inner mb-8">
+                        <label for="user-name-input" class="block text-xs font-black text-cyber-secondary uppercase tracking-widest mb-3">Ingresa tu Nombre para Personalizar la Experiencia</label>
+                        <input type="text" id="user-name-input" class="w-full bg-cyber-panel border border-cyber-card text-white text-center py-3 rounded-xl focus:outline-none focus:border-cyber-primary font-black tracking-widest text-lg transition-colors" placeholder="TÚ NOMBRE">
+                    </div>
+
+                    <button onclick="startOvaMission()" class="px-10 py-4 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 hover:scale-105 transition-all glow-purple uppercase tracking-widest text-sm">
+                        INICIAR APRENDIZAJE <i class="fa-solid fa-circle-play ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <section id="section-1" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-primary tracking-widest uppercase font-bold">SECCIÓN 1</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-green">CONTEXTUALIZACIÓN DE LAS TEORÍAS</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 hover:border-cyber-primary transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-cyber-primary/10 border border-cyber-primary flex items-center justify-center mb-6 glow-green">
+                                <i class="fa-solid fa-users-line text-cyber-primary text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-4">La Teoría de Colas</h3>
+                            <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                                La teoría de colas surge para resolver el choque inevitable entre la demanda de los usuarios y la capacidad limitada de los servicios. Esta disciplina formaliza el flujo de un sistema analizando cómo se comportan las llegadas aleatorias frente al ritmo de atención de los servidores disponibles en un sistema. Su base teórica radica en modelar matemáticamente estas variables para predecir el colapso del sistema y calcular los tiempos de espera promedio antes de que ocurran. Al final, su propósito educativo es enseñar a diseñar un equilibrio óptimo maximizando la experiencia de usuario y dimensionando racionalmente la capacidad de servicio, maximizando así la eficiencia operativa de cualquier sistéma.
+                            </p>
+                        </div>
+                        <div class="border-t border-cyber-card mt-6 pt-4 text-xs font-mono text-cyber-primary font-bold uppercase tracking-widest">Modelado Operativo y de Flujo</div>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 hover:border-cyber-accent transition-all duration-300 flex flex-col justify-between">
+                        <div>
+                            <div class="w-14 h-14 rounded-2xl bg-cyber-accent/10 border border-cyber-accent flex items-center justify-center mb-6 glow-purple">
+                                <i class="fa-solid fa-puzzle-piece text-cyber-accent text-2xl"></i>
+                            </div>
+                            <h3 class="text-2xl font-black text-white mb-4">La Teoría de Juegos</h3>
+                            <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                               La teoría de juegos nace para formalizar la toma de decisiones en entornos estratégicos donde el resultado de una entidad depende directamente de las acciones que elijan sus competidores. Esta disciplina analiza escenarios de conflicto o cooperación entre entidades que actúan bajo reglas y recursos limitados. Su sólida base matemática busca anticipar los movimientos del rival y predecir el comportamiento colectivo mediante la identificación de puntos de equilibrio estables, donde nadie tiene incentivos para cambiar de estrategia de forma unilateral. El enfoque educativo de esta teoría radica en enseñar a pensar de forma interdependiente, demostrando que en el mundo real el éxito no se logra de manera aislada, sino descifrando las jugadas de todo el entorno.
+                            </p>
+                        </div>
+                        <div class="border-t border-cyber-card mt-6 pt-4 text-xs font-mono text-cyber-accent font-bold uppercase tracking-widest">Toma de Decisiones de Interdependencia</div>
+                    </div>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 mb-8">
+                    <h3 class="text-xl font-black text-white mb-4 flex items-center text-glow-cyan">
+                        <i class="fa-solid fa-circle-question text-cyber-secondary mr-3"></i> ¿CUÁL ES SU IMPORTANCIA?
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm md:text-base text-gray-300 leading-relaxed">
+                        <p class="text-justify border-l-4 border-cyber-secondary pl-6">
+                            la teoría de colas es la arquitectura matemática que sostiene el funcionamiento del mundo moderno al sincronizar los recursos limitados del planeta con la demanda masiva de la humanidad. Su gran aporte es haber convertido el tiempo de espera en una variable científica controlable, evitando el colapso de infraestructuras críticas globales ante el caos del flujo aleatorio y variables inprevistas en los procesos.
+                        </p>
+                        <p class="text-justify border-l-4 border-cyber-secondary pl-6">
+                            La teoría de juegos es la brújula matemática que transforma conflictos globales en cooperación sostenible mediante el entendimiento de incentivos mutuos. Al estructurar la toma de decisiones complejas, evita crisis mundiales y sostiene científicamente la diplomacia internacional, la estabilidad de los mercados financieros, promoviendo la competencia constructiva para evitar el colapso sistémico.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="goToSlide(2)" class="px-8 py-3 bg-cyber-secondary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs">Siguiente Sección <i class="fa-solid fa-chevron-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-2" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-secondary tracking-widest uppercase font-bold">SECCIÓN 2</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-cyan">EXPLICACIÓN CONCEPTUAL Y TEORICA</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 relative flex flex-col justify-between border-t-4 border-t-cyber-secondary">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <h3 class="text-2xl font-black text-white">Origen de Teoría de Colas</h3>
+                                <button onclick="showRef('colas')" class="w-10 h-10 rounded-full bg-cyber-bg border border-cyber-card flex items-center justify-center hover:border-cyber-primary transition-colors hover:scale-105 flex-shrink-0">
+                                    <i class="fa-solid fa-graduation-cap text-cyber-primary text-sm"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                               La Teoría de Colas es una rama de las matemáticas que estudia de forma científica cómo se forman y gestionan las líneas de espera. Su estructura conceptual se basa en analizar matemáticamente el ritmo con el que llegan los clientes frente a la velocidad y capacidad que tienen los servidores para atenderlos, utilizando modelos de probabilidad para predecir el comportamiento del sistema. El objetivo teórico de este análisis es encontrar un equilibrio matemático perfecto: optimizar los recursos del sistema, mientras se minimiza el tiempo muerto, Veamos: <br>
+x - y = z<br>
+Donde:<br>
+x = Tasa de entrada (Volumen total de ingresos)<br>
+y = Tasa de salida (Volumen total de atendidos<br>
+z = Tamaño neto de la fila<br>
+"La diferencia entre la demanda y la capacidad de procesamiento determinan el residuo del sistema."
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 relative flex flex-col justify-between border-t-4 border-t-cyber-accent">
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <h3 class="text-2xl font-black text-white">Origen de Teoría de Juegos</h3>
+                                <button onclick="showRef('juegos')" class="w-10 h-10 rounded-full bg-cyber-bg border border-cyber-card flex items-center justify-center hover:border-cyber-accent transition-colors hover:scale-105 flex-shrink-0">
+                                    <i class="fa-solid fa-graduation-cap text-cyber-accent text-sm"></i>
+                                </button>
+                            </div>
+                            <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                              La teoría de juegos es una disciplina matemática y económica que analiza la toma de decisiones estratégicas, un entorno donde el resultado de una entidad depende directamente de las elecciones que hagan las demás. Esta herramienta estudia interacciones entre sistemas abiertos e interdependientes que compiten o colaboran bajo reglas preestablecidas con el fin de predecir las jugadas de los oponentes y obtener la mayor ganancia posible. Veamos:<br>
+x + y = 0<br>
+Donde:<br>
+x = Ganancia<br>
+y = Perdida<br>
+0 = Lo que uno gana, otro lo pierde
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="academic-modal" class="hidden bg-cyber-card border-2 border-cyber-secondary p-6 rounded-2xl shadow-2xl max-w-xl mx-auto mb-8 animate-pulse-slow">
+                    <div class="flex justify-between items-center border-b border-cyber-panel pb-3 mb-4">
+                        <h4 class="font-black text-cyber-secondary text-sm font-mono uppercase tracking-wider">Referencia Académica</h4>
+                        <button onclick="closeAcademicModal()" class="text-cyber-alert hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p id="academic-modal-body" class="text-xs md:text-sm text-gray-200 leading-relaxed font-mono bg-cyber-bg p-4 rounded-xl border border-cyber-panel text-justify"></p>
+                </div>
+
+                <div class="flex justify-between">
+                    <button onclick="goToSlide(1)" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                    <button onclick="goToSlide(3)" class="px-8 py-3 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs">Siguiente Sección <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-3" class="w-full max-w-5xl hidden portal-transition">
+                <div id="slide-4a" class="block">
+                    <div class="mb-8">
+                        <span class="text-xs font-mono text-cyber-primary tracking-widest uppercase font-bold">SECCIÓN 3</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white text-glow-green">CASO 1: SIMULADOR DE COLAS Y OPTIMIZACIÓN DE FLUJOS</h2>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 mb-8 text-sm md:text-base leading-relaxed text-justify text-gray-300">
+                        <p>
+                            En este ejemplo práctico aplicado a un caso real, imagina que entras a la sucursal de un banco en plena temporada de pagos de prima de servicios. Los clientes que llegan representan la Entrada del sistema, las personas esperando son la Fila (Cola) y el cajero automático o humano es el Servidor. Si la fila es demasiado larga, los clientes se van molestos a otro banco; pero si pones demasiados cajeros (Servidores), el banco debe invertir mas recursos economicos. Los ingenieros aplican la Teoría de Colas de forma transversal en las finanzas para calcular el equilibrio exacto entre el tiempo de espera del cliente y el costo operativo del banco.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                        <div class="lg:col-span-2 bg-cyber-bg border border-cyber-card rounded-3xl p-6 md:p-8 flex flex-col justify-between overflow-hidden">
+                            <div>
+                                <h3 class="text-white font-black text-lg mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                    <span>Vista Operativa de la Sucursal</span>
+                                    <span id="cajero-count" class="text-xs font-mono text-cyber-primary bg-cyber-primary/10 border border-cyber-primary px-3 py-1.5 rounded font-bold w-max">0 CAJEROS ACTIVOS</span>
+                                </h3>
+                                
+                                <div class="bg-cyber-panel border border-cyber-card rounded-2xl p-6 min-h-[180px] flex items-center justify-start space-x-6 overflow-x-auto w-full">
+                                    <div class="flex-shrink-0 text-center" id="atm-server-icon">
+                                        <div class="w-20 h-24 rounded-2xl bg-gradient-to-b from-gray-800 to-gray-900 border-2 border-gray-600 flex items-center justify-center opacity-50">
+                                            <i class="fa-solid fa-power-off text-4xl text-gray-500"></i>
+                                        </div>
+                                        <span class="text-[10px] font-mono text-gray-500 block mt-2 font-black uppercase tracking-wider">Apagado</span>
+                                    </div>
+
+                                    <div id="atm-line-container" class="flex items-center space-x-4 min-w-max">
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8">
+                                <div class="flex justify-between text-xs font-mono text-gray-400 mb-2">
+                                    <span class="font-bold uppercase tracking-wider">Satisfacción General del Cliente</span>
+                                    <span id="satisfaction-value" class="text-gray-500 font-black text-sm">0%</span>
+                                </div>
+                                <div class="w-full bg-cyber-panel h-5 rounded-full overflow-hidden border border-cyber-card p-1">
+                                    <div id="satisfaction-fill" class="h-full bg-gray-600 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-white font-black text-lg mb-6">Métricas en Tiempo Real</h3>
+                                <div class="space-y-4 mb-6 text-sm">
+                                    <div>
+                                        <label class="block text-xs text-gray-400 mb-1 font-mono uppercase tracking-wider">Tasa de Llegada:</label>
+                                        <div class="font-bold text-white bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs">Clientes / Por Hora</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-400 mb-1 font-mono uppercase tracking-wider">Capacidad de Atención:</label>
+                                        <div class="font-bold text-white bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs">Clientes / Por Hora</div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-400 mb-1 font-mono uppercase tracking-wider">Tiempo de Espera Promedio:</label>
+                                        <div id="atm-wq-val" class="font-bold text-gray-500 bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs">INACTIVO</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button onclick="changeAtmServers(1)" class="w-full py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest glow-green">
+                                    + Habilitar Servidor
+                                </button>
+                                <button onclick="changeAtmServers(-1)" class="w-full py-3 bg-cyber-alert text-white font-black rounded-xl hover:bg-opacity-90 transition-all text-xs uppercase tracking-widest glow-red">
+                                    - Desactivar Servidor
+                                </button>
+                                <button onclick="resetAtmSim()" class="w-full py-2 bg-cyber-card text-gray-400 font-bold rounded-xl hover:bg-opacity-95 transition-all text-[10px] uppercase tracking-widest border border-cyber-card">
+                                    Reiniciar Simulación
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="atm-feedback" class="bg-cyber-card border-l-4 border-gray-500 p-5 rounded-r-2xl text-sm md:text-base mb-8 text-gray-300 leading-relaxed text-justify">
+                        Habilita servidores para iniciar la simulación y observar el comportamiento del flujo.
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between gap-4">
+                        <button onclick="goToSlide(2)" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                        <button onclick="loadSlide4B()" class="px-8 py-3 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs w-full sm:w-auto">Siguiente simulación (&rarr;)</button>
+                    </div>
+                </div>
+
+                <div id="slide-4b" class="hidden">
+                    <div class="mb-8">
+                        <span class="text-xs font-mono text-cyber-accent tracking-widest uppercase font-bold">SECCIÓN 4</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white text-glow-purple">CASO 2: SIMULADOR DEL DILEMA VÍAL</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-between border-l-4 border-cyber-secondary">
+                            <div>
+                                <h3 class="text-2xl font-black text-cyber-secondary mb-4"><i class="fa-solid fa-car"></i> VEHÍCULO PROPIO</h3>
+                                <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                                    Confort total: aire, música y autonomía exclusiva garantizan un viaje placentero. Sin embargo, esta elección individual incrementa la congestión y el gasto, priorizando tu bienestar sobre la fluidez del sistema. Al optar por esta comodidad absoluta, ignoras el impacto colectivo, sacrificando la eficiencia estratégica de todos los conductores en la vía.
+                                </p>
+                            </div>
+                            <div class="mt-6 border-t border-cyber-card pt-4 text-xs text-cyber-secondary font-mono uppercase tracking-wider font-bold">OPCIÓN 1 | Estrategia Egoísta</div>
+                        </div>
+
+                        <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 relative overflow-hidden flex flex-col justify-between border-l-4 border-cyber-warning">
+                            <div>
+                                <h3 class="text-2xl font-black text-cyber-warning mb-4"><i class="fa-solid fa-bus"></i> AUTOBÚS PÚBLICO</h3>
+                                <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify">
+                                    Viaje colectivo que reduce vehículos y maximiza la fluidez urbana. Aunque sacrificas confort y autonomía personal, esta opción disminuye la congestión y emisiones. Al elegirlo, priorizas la eficiencia global del sistema sobre tu comodidad individual.
+                                </p>
+                            </div>
+                            <div class="mt-6 border-t border-cyber-card pt-4 text-xs text-cyber-warning font-mono uppercase tracking-wider font-bold">OPCIÓN 2 | Estrategia Cooperativa</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyber-card border border-cyber-panel p-6 md:p-8 rounded-3xl mb-8">
+                        <p class="text-sm md:text-lg text-white font-semibold mb-4 leading-relaxed text-justify">
+                          ¡Bienvenido al simulador de decisiones cotidianas! En este caso práctico veremos cómo salir de casa inicia una partida estratégica contra la ciudad. Exploraremos cómo tus decisiones individuales interactúan con las de otros conductores, determinando si el camino será fluido o caótico mediante los principios de la Teoría de Juegos. Estos tres elementos fundamentales conformarán nuestra matriz de pagos, donde cruzaremos las decisiones para calcular el balance entre costos, beneficios y la eficiencia vial.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs leading-relaxed">
+                            <div class="bg-cyber-panel p-4 rounded-xl"><span class="font-black text-cyber-primary block mb-2 uppercase tracking-wide">1. Los Jugadores:</span> Tú (Jugador 1) y La Máquina / Resto de Ciudad (Jugador 2).</div>
+                            <div class="bg-cyber-panel p-4 rounded-xl"><span class="font-black text-cyber-primary block mb-2 uppercase tracking-wide">2. Las Estrategias:</span> Las opciones disponibles: ir en [Carro Propio] o ir en [Autobús].</div>
+                            <div class="bg-cyber-panel p-4 rounded-xl"><span class="font-black text-cyber-primary block mb-2 uppercase tracking-wide">3. Las Ganancias:</span> Puntos que ganas según la comodidad y velocidad de tu viaje. ¡A mayor puntaje, mejor!</div>
+                        </div>
+                    </div>
+
+                    <div id="game-panel-trancon" class="bg-cyber-bg border border-cyber-card rounded-3xl p-6 md:p-8 mb-8 relative">
+                        <h3 class="text-white font-black text-xl mb-3 text-glow-cyan">MATRIZ DE DECISIONES: ANÁLISIS DE RESULTADOS</h3>
+                       <p class="text-sm text-gray-400 mb-6 w-full text-justify">
+                           "Analiza detenidamente la matriz de pagos a continuación. Tu objetivo es maximizar tus puntos para alcanzar tu destino de manera óptima. Al elegir tu estrategia, te enfrentarás a un oponente que actúa bajo una racionalidad perfecta, aunque sus decisiones finales permanecen bajo la incertidumbre del azar. Observa cómo tus resultados y la retroalimentación del sistema varían según tu selección y la respuesta estratégica de la máquina, reflejando el balance real entre tus costos y beneficios en un entorno de competencia dinámica."
+                        </p>
+
+                        <div class="overflow-x-auto mb-8">
+                            <table class="w-full text-center border-collapse text-xs md:text-sm font-mono min-w-[500px]">
+                                <thead>
+                                    <tr>
+                                        <th class="p-4 border border-cyber-card bg-cyber-panel text-white">TÚ \ Jugador 2 (Ciudadanos)</th>
+                                        <th class="p-4 border border-cyber-card bg-cyber-panel text-cyber-primary uppercase tracking-widest">Autobús (Coopera)</th>
+                                        <th class="p-4 border border-cyber-card bg-cyber-panel text-cyber-accent uppercase tracking-widest">Carro Propio (Egoísmo)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-4 border border-cyber-card bg-cyber-panel font-bold text-cyber-primary uppercase tracking-widest">Autobús (Coopera)</td>
+                                        <td id="m-cell-bb" class="p-5 border border-cyber-card bg-cyber-card transition-colors">Tus Puntos: 6<br>Jugador 2: 6</td>
+                                        <td id="m-cell-bc" class="p-5 border border-cyber-card bg-cyber-card transition-colors">Tus Puntos: 2<br>Jugador 2: 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-4 border border-cyber-card bg-cyber-panel font-bold text-cyber-accent uppercase tracking-widest">Carro propio (Egoísmo)</td>
+                                        <td id="m-cell-cb" class="p-5 border border-cyber-card bg-cyber-card transition-colors">Tus Puntos: 8<br>Jugador 2: 2</td>
+                                        <td id="m-cell-cc" class="p-5 border border-cyber-card bg-cyber-card transition-colors">Tus Puntos: 4<br>Jugador 2: 4</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="trancon-choice-btns" class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                            <button onclick="playTrancon('car')" class="w-full sm:w-auto px-8 py-4 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs glow-purple">
+                                [IR EN CARRO PROPIO]
+                            </button>
+                            <button onclick="playTrancon('bus')" class="w-full sm:w-auto px-8 py-4 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs glow-green">
+                                [IR EN AUTOBÚS]
+                            </button>
+                        </div>
+
+                        <div id="trancon-outcome" class="hidden mt-8 border-t border-cyber-card pt-8">
+                            <div id="trancon-dynamic-result"></div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs leading-relaxed text-justify mb-8 mt-8">
+                                <div class="bg-cyber-card border border-cyber-panel p-5 rounded-2xl">
+                                    <h5 class="font-extrabold text-white mb-3 text-cyber-secondary uppercase">1. Estrategia Dominante</h5>
+                                    <p class="text-gray-400">Si miras la tabla, para ti el Carro siempre parece la mejor opción individual. Si los demás van en bus, en carro ganas más (8 > 6). Si los demás van en carro, en carro viajas más cómodo que en bus (4 > 2). Tu mente te obliga a elegir el carro.</p>
+                                </div>
+                                <div class="bg-cyber-card border border-cyber-panel p-5 rounded-2xl">
+                                    <h5 class="font-extrabold text-white mb-3 text-cyber-warning uppercase">2. Equilibrio de Nash</h5>
+                                    <p class="text-gray-400">El caso donde todos eligen viajar en carro propio, es un imán del que nadie puede escapar solo. Aquí el resultado es el mismo para ambos, pierden tiempo, pero ganan comodidad es un 50/50.</p>
+                                </div>
+                                <div class="bg-cyber-card border border-cyber-panel p-5 rounded-2xl">
+                                    <h5 class="font-extrabold text-white mb-3 text-cyber-primary uppercase">3. Óptimo de Pareto</h5>
+                                    <p class="text-gray-400">El caso donde todos eligen ir en Autobús les otorga 6 puntos. Habría menos vehículos en la calle y el tráfico fluiría rápido, Este es el mejor escenario posible en general ya que el factor tiempo  es lo que se busca optimizar mas allá del confort absoluto </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row justify-between gap-4">
+                        <button onclick="backToSlide4A()" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Volver a Colas</button>
+                        <button onclick="goToSlide(4)" class="px-8 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs w-full sm:w-auto">SIGUIENTE SECCIÓN <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-4" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-secondary tracking-widest uppercase font-bold">SECCIÓN 5</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-cyan">PLANTEAMIENTO DE EJERCICIOS Y RETROALIMENTACIÓN</h2>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 mb-8 shadow-2xl">
+                    <h3 class="text-2xl font-black text-cyber-primary mb-3 flex items-center text-glow-green">
+                        <i class="fa-solid fa-anchor mr-3"></i> Ejercicio 1: Operando el Puerto
+                    </h3>
+                    <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify mb-6">
+                        <strong>Tu rol:</strong> Como ingeniero del puerto, eres responsable de mitigar el bloqueo en la autopista externa causado por la congestión de camiones. Tu objetivo es ajustar la tasa de llegada (mínimo 9 camiones/hora) y la tasa de servicio (máximo 20 camiones/hora) para mantener el tiempo promedio de espera en fila por debajo de 10 minutos y evitar sanciones legales. Ingresa tus valores dentro de estos rangos permitidos y ejecuta el simulador matemático para visualizar en la pantalla de diagnóstico la eficiencia operativa y prevenir posibles infracciones.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                        <div class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl">
+                            <h4 class="text-xs font-black font-mono text-cyber-secondary uppercase tracking-widest mb-4">Computadora de Control</h4>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-2 font-mono uppercase tracking-wider">Tasa Llegada (Min: 9):</label>
+                                    <input type="number" id="port-lambda" min="9" class="w-full bg-cyber-panel border border-cyber-card text-white py-2 px-4 rounded-xl focus:outline-none focus:border-cyber-primary font-mono text-sm" value="12">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-400 mb-2 font-mono uppercase tracking-wider">Tasa Servicio (Max: 20):</label>
+                                    <input type="number" id="port-mu" max="20" class="w-full bg-cyber-panel border border-cyber-card text-white py-2 px-4 rounded-xl focus:outline-none focus:border-cyber-primary font-mono text-sm" value="15">
+                                </div>
+                            </div>
+                            <div class="mt-6 flex space-x-3">
+                                <button onclick="simulatePort()" class="flex-1 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest glow-green">
+                                    Simular
+                                </button>
+                                <button onclick="resetPort()" class="px-5 py-3 bg-cyber-card text-gray-400 font-bold rounded-xl hover:bg-opacity-80 transition-all text-xs">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <h4 class="text-xs font-black font-mono text-cyber-primary uppercase tracking-widest mb-4">Pantalla de Diagnóstico</h4>
+                                <div class="space-y-4">
+                                    <div class="flex justify-between items-center bg-cyber-panel border border-cyber-card p-4 rounded-xl font-mono text-xs">
+                                        <span class="text-gray-400">Porcentaje de uso de la Báscula:</span>
+                                        <span id="port-rho-val" class="font-black text-white">80.0%</span>
+                                    </div>
+                                    <div class="flex justify-between items-center bg-cyber-panel border border-cyber-card p-4 rounded-xl font-mono text-xs">
+                                        <span class="text-gray-400">Tiempo de espera en la fila:</span>
+                                        <span id="port-wq-val" class="font-black text-cyber-primary text-sm md:text-base">16.0 min</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="port-status-badge" class="mt-4 p-4 rounded-xl text-center font-black font-mono text-xs uppercase border">
+                                ESTADO DEL PUERTO: --
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="port-feedback" class="bg-cyber-card border-l-4 border-cyber-secondary p-5 rounded-r-2xl text-sm md:text-base mb-6 text-gray-300 text-justify">
+                        Ingresa los valores permitidos y ejecuta el simulador para evaluar el rendimiento operativo y detectar posibles alertas de infracción.
+                    </div>
+
+                    <div id="port-quiz-box" class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl">
+                        <h4 class="font-black text-white text-base mb-3">Pregunta de Afianzar Principios:</h4>
+                        <p class="text-sm text-gray-400 mb-4 text-justify">Después de probar diferentes combinaciones en tu simulación, ¿cuál es el principio fundamental de la Teoría de Colas que pudiste comprobar empíricamente?</p>
+                        <div class="space-y-3 text-xs md:text-sm">
+                            <label class="flex items-start space-x-4 p-4 bg-cyber-panel border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-primary transition-colors">
+                                <input type="radio" name="port-afianz" value="A" class="form-radio text-cyber-primary mt-1">
+                                <span class="text-gray-300">A) Para que la fila desaparezca, basta con que la Tasa de Servicio sea exactamente igual a la Tasa de Llegada.</span>
+                            </label>
+                            <label class="flex items-start space-x-4 p-4 bg-cyber-panel border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-primary transition-colors">
+                                <input type="radio" name="port-afianz" value="B" class="form-radio text-cyber-primary mt-1">
+                                <span class="text-gray-300">B) La variabilidad aleatoria exige que la Tasa de Servicio sea significativamente mayor que la de Llegada para que no colapse.</span>
+                            </label>
+                            <label class="flex items-start space-x-4 p-4 bg-cyber-panel border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-primary transition-colors">
+                                <input type="radio" name="port-afianz" value="C" class="form-radio text-cyber-primary mt-1">
+                                <span class="text-gray-300">C) El tiempo de espera en la fila solo depende del operador de la báscula y no de la llegada de camiones.</span>
+                            </label>
+                        </div>
+                        <div class="mt-5 flex justify-end">
+                            <button onclick="checkPortQuiz()" class="px-6 py-3 bg-cyber-secondary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest">
+                                Verificar Principio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prisoner-container" class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 mb-8 relative overflow-hidden transition-all duration-300 shadow-2xl">
+                    <h3 class="text-2xl font-black text-cyber-accent mb-4 flex items-center text-glow-purple">
+                        <i class="fa-solid fa-handcuffs mr-3"></i> Ejercicio 2: El Dilema del Prisionero
+                    </h3>
+                    <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify mb-6">
+                       Contexto: Tú y tu cómplice cibernético han sido capturados por las autoridades. Están en salas de interrogatorio separadas, sin poder comunicarse. El fiscal te ofrece un trato. Puedes <strong>Guardar Silencio (Cooperar con tu cómplice)</strong> o <strong>Confesar (Traicionar a tu cómplice)</strong>. Configura la mente de tu cómplice y experimenta las variables de este clásico de la Teoría de Juegos.
+                    </p>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
+                        <div class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl flex flex-col justify-between">
+                            <div class="mb-6">
+                                <label class="block text-xs font-black font-mono text-cyber-secondary uppercase tracking-widest mb-3">1. Selecciona el Perfil de tu Cómplice:</label>
+                                <select id="prisoner-ai-profile" class="w-full bg-cyber-panel border border-cyber-card text-gray-300 py-3 px-4 rounded-xl focus:outline-none focus:border-cyber-primary font-mono text-xs md:text-sm transition-colors">
+                                    <option value="random">Cómplice Aleatorio (Deja que el azar decida)</option>
+                                    <option value="loyal">Cómplice Leal (Siempre guarda silencio)</option>
+                                    <option value="traitor">Cómplice Traicionero (Siempre te confiesa)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-black font-mono text-cyber-primary uppercase tracking-widest mb-3">2. Toma tu Decisión Estratégica:</label>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <button onclick="playPrisoner('silence')" class="flex-1 py-4 bg-gradient-to-r from-cyan-600 to-cyan-900 border-2 border-cyber-secondary text-white font-black rounded-xl hover:scale-105 transition-all text-[10px] md:text-xs uppercase tracking-widest shadow-lg glow-cyan">
+                                        <i class="fa-solid fa-user-secret mr-2"></i> GUARDAR SILENCIO<br>(Cooperar)
+                                    </button>
+                                    <button onclick="playPrisoner('confess')" class="flex-1 py-4 bg-gradient-to-r from-red-600 to-red-900 border-2 border-cyber-alert text-white font-black rounded-xl hover:scale-105 transition-all text-[10px] md:text-xs uppercase tracking-widest shadow-lg glow-red">
+                                        <i class="fa-solid fa-bullhorn mr-2"></i> CONFESAR<br>(Traicionar)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-bg border border-cyber-card p-4 rounded-2xl overflow-x-auto flex flex-col justify-center">
+                            <h4 class="text-[10px] md:text-xs font-mono text-cyber-accent uppercase font-bold mb-4 text-center tracking-widest">Años de Cárcel (Tú \ Cómplice)</h4>
+                            <table class="w-full text-center border-collapse text-[10px] md:text-xs font-mono min-w-[280px]">
+                                <thead>
+                                    <tr class="bg-cyber-panel">
+                                        <th class="p-3 border border-cyber-card text-white">Tú \ Cómplice</th>
+                                        <th class="p-3 border border-cyber-card text-cyber-secondary">Guarda Silencio</th>
+                                        <th class="p-3 border border-cyber-card text-cyber-alert">Confiesa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-3 border border-cyber-card font-bold bg-cyber-panel text-cyber-secondary">Guardas Silencio</td>
+                                        <td id="cell-pd-ss" class="p-3 border border-cyber-card transition-colors">(-1 año, -1 año)<br><span class="text-[8px] text-gray-500 block mt-1">Óptimo de Pareto</span></td>
+                                        <td id="cell-pd-sc" class="p-3 border border-cyber-card transition-colors">(-10 años, 0 años)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 border border-cyber-card font-bold bg-cyber-panel text-cyber-alert">Confiesas</td>
+                                        <td id="cell-pd-cs" class="p-3 border border-cyber-card transition-colors">(0 años, -10 años)</td>
+                                        <td id="cell-pd-cc" class="p-3 border border-cyber-card transition-colors">(-5 años, -5 años)<br><span class="text-[8px] text-gray-500 block mt-1">Equilibrio Nash</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="prisoner-outcome" class="hidden border-t border-cyber-card pt-6">
+                        <div class="p-6 bg-cyber-bg border border-cyber-accent rounded-2xl text-justify text-sm md:text-base text-gray-200 mb-6 leading-relaxed flex flex-col md:flex-row items-center gap-6 shadow-inner">
+                            <div id="prisoner-icon-result" class="text-5xl md:text-6xl text-cyber-accent animate-pulse flex-shrink-0"></div>
+                            <div class="flex-1 w-full">
+                                <h4 class="font-black text-white text-lg uppercase mb-2" id="prisoner-title-result">Veredicto</h4>
+                                <p id="prisoner-text-result" class="text-sm md:text-base"></p>
+                            </div>
+                        </div>
+                        <div class="flex justify-center">
+                            <button onclick="resetPrisoner()" class="px-8 py-3 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all text-xs uppercase tracking-widest shadow-md">
+                                Reiniciar Interrogatorio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between gap-4">
+                    <button onclick="goToSlide(3)" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                    <button onclick="goToSlide(5)" class="px-8 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs w-full sm:w-auto">Siguiente Sección <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-5" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-primary tracking-widest uppercase font-bold">SECCIÓN 6</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-green">!APRENDE MIENTRAS JUEGAS¡</h2>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 mb-8">
+                    <h3 class="text-2xl font-black text-cyber-primary mb-3 flex items-center text-glow-green">
+                        <i class="fa-solid fa-utensils mr-3"></i> BURGUER EXPRESS: GESTIÓN DE PEDIDOS
+                    </h3>
+                    <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify mb-6">
+                        "Como mesero en un restaurante con capacidad para 7 mesas, tu objetivo es gestionar eficientemente una fila de espera estocástica para servir la mayor cantidad de pedidos en 60 segundos, aprovechando que las hamburguesas se preparan automáticamente en el mostrador cada 3 segundos. RESTRICCIÓN CRÍTICA: el sistema solo te permitirá atender mesas respetando estrictamente la disciplina de servicio seleccionada (FIFO, LIFO o Prioridad); por lo tanto, debes identificar rápidamente al cliente válido según su tiempo de paciencia y recompensa:<br>
+Rojo (10segundos, 10 XP)<br>
+Amarillo (15segundos, 20 XP)<br>
+Verde (20segundos, 10 XP)<br>
+y hacer clic sobre su mesa iluminada, considerando que cualquier intento de atención fuera del orden establecido será rechazado por el sistema."
+                    </p>
+
+                    <div id="rest-mode-selector" class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl mb-6">
+                        <label class="block text-xs font-bold text-cyber-secondary uppercase tracking-widest mb-4 text-center">Selecciona la Disciplina de Cola y la Jornada iniciará</label>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button onclick="setRestMode('FIFO')" id="btn-rest-fifo" class="py-3 bg-cyber-panel border border-cyber-card rounded-xl text-xs font-black text-white hover:border-cyber-primary transition-all uppercase tracking-wider">FIFO (Primero en llegar)</button>
+                            <button onclick="setRestMode('LIFO')" id="btn-rest-lifo" class="py-3 bg-cyber-panel border border-cyber-card rounded-xl text-xs font-black text-white hover:border-cyber-primary transition-all uppercase tracking-wider">LIFO (Último en llegar)</button>
+                            <button onclick="setRestMode('PRIO')" id="btn-rest-prio" class="py-3 bg-cyber-panel border border-cyber-card rounded-xl text-xs font-black text-white hover:border-cyber-primary transition-all uppercase tracking-wider">PRIORIDAD (Color Crítico)</button>
+                        </div>
+                    </div>
+
+                    <div id="restaurant-game-area" class="hidden">
+                        <div class="bg-amber-950/40 border border-cyber-warning p-4 rounded-xl mb-6 flex items-start space-x-3 text-xs md:text-sm">
+                            <div class="w-8 h-8 rounded-full bg-cyber-warning/10 flex items-center justify-center text-cyber-warning flex-shrink-0 animate-pulse mt-1">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                            </div>
+                            <div class="text-gray-300 leading-relaxed">
+                                <strong>DISCIPLINA ACTIVA: <span id="rest-active-mode-label" class="text-cyber-warning font-black">--</span></strong><br>
+                                El sistema resalta con un <span class="text-cyber-warning font-bold">halo dorado y estrella (⭐)</span> la única mesa que puedes atender legalmente en este instante. Si te equivocas de orden o no tienes comida en bandeja, verás notificaciones de advertencia arriba a la derecha.
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+                            <div class="bg-cyber-bg border border-cyber-card p-6 rounded-2xl text-center flex flex-col justify-between">
+                                <div>
+                                    <h4 class="text-xs font-mono text-cyber-secondary uppercase font-bold mb-3 tracking-wider">Mostrador</h4>
+                                    <div id="kitchen-conveyor" class="w-full h-16 bg-cyber-panel border border-cyber-card rounded-2xl flex items-center justify-center text-4xl cursor-pointer hover:scale-105 transition-transform shadow-inner select-none" onclick="pickBurgerFromKitchen()">
+                                        🍔
+                                    </div>
+                                    <span class="text-[10px] text-gray-500 block mt-3 leading-tight uppercase font-mono">Haz clic para recoger</span>
+                                </div>
+                                <div class="mt-4 bg-cyber-panel border border-cyber-card p-3 rounded-xl">
+                                    <div class="text-[10px] text-gray-400 uppercase font-mono">En Bandeja:</div>
+                                    <div id="rest-held-burgers" class="text-2xl font-black text-cyber-primary">0</div>
+                                </div>
+                            </div>
+
+                            <div class="lg:col-span-3 bg-cyber-bg border border-cyber-card p-4 md:p-6 rounded-2xl">
+                                <div class="flex flex-col md:flex-row justify-between md:items-center mb-4 gap-3">
+                                    <h4 class="text-[10px] md:text-xs font-mono text-cyber-primary uppercase font-bold tracking-wider">Mesas Activas (Max: 7)</h4>
+                                    <div class="flex space-x-4 text-[10px] md:text-xs font-mono font-bold">
+                                        <span class="text-gray-400">PUNTOS: <strong id="rest-xp-score" class="text-cyber-primary">0 XP</strong></span>
+                                        <span class="text-gray-400">TIEMPO: <strong id="rest-clock-val" class="text-cyber-alert">60s</strong></span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3" id="restaurant-tables-grid">
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-card border border-cyber-panel p-4 rounded-xl mb-6 flex flex-col md:flex-row justify-between items-center text-xs gap-3">
+                            <div>
+                                <span class="text-gray-400 mr-2 block text-center md:inline">Siguiente en Fila:</span>
+                                <span id="rest-next-client-badge" class="px-3 py-1 rounded font-bold font-mono uppercase tracking-wider block mx-auto w-max md:inline">NINGUNO</span>
+                            </div>
+                            <div class="text-[10px] text-gray-500 font-mono text-center">Tiempos: 🟥 (10s|30XP) | 🟨 (15s|20XP) | 🟩 (20s|10XP)</div>
+                        </div>
+                    </div>
+
+                    <div id="rest-end-screen" class="hidden bg-cyber-bg border-2 border-cyber-warning p-6 md:p-8 rounded-2xl text-center mb-6">
+                        <h4 class="text-cyber-warning font-black text-xl mb-3 uppercase">Fin de la Jornada</h4>
+                        <p id="rest-end-feedback" class="text-sm text-gray-300 max-w-xl mx-auto mb-6 leading-relaxed text-justify"></p>
+                        <div class="flex justify-center">
+                            <button onclick="restartRestaurant()" class="px-6 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest glow-green">Probar otra Disciplina</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8">
+                    <h3 class="text-2xl font-black text-cyber-accent mb-3 flex items-center text-glow-purple">
+                        <i class="fa-solid fa-hand-back-fist mr-3"></i> Piedra, Papel, Dilema: El Reto de Nash
+                    </h3>
+                    <p class="text-sm md:text-base text-gray-300 leading-relaxed text-justify mb-6">
+                        Juego de 'Suma Cero' contra un algoritmo de racionalidad Perfecta. Selecciona tu carta secreta y prepárate para la revelación TÚ VS LA MAQUINA. Son 3 rondas en total. Visualiza en la matriz de pagos los resultados por ronda y finalmente obten una retroalimentación de la partida
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                        <div class="bg-cyber-bg border border-cyber-card p-4 md:p-6 rounded-2xl flex flex-col justify-between">
+                            <h4 class="text-xs font-mono text-cyber-secondary uppercase font-bold mb-4 text-center tracking-widest">Pantalla de Decisiones</h4>
+                            
+                            <div class="bg-cyber-panel border border-cyber-card rounded-xl p-4 mb-5 flex items-center justify-between shadow-inner relative h-28 w-full overflow-hidden">
+                                <div class="w-1/3 flex flex-col items-center relative z-20">
+                                    <span class="text-[10px] md:text-xs text-cyber-primary font-mono uppercase font-black mb-2 tracking-widest">TÚ</span>
+                                    <div id="rps-user-arena" class="text-4xl md:text-5xl transition-all duration-300 transform scale-100">👤</div>
+                                </div>
+                                <div class="w-1/3 flex flex-col justify-center items-center relative z-20">
+                                    <span class="text-2xl font-black text-cyber-alert italic text-glow-red animate-pulse">VS</span>
+                                    <span id="rps-arena-result" class="text-[10px] md:text-xs font-mono font-bold mt-2 text-center text-gray-400 opacity-0 transition-opacity duration-300"></span>
+                                </div>
+                                <div class="w-1/3 flex flex-col items-center relative z-20">
+                                    <span class="text-[10px] md:text-xs text-cyber-secondary font-mono uppercase font-black mb-2 tracking-widest">MAQUINA</span>
+                                    <div id="rps-ai-arena" class="text-4xl md:text-5xl transition-all duration-300 transform scale-100">🤖</div>
+                                </div>
+                                
+                                <div id="rps-loading-overlay" class="hidden absolute inset-0 bg-cyber-panel/95 backdrop-blur-md flex flex-col items-center justify-center z-30 transition-all duration-300">
+                                    <i class="fa-solid fa-satellite-dish text-cyber-secondary animate-pulse text-3xl mb-2"></i>
+                                    <span class="text-[10px] text-cyber-secondary font-mono font-bold tracking-widest uppercase">Mostrando Jugada...</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-center gap-2 sm:gap-4 pointer-events-auto" id="rps-btn-group">
+                                <button onclick="playRps('Piedra')" class="flex-1 max-w-[80px] md:max-w-[100px] aspect-[3/4] bg-cyber-panel border border-cyber-card rounded-xl flex flex-col items-center justify-center hover:border-cyber-primary hover:scale-105 transition-all text-2xl md:text-3xl shadow-md">
+                                    <span>👊</span>
+                                    <span class="text-[9px] md:text-[10px] font-mono mt-2 font-normal text-gray-400 uppercase">Piedra</span>
+                                </button>
+                                <button onclick="playRps('Papel')" class="flex-1 max-w-[80px] md:max-w-[100px] aspect-[3/4] bg-cyber-panel border border-cyber-card rounded-xl flex flex-col items-center justify-center hover:border-cyber-primary hover:scale-105 transition-all text-2xl md:text-3xl shadow-md">
+                                    <span>📄</span>
+                                    <span class="text-[9px] md:text-[10px] font-mono mt-2 font-normal text-gray-400 uppercase">Papel</span>
+                                </button>
+                                <button onclick="playRps('Tijera')" class="flex-1 max-w-[80px] md:max-w-[100px] aspect-[3/4] bg-cyber-panel border border-cyber-card rounded-xl flex flex-col items-center justify-center hover:border-cyber-primary hover:scale-105 transition-all text-2xl md:text-3xl shadow-md">
+                                    <span>✂️</span>
+                                    <span class="text-[9px] md:text-[10px] font-mono mt-2 font-normal text-gray-400 uppercase">Tijera</span>
+                                </button>
+                            </div>
+                            <div class="mt-4 text-center font-mono">
+                                <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">Ronda: <strong id="rps-round-badge" class="text-white text-sm">0 / 3</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="bg-cyber-bg border border-cyber-card p-4 rounded-2xl overflow-x-auto flex flex-col justify-center">
+                            <h4 class="text-[10px] md:text-xs font-mono text-cyber-primary uppercase font-bold mb-4 text-center tracking-widest">Matriz de Recompensas</h4>
+                            <table class="w-full text-center border-collapse text-[10px] md:text-xs font-mono min-w-[280px]">
+                                <thead>
+                                    <tr class="bg-cyber-panel">
+                                        <th class="p-3 border border-cyber-card text-white">Tú \ MAQUINA</th>
+                                        <th class="p-3 border border-cyber-card text-cyber-secondary">Piedra</th>
+                                        <th class="p-3 border border-cyber-card text-cyber-secondary">Papel</th>
+                                        <th class="p-3 border border-cyber-card text-cyber-secondary">Tijera</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-3 border border-cyber-card font-bold bg-cyber-panel">Piedra</td>
+                                        <td id="cell-rps-pp" class="p-3 border border-cyber-card transition-colors duration-500">(0, 0)</td>
+                                        <td id="cell-rps-pa" class="p-3 border border-cyber-card transition-colors duration-500">(-1, 1)</td>
+                                        <td id="cell-rps-pt" class="p-3 border border-cyber-card transition-colors duration-500">(1, -1)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 border border-cyber-card font-bold bg-cyber-panel">Papel</td>
+                                        <td id="cell-rps-ap" class="p-3 border border-cyber-card transition-colors duration-500">(1, -1)</td>
+                                        <td id="cell-rps-aa" class="p-3 border border-cyber-card transition-colors duration-500">(0, 0)</td>
+                                        <td id="cell-rps-at" class="p-3 border border-cyber-card transition-colors duration-500">(-1, 1)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 border border-cyber-card font-bold bg-cyber-panel">Tijera</td>
+                                        <td id="cell-rps-tp" class="p-3 border border-cyber-card transition-colors duration-500">(-1, 1)</td>
+                                        <td id="cell-rps-ta" class="p-3 border border-cyber-card transition-colors duration-500">(1, -1)</td>
+                                        <td id="cell-rps-tt" class="p-3 border border-cyber-card transition-colors duration-500">(0, 0)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="rps-outcome-panel" class="hidden bg-cyber-card border-l-4 border-cyber-accent p-6 rounded-r-2xl text-xs md:text-sm text-justify leading-relaxed text-gray-300 mb-4 shadow-xl">
+                        <h4 class="font-bold text-white mb-3 uppercase text-glow-purple text-sm md:text-base">Retroalimentación del Ejercicio:</h4>
+                        <p id="rps-feedback-body" class="mb-5 text-justify"></p>
+                        <div class="flex justify-center">
+                            <button onclick="resetRps()" class="px-8 py-3 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all text-xs uppercase tracking-widest shadow-md">Reiniciar Juego</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between mt-8 gap-4">
+                    <button onclick="goToSlide(4)" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                    <button onclick="goToSlide(6)" class="px-8 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs w-full sm:w-auto">Siguiente Sección <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-6" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-secondary tracking-widest uppercase font-bold">SECCIÓN 7</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-cyan">AULA MULTIMEDIA</h2>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card p-6 md:p-8 rounded-3xl mb-8 text-sm md:text-base text-justify text-gray-300 leading-relaxed">
+                    <p>
+                        ¡Haz realizado un excelente trabajo! Para profundizar en las bases conceptuales y ver cómo estos modelos matemáticos se aplican en otros entornos, echa un vistazo a estos recursos audiovisuales clave para reforzar conocimientos sobre el flujo de los sistemas y la interdependencia en las estratégias.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 relative flex flex-col justify-between hover:-translate-y-2 transition-all duration-300">
+                        <div>
+                            <div class="aspect-video bg-cyber-bg rounded-2xl border border-cyber-card flex items-center justify-center mb-4 relative overflow-hidden">
+                                <i class="fa-brands fa-youtube text-5xl md:text-6xl text-cyber-alert animate-pulse"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">El Flujo de los Sistemas (Teoría Colas)</h3>
+                            <p class="text-xs text-gray-400 mb-6 leading-relaxed text-justify">
+                                Descubre cómo las matemáticas organizan las líneas de espera de manera eficiente y eliminan los cuellos de botella.
+                            </p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-4 border-t border-cyber-card">
+                            <button onclick="playVideo('VPuRoEOVogo')" class="px-4 py-2 bg-cyber-alert text-white font-extrabold rounded-lg hover:bg-opacity-90 transition-all text-[10px] md:text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-play mr-2"></i> Reproducir
+                            </button>
+                            <button onclick="showVideoCredits('colas')" class="text-xs text-cyber-secondary hover:underline">Créditos</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 relative flex flex-col justify-between hover:-translate-y-2 transition-all duration-300">
+                        <div>
+                            <div class="aspect-video bg-cyber-bg rounded-2xl border border-cyber-card flex items-center justify-center mb-4 relative overflow-hidden">
+                                <i class="fa-brands fa-youtube text-5xl md:text-6xl text-cyber-alert animate-pulse"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white mb-2">Estrategia e Interdependencia (Juegos)</h3>
+                            <p class="text-xs text-gray-400 mb-6 leading-relaxed text-justify">
+                                Explora cómo las decisiones racionales y la búsqueda de equilibrios (Nash) definen la competencia.
+                            </p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-4 border-t border-cyber-card">
+                            <button onclick="playVideo('-kVD7v_c-R8')" class="px-4 py-2 bg-cyber-alert text-white font-extrabold rounded-lg hover:bg-opacity-90 transition-all text-[10px] md:text-xs uppercase tracking-wider flex items-center">
+                                <i class="fa-solid fa-play mr-2"></i> Reproducir
+                            </button>
+                            <button onclick="showVideoCredits('juegos')" class="text-xs text-cyber-secondary hover:underline">Créditos</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="video-modal" class="hidden fixed inset-0 z-[3000] bg-black/90 flex items-center justify-center p-4">
+                    <div class="w-full max-w-3xl bg-cyber-panel border border-cyber-card rounded-3xl p-4 relative">
+                        <button onclick="closeVideo()" class="absolute -top-4 -right-4 md:top-4 md:right-4 bg-cyber-alert w-10 h-10 rounded-full text-white hover:bg-white hover:text-cyber-alert transition-colors text-xl z-50 flex items-center justify-center shadow-lg"><i class="fa-solid fa-xmark"></i></button>
+                        <div class="aspect-video w-full mt-4 md:mt-8">
+                            <iframe id="video-iframe" class="w-full h-full rounded-2xl border border-cyber-card" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between gap-4">
+                    <button onclick="goToSlide(5)" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                    <button onclick="initiateQuizPortal()" class="px-8 py-3 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all uppercase tracking-widest text-xs w-full sm:w-auto">Siguiente Sección <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-7" class="w-full max-w-4xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-primary tracking-widest uppercase font-bold">SECCIÓN 8</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-green">QUIZ INTERACTIVO: PON A PRUEBA LO APRENDIDO</h2>
+                </div>
+
+                <div id="quiz-intro-box" class="bg-cyber-panel border border-cyber-card p-6 md:p-8 rounded-3xl text-center">
+                    <div class="w-16 h-16 md:w-20 md:h-20 bg-cyber-secondary/10 border border-cyber-secondary rounded-full flex items-center justify-center mx-auto mb-6 glow-cyan">
+                        <i class="fa-solid fa-graduation-cap text-cyber-secondary text-2xl md:text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg md:text-xl font-bold text-white mb-3">Hola <span id="quiz-user-name" class="text-cyber-primary font-black">Estudiante</span>, pongamos a prueba lo aprendido.</h3>
+                    <p class="text-sm text-gray-400 mb-8 max-w-xl mx-auto">Completa el Quiz interactivo en base a los conocimientos adquiridos hasta ahora. Presiona Enviar para calificar tu rendimiento.</p>
+                    <button onclick="unlockQuiz()" class="px-8 py-3 bg-cyber-secondary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest">INICIAR LABORATORIO</button>
+                </div>
+
+                <div id="quiz-body-box" class="hidden space-y-6 mb-8 w-full">
+                    <div class="bg-cyber-panel border border-cyber-card p-4 md:p-6 rounded-2xl quiz-item" id="q-item-1">
+                        <h4 class="font-bold text-[10px] md:text-xs text-cyber-secondary mb-4 uppercase tracking-widest">RETO 1: Arrastrar variables a su definición</h4>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span draggable="true" ondragstart="drag(event)" id="drag-lambda" class="px-3 py-2 bg-cyber-bg border border-cyber-primary text-cyber-primary text-[10px] md:text-xs font-bold rounded-lg cursor-grab font-mono">Tasa Llegada (λ)</span>
+                            <span draggable="true" ondragstart="drag(event)" id="drag-mu" class="px-3 py-2 bg-cyber-bg border border-cyber-primary text-cyber-primary text-[10px] md:text-xs font-bold rounded-lg cursor-grab font-mono">Tasa Servicio (μ)</span>
+                        </div>
+                        <div class="space-y-3 text-[10px] md:text-xs">
+                            <div class="bg-cyber-bg border border-cyber-card p-3 md:p-4 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-3">
+                                <span class="text-gray-300 text-center sm:text-left w-full">Velocidad a la que ingresan al sistema:</span>
+                                <div id="drop-zone-lambda" ondrop="drop(event, 'lambda')" ondragover="allowDrop(event)" class="w-full sm:w-44 h-10 bg-cyber-panel border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0"></div>
+                            </div>
+                            <div class="bg-cyber-bg border border-cyber-card p-3 md:p-4 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-3">
+                                <span class="text-gray-300 text-center sm:text-left w-full">Capacidad de procesamiento del servidor:</span>
+                                <div id="drop-zone-mu" ondrop="drop(event, 'mu')" ondragover="allowDrop(event)" class="w-full sm:w-44 h-10 bg-cyber-panel border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0"></div>
+                            </div>
+                        </div>
+                        <p id="q-hint-1" class="hidden text-[10px] md:text-[11px] text-cyber-warning mt-3 italic font-mono bg-amber-950/20 p-3 rounded-lg border border-cyber-warning/30 text-justify"></p>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card p-4 md:p-6 rounded-2xl quiz-item" id="q-item-2">
+                        <h4 class="font-bold text-[10px] md:text-xs text-cyber-secondary mb-4 uppercase tracking-widest">RETO 2: Arrastra modelo a su característica</h4>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span draggable="true" ondragstart="drag(event)" id="drag-mm1" class="px-3 py-2 bg-cyber-bg border border-cyber-accent text-cyber-accent text-[10px] md:text-xs font-bold rounded-lg cursor-grab font-mono">Modelo M/M/1 (Canal Único)</span>
+                            <span draggable="true" ondragstart="drag(event)" id="drag-mmc" class="px-3 py-2 bg-cyber-bg border border-cyber-accent text-cyber-accent text-[10px] md:text-xs font-bold rounded-lg cursor-grab font-mono">Modelo M/M/C (Multicanal)</span>
+                        </div>
+                        <div class="space-y-3 text-[10px] md:text-xs">
+                            <div class="bg-cyber-bg border border-cyber-card p-3 md:p-4 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-3">
+                                <span class="text-gray-300 text-center sm:text-left w-full">Riesgo de fragilidad: si falla, colapsa:</span>
+                                <div id="drop-zone-mm1" ondrop="drop(event, 'mm1')" ondragover="allowDrop(event)" class="w-full sm:w-44 h-10 bg-cyber-panel border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0"></div>
+                            </div>
+                            <div class="bg-cyber-bg border border-cyber-card p-3 md:p-4 rounded-xl flex flex-col sm:flex-row justify-between items-center gap-3">
+                                <span class="text-gray-300 text-center sm:text-left w-full">Ventaja resiliencia: los demás mantienen flujo:</span>
+                                <div id="drop-zone-mmc" ondrop="drop(event, 'mmc')" ondragover="allowDrop(event)" class="w-full sm:w-44 h-10 bg-cyber-panel border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center font-mono text-xs flex-shrink-0"></div>
+                            </div>
+                        </div>
+                        <p id="q-hint-2" class="hidden text-[10px] md:text-[11px] text-cyber-warning mt-3 italic font-mono bg-amber-950/20 p-3 rounded-lg border border-cyber-warning/30 text-justify"></p>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card p-4 md:p-6 rounded-2xl quiz-item" id="q-item-4">
+                        <h4 class="font-bold text-[10px] md:text-xs text-cyber-secondary mb-4 uppercase tracking-widest">RETO 3: Fundamentos Sistémicos</h4>
+                        <p class="text-[11px] md:text-sm text-gray-300 leading-relaxed text-justify mb-4">
+                            "La Teoría de Juegos se fundamenta en la 
+                            <select id="q-val-4-1" class="bg-cyber-bg border border-cyber-card px-2 py-1.5 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyber-primary m-1">
+                                <option value="">[Seleccionar]</option>
+                                <option value="A">transversalidad</option>
+                                <option value="B">linealidad</option>
+                            </select> 
+                            del modelado estratégico bajo la premisa de 
+                            <select id="q-val-4-2" class="bg-cyber-bg border border-cyber-card px-2 py-1.5 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyber-primary m-1">
+                                <option value="">[Seleccionar]</option>
+                                <option value="A">racionalidad</option>
+                                <option value="B">irracionalidad</option>
+                            </select> 
+                            perfecta del oponente."
+                        </p>
+                        <p id="q-hint-4" class="hidden text-[10px] md:text-[11px] text-cyber-warning mt-3 italic font-mono bg-amber-950/20 p-3 rounded-lg border border-cyber-warning/30 text-justify"></p>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card p-4 md:p-6 rounded-2xl quiz-item" id="q-item-6">
+                        <h4 class="font-bold text-[10px] md:text-xs text-cyber-secondary mb-4 uppercase tracking-widest">RETO 4: Dilema del Prisionero</h4>
+                        <p class="text-[11px] md:text-sm text-gray-300 leading-relaxed text-justify mb-4">
+                            "Aunque cooperar es mejor colectivamente, el Equilibrio de Nash se alcanza cuando ambos 
+                            <select id="q-val-6-1" class="bg-cyber-bg border border-cyber-card px-2 py-1.5 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyber-primary m-1">
+                                <option value="">[Seleccionar]</option>
+                                <option value="A">cooperan</option>
+                                <option value="B">traicionan</option>
+                            </select> 
+                            demostrando que la razón individual conduce a un resultado colectivo 
+                            <select id="q-val-6-2" class="bg-cyber-bg border border-cyber-card px-2 py-1.5 rounded-lg text-white font-mono text-xs focus:outline-none focus:border-cyber-primary m-1">
+                                <option value="">[Seleccionar]</option>
+                                <option value="A">inferior</option>
+                                <option value="B">superior</option>
+                            </select>."
+                        </p>
+                        <p id="q-hint-6" class="hidden text-[10px] md:text-[11px] text-cyber-warning mt-3 italic font-mono bg-amber-950/20 p-3 rounded-lg border border-cyber-warning/30 text-justify"></p>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card p-4 md:p-6 rounded-2xl quiz-item" id="q-item-7">
+                        <h4 class="font-bold text-[10px] md:text-xs text-cyber-secondary mb-4 uppercase tracking-widest">RETO 5: Diagnóstico Operativo</h4>
+                        <p class="text-xs md:text-sm text-gray-300 mb-4 text-justify">Un ascensor recibe Tasa de llegada= 12 pers/min, pero su capacidad es Tasa de servicio = 10 pers/min. ¿Qué ocurre con la fila?</p>
+                        <div class="space-y-3 text-[11px] md:text-sm">
+                            <label class="flex items-start space-x-3 cursor-pointer p-3 bg-cyber-bg border border-cyber-card rounded-xl hover:border-cyber-primary transition-colors"><input type="radio" name="q-val-7" value="A" class="form-radio text-cyber-primary mt-1"><span class="text-gray-300">A) Se mantiene estable.</span></label>
+                            <label class="flex items-start space-x-3 cursor-pointer p-3 bg-cyber-bg border border-cyber-card rounded-xl hover:border-cyber-primary transition-colors"><input type="radio" name="q-val-7" value="B" class="form-radio text-cyber-primary mt-1"><span class="text-gray-300">B) Se acumula y crece de forma inestable.</span></label>
+                            <label class="flex items-start space-x-3 cursor-pointer p-3 bg-cyber-bg border border-cyber-card rounded-xl hover:border-cyber-primary transition-colors"><input type="radio" name="q-val-7" value="C" class="form-radio text-cyber-primary mt-1"><span class="text-gray-300">C) Genera entropía negativa balanceable.</span></label>
+                        </div>
+                        <p id="q-hint-7" class="hidden text-[10px] md:text-[11px] text-cyber-warning mt-3 italic font-mono bg-amber-950/20 p-3 rounded-lg border border-cyber-warning/30 text-justify"></p>
+                    </div>
+                </div>
+
+                <div id="quiz-control-box" class="hidden w-full">
+                    <div class="flex justify-center mb-6">
+                        <button onclick="submitQuiz()" class="px-10 py-4 bg-cyber-primary text-cyber-bg font-black rounded-xl hover:bg-white transition-all text-xs uppercase tracking-widest glow-green w-full sm:w-auto">
+                            Enviar Respuestas
+                        </button>
+                    </div>
+
+                    <div id="quiz-report-card" class="hidden bg-cyber-bg border-2 border-cyber-secondary p-6 md:p-8 rounded-2xl glow-cyan w-full">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3 font-mono uppercase text-center" id="report-user-title">REPORTE OPERATIVO</h3>
+                        <div class="text-center mb-6">
+                            <span class="text-xs text-gray-400 font-mono">Puntaje:</span>
+                            <div class="text-4xl md:text-5xl font-mono font-black text-cyber-secondary mt-2" id="report-score-val">0 / 100</div>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-300 text-center leading-relaxed mb-6 max-w-lg mx-auto text-justify">Si tu resultado es distinto de 100, revisa la retroalimentación en cada pregunta marcada para reflexionar sobre tú respuesta</p>
+                        <div class="flex justify-center">
+                            <button onclick="resetQuiz()" class="px-6 py-3 bg-cyber-card text-white font-bold rounded-xl border border-cyber-card text-[10px] md:text-xs uppercase tracking-widest w-full sm:w-auto">
+                                Reestablecer Sistema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between mt-8 gap-4 w-full">
+                    <button onclick="goToSlide(6)" id="quiz-back-btn" class="px-6 py-3 bg-cyber-card text-white font-extrabold rounded-xl hover:bg-opacity-85 transition-all uppercase tracking-widest text-xs w-full sm:w-auto"><i class="fa-solid fa-arrow-left mr-2"></i> Atrás</button>
+                    <button onclick="goToSlide(8)" id="quiz-next-btn" class="hidden px-8 py-3 bg-cyber-accent text-white font-black rounded-xl hover:bg-opacity-90 transition-all uppercase tracking-widest text-xs w-full sm:w-auto">Cierre de la OVA <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <section id="section-8" class="w-full max-w-5xl hidden portal-transition">
+                <div class="mb-8">
+                    <span class="text-xs font-mono text-cyber-secondary tracking-widest uppercase font-bold">SECCIÓN 9</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-white text-glow-cyan">CRÉDITOS Y REFERENCIAS BIBLIOGRÁFICAS</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-black text-white mb-6 flex items-center text-glow-green"><i class="fa-solid fa-id-card mr-3 text-cyber-primary"></i> Ficha Técnica</h3>
+                            <div class="space-y-4 text-xs md:text-sm font-mono leading-relaxed">
+                                <div class="bg-cyber-bg p-4 rounded-xl border border-cyber-card"><span class="text-gray-400">Autor:</span> <strong class="text-white">Miguel Ángel Tamayo Molina</strong></div>
+                                <div class="bg-cyber-bg p-4 rounded-xl border border-cyber-card"><span class="text-gray-400">Institución:</span> <strong class="text-white">Universidad Simón Bolívar</strong></div>
+                                <div class="bg-cyber-bg p-4 rounded-xl border border-cyber-card"><span class="text-gray-400">Curso:</span> <strong class="text-white">Teoría de Sistemas</strong></div>
+                                <div class="bg-cyber-bg p-4 rounded-xl border border-cyber-card"><span class="text-gray-400 font-bold block mb-2">Propósito:</span> <span class="text-gray-300 normal-case leading-relaxed font-sans text-justify block">Objeto Virtual de Aprendizaje (OVA) diseñado para aplicar los fundamentos de la Investigación de Operaciones a través de simuladores interactivos. Su objetivo es permitir la exploración práctica de la Teoría de Colas, mediante la gestión de sistemas de atención bajo diversas disciplinas, y la Teoría de Juegos, analizando la toma de decisiones estratégicas bajo modelos de racionalidad perfecta.</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-cyber-panel border border-cyber-card rounded-3xl p-6 md:p-8">
+                        <h3 class="text-xl font-black text-white mb-6 flex items-center text-glow-purple"><i class="fa-solid fa-book mr-3 text-cyber-accent"></i> Bibliografía</h3>
+                        <p class="text-xs md:text-sm text-gray-400 mb-5">Haz clic para desplegar la referencia académica.</p>
+                        
+                        <div class="space-y-3 text-[11px] md:text-sm">
+                            <div onclick="toggleRefDetails('ref1')" class="p-3 md:p-4 bg-cyber-bg border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-accent transition-colors">
+                                <span class="font-bold text-cyber-accent block"><i class="fa-solid fa-bookmark mr-2"></i> Sistemas Abiertos</span>
+                                <div id="ref1-body" class="hidden mt-3 text-[10px] md:text-xs text-gray-300 border-t border-cyber-panel pt-3 text-justify leading-relaxed">
+                                    <p class="italic mb-2">Von Bertalanffy, L. (1968). General System Theory.</p>
+                                    <p class="text-cyber-accent font-semibold mt-2">Nota: Conceptos de homeostasis e interdependencia.</p>
+                                </div>
+                            </div>
+                            <div onclick="toggleRefDetails('ref2')" class="p-3 md:p-4 bg-cyber-bg border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-accent transition-colors">
+                                <span class="font-bold text-cyber-accent block"><i class="fa-solid fa-bookmark mr-2"></i> Modelos de Espera</span>
+                                <div id="ref2-body" class="hidden mt-3 text-[10px] md:text-xs text-gray-300 border-t border-cyber-panel pt-3 text-justify leading-relaxed">
+                                    <p class="italic mb-2">Hillier, F. S., & Lieberman, G. J. (2015). Introducción a la Investigación de Operaciones.</p>
+                                    <p class="text-cyber-accent font-semibold mt-2">Nota: Base matemática para cálculo en Teoría de Colas.</p>
+                                </div>
+                            </div>
+                            <div onclick="toggleRefDetails('ref3')" class="p-3 md:p-4 bg-cyber-bg border border-cyber-card rounded-xl cursor-pointer hover:border-cyber-accent transition-colors">
+                                <span class="font-bold text-cyber-accent block"><i class="fa-solid fa-bookmark mr-2"></i> Equilibrio Estratégico</span>
+                                <div id="ref3-body" class="hidden mt-3 text-[10px] md:text-xs text-gray-300 border-t border-cyber-panel pt-3 text-justify leading-relaxed">
+                                    <p class="italic mb-2">Gibbons, R. (1993). Un Primer Curso de Teoría de Juegos.</p>
+                                    <p class="text-cyber-accent font-semibold mt-2">Nota: Sustento teórico para Equilibrio de Nash.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-cyber-panel border border-cyber-card p-6 md:p-8 rounded-3xl flex flex-col md:flex-row justify-center items-center gap-4 shadow-2xl">
+                    <button onclick="generalReset()" class="w-full md:w-auto px-8 py-4 bg-cyber-warning text-cyber-bg font-extrabold rounded-xl hover:bg-white transition-all text-[10px] md:text-xs uppercase tracking-widest glow-yellow">
+                        REINICIAR TODO
+                    </button>
+                    <button onclick="systemExit()" class="w-full md:w-auto px-8 py-4 bg-cyber-alert text-white font-extrabold rounded-xl hover:bg-opacity-95 transition-all text-[10px] md:text-xs uppercase tracking-widest glow-red">
+                        SALIR (Cerrar Sistema)
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-cyber-panel border-t border-cyber-card px-4 md:px-8 py-4 flex flex-col sm:flex-row justify-between items-center text-[10px] md:text-xs space-y-2 sm:space-y-0 w-full mt-auto">
+            <div class="text-gray-500 font-mono tracking-wide text-center sm:text-left">&copy; 2026 UNISIMÓN - FACULTAD DE INGENIERÍAS</div>
+            <div class="flex space-x-3 text-cyber-secondary font-black tracking-widest uppercase">
+                <span class="font-mono">PORTAL: <strong id="footer-section-badge" class="text-white text-glow-cyan">INTRO</strong></span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playTone(freq, type, duration, volume = 0.08) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                
+                gainNode.gain.setValueAtTime(volume, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+                
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function soundClick() { playTone(650, 'sine', 0.1, 0.1); }
+        function soundSuccess() { playTone(520, 'triangle', 0.15, 0.08); setTimeout(() => playTone(1040, 'triangle', 0.35, 0.08), 120); }
+        function soundAlarm() { playTone(180, 'sawtooth', 0.5, 0.15); }
+        function soundTicking() { playTone(950, 'sine', 0.03, 0.03); }
+        function soundCrash() { playTone(110, 'sawtooth', 0.6, 0.1); playTone(55, 'triangle', 0.6, 0.15); }
+    </script>
+
+    <script>
+        const STATE = {
+            userName: "",
+            currentSlide: 0,
+            
+            // Colas ATM Sim
+            atmServers: 0, 
+            atmSatisfaction: 0,
+            atmLambda: 15,
+            atmMu: 12,
+            atmQueue: [],
+
+            // Puerto Buenaventura
+            portLambda: 12,
+            portMu: 15,
+            portWq: 0,
+            portRho: 0,
+
+            // Restaurante
+            restMode: null, 
+            restXp: 0,
+            restClock: 60,
+            restClockInterval: null,
+            restHeldBurgers: 0,
+            restTables: [], 
+            restQueue: [], 
+            restBurgerSpawner: null,
+            restArrivalCounter: 0, 
+            restOptimalTableId: null, 
+
+            // PPT
+            rpsRound: 0,
+            rpsUserScore: 0,
+            rpsAiScore: 0,
+
+            // Drag and drop
+            draggedId: ""
+        };
+
+        // Sistema de Toasts No Invasivos
+        function showToast(message, colorClass = "text-cyber-warning", bgBorder = "border-cyber-warning") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `bg-cyber-panel border-l-4 ${bgBorder} ${colorClass} px-4 py-3 rounded-lg shadow-2xl font-mono text-xs font-bold transition-all duration-500 transform translate-x-10 opacity-0 max-w-sm ml-auto z-[2000]`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-2"></i> ${message}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-x-10', 'opacity-0');
+            }, 50);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-x-10');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        function triggerAlert(title, message, iconClass = "fa-circle-info", color = "text-cyber-secondary") {
+            soundAlarm();
+            const alertBox = document.getElementById('custom-alert');
+            const alertTitle = document.getElementById('alert-title');
+            const alertMessage = document.getElementById('alert-message');
+            const alertIcon = document.getElementById('alert-icon');
+            
+            alertBox.style.borderColor = color === "text-cyber-primary" ? "#39ff14" : color === "text-cyber-alert" ? "#ff3131" : color === "text-cyber-warning" ? "#fffb00" : "#00f0ff";
+            alertIcon.className = `${color} text-3xl`;
+            alertIcon.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+            alertTitle.innerText = title;
+            alertMessage.innerText = message;
+            alertBox.classList.remove('hidden');
+        }
+
+        function closeAlert() {
+            soundClick();
+            document.getElementById('custom-alert').classList.add('hidden');
+        }
+
+        // --- SISTEMAS COMPLEJOS CANVAS ANIMACION ---
+        const canvas = document.getElementById('systems-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
+                this.radius = Math.random() * 2 + 1;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f0ff';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < (window.innerWidth < 768 ? 15 : 35); i++) {
+            particles.push(new Particle());
+        }
+
+        function animateBg() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, idx) => {
+                p.update();
+                p.draw();
+                for (let j = idx + 1; j < particles.length; j++) {
+                    const dx = p.x - particles[j].x;
+                    const dy = p.y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 130) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(157, 0, 255, ${1 - dist / 130})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animateBg);
+        }
+        animateBg();
+
+        // --- NAVEGACIÓN SPA ---
+        function goToSlide(slideIndex) {
+            soundClick();
+            for (let i = 0; i <= 8; i++) {
+                const sec = document.getElementById(`section-${i}`);
+                if (sec) sec.classList.add('hidden');
+            }
+            const targetSec = document.getElementById(`section-${slideIndex}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+
+            clearInterval(STATE.restClockInterval);
+            clearInterval(STATE.restBurgerSpawner);
+
+            STATE.currentSlide = slideIndex;
+            updateFooterBadge();
+            window.scrollTo(0,0);
+        }
+
+        function updateFooterBadge() {
+            const footerBadge = document.getElementById('footer-section-badge');
+            const sections = ["INTRODUCCIÓN", "CONTEXTO", "ORÍGENES APA", "SIMULADORES", "BÁSCULA Y DILEMA", "JUEGOS", "AULA MULTIMEDIA", "LABORATORIO", "CRÉDITOS Y CIERRE"];
+            footerBadge.innerText = sections[STATE.currentSlide] || "DESCONOCIDO";
+        }
+
+        function startOvaMission() {
+            const inputVal = document.getElementById('user-name-input').value.trim();
+            if (inputVal === "") {
+                triggerAlert("Acceso Restringido", "Debes ingresar tu nombre para poder explorar el contenido.", "fa-lock", "text-cyber-alert");
+                return;
+            }
+            STATE.userName = inputVal.toUpperCase();
+            document.getElementById('header-user-name').innerText = STATE.userName;
+            document.getElementById('quiz-user-name').innerText = STATE.userName;
+            soundSuccess();
+            goToSlide(1);
+        }
+
+        // --- REFERENCIAS APA DIAPOSITIVA 3 ---
+        function showRef(refType) {
+            soundClick();
+            const modal = document.getElementById('academic-modal');
+            const body = document.getElementById('academic-modal-body');
+            modal.classList.remove('hidden');
+            if (refType === 'colas') {
+                body.innerText = "Hillier, F. S., & Lieberman, G. J. (2015). Introducción a la Investigación de Operaciones (10.ª ed.). México D.F.: McGraw-Hill. Referencia central para el modelado matemático de colas en terminales logísticos de servicios masivos.";
+            } else {
+                body.innerText = "Gibbons, R. (1993). Un Primer Curso de Teoría de Juegos. Barcelona: Antoni Bosch Editor. Sustento teórico fundamental enfocado en decisiones interdependientes y equilibrio dinámico de Nash.";
+            }
+        }
+
+        function closeAcademicModal() {
+            soundClick();
+            document.getElementById('academic-modal').classList.add('hidden');
+        }
+
+        // --- SIMULADOR DE CAJERO ATM ---
+        function generateAtmLine() {
+            const line = document.getElementById('atm-line-container');
+            const iconContainer = document.getElementById('atm-server-icon');
+            line.innerHTML = "";
+            
+            if(STATE.atmServers === 0) {
+                iconContainer.innerHTML = `
+                    <div class="w-20 h-24 rounded-2xl bg-gradient-to-b from-gray-800 to-gray-900 border-2 border-gray-600 flex items-center justify-center opacity-50">
+                        <i class="fa-solid fa-power-off text-4xl text-gray-500"></i>
+                    </div>
+                    <span class="text-[10px] font-mono text-gray-500 block mt-2 font-black uppercase tracking-wider">Apagado</span>
+                `;
+            } else {
+                iconContainer.innerHTML = `
+                    <div class="w-20 h-24 rounded-2xl bg-gradient-to-b from-cyber-panel to-cyber-card border-2 border-cyber-secondary flex items-center justify-center glow-cyan">
+                        <i class="fa-solid fa-vault text-4xl text-cyber-secondary animate-pulse"></i>
+                    </div>
+                    <span class="text-[10px] font-mono text-cyber-secondary block mt-2 font-black uppercase tracking-wider">Cajero</span>
+                `;
+                
+                STATE.atmQueue.forEach((person, idx) => {
+                    const div = document.createElement('div');
+                    div.className = "w-10 h-10 rounded-full flex items-center justify-center font-black text-xs shadow-md glow-cyan border border-cyber-secondary animate-bounce flex-shrink-0 text-cyber-bg select-none";
+                    div.style.backgroundColor = person.color;
+                    div.style.animationDelay = `${idx * 0.1}s`;
+                    div.innerText = `P${idx+1}`;
+                    line.appendChild(div);
+                });
+            }
+        }
+
+        function runAtmMath() {
+            const fdb = document.getElementById('atm-feedback');
+            
+            if (STATE.atmServers === 0) {
+                document.getElementById('atm-wq-val').innerText = "INACTIVO";
+                document.getElementById('atm-wq-val').className = "font-bold text-gray-500 bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs";
+                document.getElementById('satisfaction-value').innerText = "0%";
+                document.getElementById('satisfaction-fill').style.width = "0%";
+                fdb.className = "bg-cyber-card border-l-4 border-gray-500 p-5 rounded-r-2xl text-sm md:text-base mb-8 text-gray-300 text-justify";
+                fdb.innerHTML = "Agrega cajeros para encender el sistema e iniciar la simulación matemática.";
+                return;
+            }
+
+            const l = STATE.atmLambda;
+            const m = STATE.atmMu * STATE.atmServers;
+            let wq = 0;
+            
+            if (l >= m) {
+                wq = Infinity;
+                STATE.atmSatisfaction = Math.max(0, STATE.atmSatisfaction - 35);
+                document.getElementById('atm-wq-val').innerText = "COLAPSO POR FALTA DE SERVIDORES¡";
+                document.getElementById('atm-wq-val').className = "font-bold text-cyber-alert bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs";
+            } else {
+                wq = l / (m * (m - l));
+                const waitMinutes = (wq * 60).toFixed(1);
+                document.getElementById('atm-wq-val').innerText = `${waitMinutes} Minutos`;
+                document.getElementById('atm-wq-val').className = "font-bold text-cyber-primary bg-cyber-bg p-3 rounded-lg border border-cyber-card font-mono text-xs";
+                
+                if (waitMinutes > 15) {
+                    STATE.atmSatisfaction = Math.max(10, STATE.atmSatisfaction - 15);
+                } else {
+                    STATE.atmSatisfaction = Math.min(100, STATE.atmSatisfaction + 10);
+                }
+            }
+
+            document.getElementById('satisfaction-value').innerText = `${STATE.atmSatisfaction}%`;
+            document.getElementById('satisfaction-fill').style.width = `${STATE.atmSatisfaction}%`;
+
+            if (STATE.atmSatisfaction > 70) {
+                fdb.className = "bg-cyber-card border-l-4 border-cyber-primary p-5 rounded-r-2xl text-sm md:text-base mb-8 text-gray-300 text-justify";
+                fdb.innerHTML = `<strong>FEEDBACK NEGATIVO:</strong> La satisfacción es óptima. Los servidores instalados amortiguan el flujo aleatorio de entrada.`;
+            } else if (STATE.atmSatisfaction > 30) {
+                fdb.className = "bg-cyber-card border-l-4 border-cyber-warning p-5 rounded-r-2xl text-sm md:text-base mb-8 text-gray-300 text-justify";
+                fdb.innerHTML = `<strong>FEEDBACK NEGATIVO:</strong> Alerta de demora. El tiempo de espera está incrementándose debido a la falta de capacidad operativa.`;
+            } else {
+                fdb.className = "bg-cyber-card border-l-4 border-cyber-alert p-5 rounded-r-2xl text-sm md:text-base mb-8 text-gray-300 text-justify";
+                fdb.innerHTML = `<strong>FEEDBACK NEGATIVO:</strong> ¡Saturación crítica! El sistema colapsó por sobrecarga. Las pérdidas por demora son inminentes debido a la insatisfacción de los clientes.`;
+            }
+        }
+
+        function changeAtmServers(amount) {
+            soundClick();
+            STATE.atmServers += amount;
+            if (STATE.atmServers < 0) STATE.atmServers = 0;
+            if (STATE.atmServers > 4) STATE.atmServers = 4;
+            
+            document.getElementById('cajero-count').innerText = `${STATE.atmServers} CAJERO${STATE.atmServers !== 1 ? 'S' : ''} ACTIVO${STATE.atmServers !== 1 ? 'S' : ''}`;
+            
+            STATE.atmQueue = [];
+            if(STATE.atmServers > 0) {
+                if(STATE.atmSatisfaction === 0) STATE.atmSatisfaction = 80;
+                const length = Math.max(1, 10 - (STATE.atmServers * 2));
+                const colors = ['#00f0ff', '#39ff14', '#fffb00'];
+                for (let i = 0; i < length; i++) {
+                    STATE.atmQueue.push({ color: colors[Math.floor(Math.random() * colors.length)] });
+                }
+            } else {
+                STATE.atmSatisfaction = 0;
+            }
+            generateAtmLine();
+            runAtmMath();
+        }
+
+        function resetAtmSim() {
+            soundSuccess();
+            STATE.atmServers = 0;
+            STATE.atmSatisfaction = 0;
+            document.getElementById('cajero-count').innerText = "0 CAJEROS ACTIVOS";
+            STATE.atmQueue = [];
+            generateAtmLine();
+            runAtmMath();
+        }
+
+        setTimeout(runAtmMath, 200);
+
+        function loadSlide4B() {
+            soundClick();
+            document.getElementById('slide-4a').classList.add('hidden');
+            document.getElementById('slide-4b').classList.remove('hidden');
+            resetTranconGame();
+        }
+
+        function backToSlide4A() {
+            soundClick();
+            document.getElementById('slide-4b').classList.add('hidden');
+            document.getElementById('slide-4a').classList.remove('hidden');
+            resetAtmSim();
+        }
+
+        // --- Dilema del Trancón ---
+        function resetTranconGame() {
+            document.getElementById('trancon-choice-btns').classList.remove('hidden');
+            document.getElementById('trancon-outcome').classList.add('hidden');
+            ['m-cell-bb', 'm-cell-bc', 'm-cell-cb', 'm-cell-cc'].forEach(id => {
+                document.getElementById(id).className = "p-5 border border-cyber-card bg-cyber-card transition-colors";
+            });
+            document.getElementById('game-panel-trancon').classList.remove('shake-active');
+        }
+
+        function playTrancon(userChoice) {
+            soundCrash();
+            const aiChoice = Math.random() > 0.5 ? 'bus' : 'car';
+            
+            document.getElementById('trancon-choice-btns').classList.add('hidden');
+            document.getElementById('trancon-outcome').classList.remove('hidden');
+            document.getElementById('game-panel-trancon').classList.add('shake-active');
+
+            ['m-cell-bb', 'm-cell-bc', 'm-cell-cb', 'm-cell-cc'].forEach(id => {
+                document.getElementById(id).className = "p-5 border border-cyber-card bg-cyber-card transition-colors";
+            });
+
+            let cellId = '';
+            let msgTitle = '';
+            let msgBody = '';
+            let color = '';
+
+            if (userChoice === 'bus' && aiChoice === 'bus') {
+                cellId = 'm-cell-bb';
+                msgTitle = "¡FLUJO ÓPTIMO (COOPERACIÓN)!";
+                msgBody = "Tú fuiste en Autobús y el Resto de la Ciudad también. Han maximizado el beneficio colectivo. El tráfico fluye libremente (Óptimo de Pareto).";
+                color = "text-cyber-primary border-cyber-primary glow-green bg-green-900/20";
+            } else if (userChoice === 'bus' && aiChoice === 'car') {
+                cellId = 'm-cell-bc';
+                msgTitle = "¡TE DEJARON ATRÁS!";
+                msgBody = "Tú fuiste en Autobús (Cooperar), pero los demás sacaron su Carro (Traicionar). Vas apretado y lento mientras ellos disfrutan tu espacio vial.";
+                color = "text-cyber-alert border-cyber-alert glow-red bg-red-900/20";
+            } else if (userChoice === 'car' && aiChoice === 'bus') {
+                cellId = 'm-cell-cb';
+                msgTitle = "¡VENTAJA INDIVIDUAL!";
+                msgBody = "Sacaste tu Carro (Individualismo) mientras los ciudadanos usaron Autobuses. Viajas rápido, cómodo y las vías están despejadas, aunque para ganar confort inviertes (Apuestas) más recursos .";
+                color = "text-cyber-accent border-cyber-accent glow-purple bg-purple-900/20";
+            } else {
+                cellId = 'm-cell-cc';
+                msgTitle = "¡TRANCÓN (PRINCIPIO DE NASH)!";
+                msgBody = "Todos pensaron que el Carro era la mejor opción. Como todos fueron egoístas, las calles colapsaron y terminaron atrapados pero sin perder su confort (Equilibrio de Nash).";
+                color = "text-cyber-warning border-cyber-warning glow-yellow bg-yellow-900/20";
+            }
+
+            const cell = document.getElementById(cellId);
+            cell.className = `p-5 border-2 font-black ${color}`;
+
+            document.getElementById('trancon-dynamic-result').innerHTML = `
+                <div class="p-6 md:p-8 bg-cyber-panel border-2 rounded-2xl text-center mb-6 ${color}">
+                    <h4 class="font-black text-xl md:text-2xl mb-3 animate-pulse uppercase">${msgTitle}</h4>
+                    <p class="text-sm md:text-base text-gray-300 max-w-3xl mx-auto text-justify leading-relaxed">
+                        ${msgBody}
+                        <br><br>
+                        <span class="font-mono text-xs">Tu Elección: <strong>${userChoice === 'car' ? 'Carro propio' : 'Autobús'}</strong> | (Ciudadanos): <strong>${aiChoice === 'car' ? 'Carro' : 'Autobús'}</strong></span>
+                    </p>
+                </div>
+                <div class="flex justify-center mt-6">
+                    <button onclick="resetTranconGame()" class="px-6 py-2.5 bg-cyber-card text-white font-bold rounded-lg border border-cyber-card hover:bg-opacity-80 transition-all text-xs uppercase tracking-widest shadow-md">Volver a Jugar la Ruleta Vial</button>
+                </div>
+            `;
+        }
+
+        // --- PUERTO BUENAVENTURA ---
+        function simulatePort() {
+            soundClick();
+            const l = parseFloat(document.getElementById('port-lambda').value);
+            const m = parseFloat(document.getElementById('port-mu').value);
+            const badge = document.getElementById('port-status-badge');
+            const feedback = document.getElementById('port-feedback');
+
+            if (isNaN(l) || isNaN(m)) {
+                triggerAlert("Error", "Ingresa números válidos.", "fa-triangle-exclamation", "text-cyber-alert");
+                return;
+            }
+            if (l < 9) {
+                showToast("Llegada mínima debe ser 9.", "text-cyber-warning", "border-cyber-warning"); return;
+            }
+            if (m > 20) {
+                showToast("Tasa Servicio max es 20.", "text-cyber-warning", "border-cyber-warning"); return;
+            }
+
+            if (l >= m) {
+                soundAlarm();
+                document.getElementById('port-rho-val').innerText = "100%";
+                document.getElementById('port-wq-val').innerText = "INFINITO";
+                document.getElementById('port-wq-val').className = "font-black text-cyber-alert text-sm md:text-base";
+                
+                badge.className = "mt-4 p-4 rounded-xl text-center font-black font-mono text-xs uppercase border bg-cyber-alert/20 border-cyber-alert text-cyber-alert glow-red";
+                badge.innerText = "ERROR (FILA INFINITA)";
+                feedback.innerHTML = "<strong>ERROR: Fila Infinita.</strong> El sistema colapsa porque entran más camiones de los atendibles. $\\mu$ debe ser mayor a $\\lambda$.";
+                return;
+            }
+
+            const rho = (l / m) * 100;
+            const wq = (l / (m * (m - l))) * 60;
+
+            document.getElementById('port-rho-val').innerText = `${rho.toFixed(1)}%`;
+            document.getElementById('port-wq-val').innerText = `${wq.toFixed(1)} Minutos`;
+
+            if (wq > 15.9) {
+                soundAlarm();
+                document.getElementById('port-wq-val').className = "font-black text-cyber-alert text-sm md:text-base";
+                badge.className = "mt-4 p-4 rounded-xl text-center font-black font-mono text-xs uppercase border bg-cyber-alert/20 border-cyber-alert text-cyber-alert glow-red";
+                badge.innerText = "MULTA CONFIRMADA";
+                feedback.innerHTML = `<strong>ESTADO: MULTA CONFIRMADA (${wq.toFixed(1)} min).</strong> Tu decisión mantiene el sistema saturado ($\\rho$ alto). La variabilidad estocástica genera cuellos de botella severos.`;
+            } else if (wq > 10) {
+                soundClick();
+                document.getElementById('port-wq-val').className = "font-black text-cyber-warning text-sm md:text-base";
+                badge.className = "mt-4 p-4 rounded-xl text-center font-black font-mono text-xs uppercase border bg-cyber-warning/20 border-cyber-warning text-cyber-warning glow-yellow";
+                badge.innerText = "RIESGO DE MULTA";
+                feedback.innerHTML = `<strong>ESTADO: RIESGO DE MULTA (${wq.toFixed(1)} min).</strong> Mejoraste el flujo, pero te quedaste corto. El sistema sigue sensible a los retrasos aleatorios.`;
+            } else {
+                soundSuccess();
+                document.getElementById('port-wq-val').className = "font-black text-cyber-primary text-sm md:text-base text-glow-green";
+                badge.className = "mt-4 p-4 rounded-xl text-center font-black font-mono text-xs uppercase border bg-cyber-primary/20 border-cyber-primary text-cyber-primary glow-green";
+                badge.innerText = "OPERACIÓN EXITOSA";
+                feedback.innerHTML = `<strong>ESTADO: OPERACIÓN EXITOSA (${wq.toFixed(1)} min).</strong> ¡Excelente! Al distanciar la llegada del servicio, amortiguaste la variabilidad y salvaste al puerto.`;
+            }
+        }
+
+        function resetPort() {
+            soundClick();
+            document.getElementById('port-lambda').value = 12;
+            document.getElementById('port-mu').value = 15;
+            simulatePort();
+        }
+
+        function checkPortQuiz() {
+            soundClick();
+            const selected = document.querySelector('input[name="port-afianz"]:checked');
+            if (!selected) {
+                showToast("Selecciona una alternativa.", "text-cyber-warning", "border-cyber-warning");
+                return;
+            }
+            if (selected.value === "B") {
+                soundSuccess();
+                triggerAlert("¡CORRECTO!", "La variabilidad estocástica exige un margen de servicio mayor; de lo contrario, la saturación exponencial devora el sistema.", "fa-circle-check", "text-cyber-primary");
+            } else {
+                soundAlarm();
+                showToast("Incorrecto. Revisa el efecto de la variabilidad estocástica.", "text-cyber-alert", "border-cyber-alert");
+            }
+        }
+
+        // --- NUEVO: EL DILEMA DEL PRISIONERO ---
+        function playPrisoner(userChoice) {
+            soundCrash();
+            const profile = document.getElementById('prisoner-ai-profile').value;
+            let aiChoice = '';
+            
+            if (profile === 'loyal') {
+                aiChoice = 'silence';
+            } else if (profile === 'traitor') {
+                aiChoice = 'confess';
+            } else {
+                aiChoice = Math.random() > 0.5 ? 'silence' : 'confess';
+            }
+
+            // Resetear estilos de matriz
+            ['cell-pd-ss', 'cell-pd-sc', 'cell-pd-cs', 'cell-pd-cc'].forEach(id => {
+                document.getElementById(id).className = "p-3 border border-cyber-card transition-colors";
+            });
+
+            let cellId = '';
+            let title = '';
+            let msg = '';
+            let icon = '';
+            let highlightColor = '';
+
+            if (userChoice === 'silence' && aiChoice === 'silence') {
+                cellId = 'cell-pd-ss';
+                title = "COOPERACIÓN MUTUA (Óptimo de Pareto)";
+                msg = "Ambos mantuvieron la lealtad. Por falta de pruebas sólidas, el fiscal solo pudo darles <strong>1 año de cárcel</strong> a cada uno. Han logrado el mejor resultado global posible, pero requirió de una confianza absoluta entre ambos.";
+                icon = '<i class="fa-solid fa-handshake text-cyber-secondary glow-cyan"></i>';
+                highlightColor = "bg-cyan-900/40 border-cyber-secondary text-white glow-cyan";
+            } else if (userChoice === 'silence' && aiChoice === 'confess') {
+                cellId = 'cell-pd-sc';
+                title = "¡TE HAN TRAICIONADO!";
+                msg = "Guardaste silencio confiando en tu cómplice, pero te vendió al fiscal para salvarse. Tú recibes la pena máxima de <strong>10 años de cárcel</strong>, y tu cómplice sale libre inmediatamente (0 años). Este es el gran riesgo lógico de cooperar a ciegas.";
+                icon = '<i class="fa-solid fa-knife-blood text-cyber-alert glow-red"></i>';
+                highlightColor = "bg-red-900/40 border-cyber-alert text-white glow-red";
+            } else if (userChoice === 'confess' && aiChoice === 'silence') {
+                cellId = 'cell-pd-cs';
+                title = "¡TRAICIÓN EXITOSA!";
+                msg = "Tu cómplice guardó silencio siendo leal, pero tú lo delataste a sangre fría. El fiscal cumple su trato: <strong>tú sales libre (0 años)</strong> y tu cómplice se pudre en la cárcel por 10 años. Ganaste el juego maximizando tu propio interés.";
+                icon = '<i class="fa-solid fa-person-walking-dashed-line-arrow-right text-cyber-primary glow-green"></i>';
+                highlightColor = "bg-green-900/40 border-cyber-primary text-white glow-green";
+            } else {
+                cellId = 'cell-pd-cc';
+                title = "TRAICIÓN MUTUA (Equilibrio de Nash)";
+                msg = "La desconfianza los dominó. Ambos confesaron buscando salvarse o protegerse, pero al hacerlo, le dieron al fiscal todas las pruebas. Ambos reciben <strong>5 años de cárcel</strong>. Matemáticamente, ninguno se atrevió a cambiar su estrategia por miedo a la condena máxima.";
+                icon = '<i class="fa-solid fa-gavel text-cyber-warning glow-yellow"></i>';
+                highlightColor = "bg-yellow-900/40 border-cyber-warning text-white glow-yellow";
+            }
+
+            const cell = document.getElementById(cellId);
+            cell.className = `p-3 border-2 font-black ${highlightColor}`;
+
+            document.getElementById('prisoner-outcome').classList.remove('hidden');
+            document.getElementById('prisoner-title-result').innerText = title;
+            document.getElementById('prisoner-title-result').className = `font-black uppercase mb-2 ${highlightColor.split(' ')[1].replace('border', 'text')}`; // Hereda el color del borde para el titulo
+            document.getElementById('prisoner-text-result').innerHTML = `
+                ${msg}<br><br>
+                <div class="mt-4 p-3 bg-cyber-bg border border-cyber-panel rounded-lg inline-block">
+                    <span class="font-mono text-[10px] md:text-xs text-gray-400 uppercase tracking-widest">Tu Elección: <strong>${userChoice === 'silence' ? 'Guardar Silencio' : 'Confesar'}</strong> | Cómplice (IA): <strong>${aiChoice === 'silence' ? 'Guardar Silencio' : 'Confesar'}</strong></span>
+                </div>
+            `;
+            document.getElementById('prisoner-icon-result').innerHTML = icon;
+        }
+
+        function resetPrisoner() {
+            soundClick();
+            document.getElementById('prisoner-outcome').classList.add('hidden');
+            ['cell-pd-ss', 'cell-pd-sc', 'cell-pd-cs', 'cell-pd-cc'].forEach(id => {
+                document.getElementById(id).className = "p-3 border border-cyber-card transition-colors";
+            });
+        }
+
+        // --- JUEGO DEL RESTAURANTE ---
+        function setRestMode(mode) {
+            soundClick();
+            STATE.restMode = mode;
+            
+            ['FIFO', 'LIFO', 'PRIO'].forEach(m => {
+                document.getElementById(`btn-rest-${m.toLowerCase()}`).className = "py-3 bg-cyber-panel border border-cyber-card rounded-xl text-xs font-black text-white hover:border-cyber-primary transition-all uppercase tracking-wider";
+            });
+            document.getElementById(`btn-rest-${mode.toLowerCase()}`).className = "py-3 bg-cyber-primary text-cyber-bg border border-cyber-primary rounded-xl text-xs font-black transition-all glow-green uppercase tracking-wider";
+
+            document.getElementById('rest-active-mode-label').innerText = mode === 'FIFO' ? 'FIFO (First-In, First-Out)' : mode === 'LIFO' ? 'LIFO (Último en llegar)' : 'PRIORIDAD CRÍTICA';
+            document.getElementById('restaurant-game-area').classList.remove('hidden');
+            document.getElementById('rest-end-screen').classList.add('hidden');
+            
+            startRestaurant();
+        }
+
+        function startRestaurant() {
+            clearInterval(STATE.restClockInterval);
+            clearInterval(STATE.restBurgerSpawner);
+            
+            STATE.restXp = 0;
+            STATE.restClock = 60;
+            STATE.restHeldBurgers = 0;
+            STATE.restArrivalCounter = 0;
+            
+            STATE.restTables = Array.from({ length: 7 }, (_, i) => ({ id: i + 1, client: null, wait: 0, maxWait: 0 }));
+            STATE.restQueue = [];
+            const types = [
+                { color: 'Rojo', maxWait: 10, xp: 30, badge: '🟥 Rojo' },
+                { color: 'Amarillo', maxWait: 15, xp: 20, badge: '🟨 Amarillo' },
+                { color: 'Verde', maxWait: 20, xp: 10, badge: '🟩 Verde' }
+            ];
+            for (let i = 0; i < 40; i++) {
+                STATE.restQueue.push({ ...types[Math.floor(Math.random() * types.length)], id: i });
+            }
+
+            document.getElementById('rest-xp-score').innerText = STATE.restXp;
+            document.getElementById('rest-clock-val').innerText = `${STATE.restClock}s`;
+            document.getElementById('rest-held-burgers').innerText = STATE.restHeldBurgers;
+
+            fillEmptyTables();
+            calculateNextTargetTable();
+            renderRestTables();
+            updateRestQueueIndicator();
+
+            STATE.restBurgerSpawner = setInterval(() => {
+                soundSuccess();
+                STATE.restHeldBurgers++;
+                document.getElementById('rest-held-burgers').innerText = STATE.restHeldBurgers;
+            }, 3000);
+
+            STATE.restClockInterval = setInterval(() => {
+                STATE.restClock--;
+                document.getElementById('rest-clock-val').innerText = `${STATE.restClock}s`;
+                soundTicking();
+
+                updateActiveTables();
+                fillEmptyTables();
+                calculateNextTargetTable();
+                renderRestTables();
+
+                if (STATE.restClock <= 0) endRestaurant();
+            }, 1000);
+        }
+
+        function renderRestTables() {
+            const grid = document.getElementById('restaurant-tables-grid');
+            grid.innerHTML = "";
+            STATE.restTables.forEach(table => {
+                const button = document.createElement('button');
+                button.onclick = () => serveTable(table.id);
+                
+                let classes = "bg-cyber-panel border border-cyber-card rounded-2xl p-3 md:p-4 transition-all flex flex-col justify-between items-center text-center min-h-[90px] md:min-h-[110px] w-full relative ";
+                
+                if (table.client && table.id === STATE.restOptimalTableId) {
+                    classes += "active-target-table border-cyber-warning ";
+                } else {
+                    classes += "hover:border-cyber-secondary ";
+                }
+
+                button.className = classes;
+                
+                let clientHtml = "<span class='text-[8px] md:text-[10px] text-gray-500 font-bold tracking-wider'>VACÍO</span>";
+                let percent = 0;
+                let barColor = "bg-cyber-primary";
+                let starBadge = "";
+
+                if (table.client) {
+                    const textColor = table.client.color === 'Rojo' ? 'text-cyber-alert' : table.client.color === 'Amarillo' ? 'text-cyber-warning' : 'text-cyber-primary';
+                    clientHtml = `<span class="text-[10px] md:text-xs font-black uppercase tracking-wider ${textColor}">${table.client.color}</span>`;
+                    percent = ((table.maxWait - table.wait) / table.maxWait) * 100;
+                    barColor = percent < 40 ? "bg-cyber-alert shadow-[0_0_8px_#ff3131]" : percent < 70 ? "bg-cyber-warning shadow-[0_0_8px_#fffb00]" : "bg-cyber-primary shadow-[0_0_8px_#39ff14]";
+                    
+                    if (table.id === STATE.restOptimalTableId) {
+                        starBadge = `<div class="absolute -top-2 -right-1 bg-cyber-warning text-cyber-bg w-4 h-4 md:w-5 md:h-5 rounded-full flex items-center justify-center text-[8px] md:text-[10px] font-black glow-yellow">⭐</div>`;
+                    }
+                }
+
+                button.innerHTML = `
+                    ${starBadge}
+                    <span class="text-[8px] md:text-[9px] font-mono text-gray-400 uppercase tracking-widest font-bold">Mesa ${table.id}</span>
+                    <div class="my-1 md:my-2">${clientHtml}</div>
+                    <div class="w-full bg-cyber-bg h-1.5 md:h-2 rounded-full overflow-hidden p-[1px] border border-cyber-card">
+                        <div class="h-full ${barColor} rounded-full transition-all" style="width: ${percent}%"></div>
+                    </div>
+                `;
+                grid.appendChild(button);
+            });
+        }
+
+        function updateRestQueueIndicator() {
+            const badge = document.getElementById('rest-next-client-badge');
+            if (STATE.restQueue.length === 0) {
+                badge.innerText = "COLA VACÍA";
+                badge.className = "px-3 py-1 bg-cyber-card text-gray-500 rounded-lg font-bold font-mono tracking-wider";
+                return;
+            }
+            let nextC = STATE.restQueue[0];
+            badge.innerText = nextC.badge;
+            badge.className = `px-3 py-1 rounded-lg font-black font-mono tracking-widest text-white block w-max mx-auto md:inline ${nextC.color === 'Rojo' ? 'bg-red-600 shadow-[0_0_8px_rgba(255,49,49,0.5)]' : nextC.color === 'Amarillo' ? 'bg-yellow-600 shadow-[0_0_8px_rgba(255,251,0,0.5)]' : 'bg-green-600 shadow-[0_0_8px_rgba(57,255,20,0.5)]'}`;
+        }
+
+        function fillEmptyTables() {
+            STATE.restTables.forEach(table => {
+                if (!table.client && STATE.restQueue.length > 0) {
+                    const client = STATE.restQueue.shift();
+                    STATE.restArrivalCounter++;
+                    table.client = { color: client.color, maxWait: client.maxWait, xp: client.xp, arrivalIndex: STATE.restArrivalCounter };
+                    table.wait = 0;
+                    table.maxWait = client.maxWait;
+                }
+            });
+            updateRestQueueIndicator();
+        }
+
+        function updateActiveTables() {
+            STATE.restTables.forEach(table => {
+                if (table.client) {
+                    table.wait++;
+                    if (table.wait >= table.maxWait) {
+                        soundAlarm();
+                        table.client = null;
+                        table.wait = 0;
+                    }
+                }
+            });
+        }
+
+        function calculateNextTargetTable() {
+            let activeTables = STATE.restTables.filter(t => t.client !== null);
+            if (activeTables.length === 0) { STATE.restOptimalTableId = null; return; }
+
+            if (STATE.restMode === 'FIFO') {
+                activeTables.sort((a, b) => a.client.arrivalIndex - b.client.arrivalIndex);
+            } else if (STATE.restMode === 'LIFO') {
+                activeTables.sort((a, b) => b.client.arrivalIndex - a.client.arrivalIndex);
+            } else if (STATE.restMode === 'PRIO') {
+                const getColorRank = (color) => { if (color === 'Rojo') return 1; if (color === 'Amarillo') return 2; return 3; };
+                activeTables.sort((a, b) => {
+                    const rankA = getColorRank(a.client.color);
+                    const rankB = getColorRank(b.client.color);
+                    if (rankA !== rankB) return rankA - rankB;
+                    return a.client.arrivalIndex - b.client.arrivalIndex;
+                });
+            }
+            STATE.restOptimalTableId = activeTables[0].id;
+        }
+
+        function pickBurgerFromKitchen() {
+            soundSuccess();
+            STATE.restHeldBurgers++;
+            document.getElementById('rest-held-burgers').innerText = STATE.restHeldBurgers;
+        }
+
+        function serveTable(tableId) {
+            const table = STATE.restTables.find(t => t.id === tableId);
+            if (!table || !table.client) return;
+
+            if (STATE.restHeldBurgers <= 0) {
+                soundAlarm();
+                showToast("Bandeja vacía. Recoge 🍔 del mostrador.", "text-cyber-warning", "border-cyber-warning");
+                return;
+            }
+
+            if (table.id !== STATE.restOptimalTableId) {
+                soundAlarm();
+                const correctTable = STATE.restTables.find(t => t.id === STATE.restOptimalTableId);
+                const correctColor = correctTable.client.color;
+                let ruleExplanation = `¡Error! Atiende la Mesa ${correctTable.id} (Color ${correctColor}) según regla ${STATE.restMode}.`;
+                showToast(ruleExplanation, "text-cyber-alert", "border-cyber-alert");
+                return;
+            }
+
+            soundSuccess();
+            STATE.restXp += table.client.xp;
+            STATE.restHeldBurgers--;
+            table.client = null;
+            table.wait = 0;
+
+            document.getElementById('rest-xp-score').innerText = STATE.restXp;
+            document.getElementById('rest-held-burgers').innerText = STATE.restHeldBurgers;
+            
+            fillEmptyTables();
+            calculateNextTargetTable();
+            renderRestTables();
+        }
+
+        function endRestaurant() {
+            clearInterval(STATE.restClockInterval);
+            clearInterval(STATE.restBurgerSpawner);
+            soundCrash();
+
+            document.getElementById('restaurant-game-area').classList.add('hidden');
+            const endScreen = document.getElementById('rest-end-screen');
+            endScreen.classList.remove('hidden');
+
+            document.getElementById('rest-end-feedback').innerHTML = `Lograste <strong>${STATE.restXp} XP</strong> bajo la regla <strong>${STATE.restMode}</strong>. La elección de la cola determina la homeostasis del sistema; FIFO es equitativo, LIFO agiliza la última llegada y PRIO salva clientes críticos.`;
+        }
+
+        function restartRestaurant() {
+            soundClick();
+            document.getElementById('rest-end-screen').classList.add('hidden');
+            document.getElementById('rest-mode-selector').classList.remove('hidden');
+        }
+
+        // --- NUEVO PIEDRA PAPEL O TIJERA (ARENA VS) ---
+        function playRps(userMove) {
+            if (STATE.rpsRound >= 3) {
+                showToast("Ya completaste las 3 rondas.", "text-cyber-warning", "border-cyber-warning");
+                return;
+            }
+            
+            soundClick();
+            
+            // Bloquear botones durante la animación
+            document.getElementById('rps-btn-group').classList.add('pointer-events-none', 'opacity-50');
+            
+            // Mostrar overlay de carga en la Arena VS
+            document.getElementById('rps-loading-overlay').classList.remove('hidden');
+            document.getElementById('rps-arena-result').classList.add('opacity-0');
+
+            const emojis = { 'Piedra': '👊', 'Papel': '📄', 'Tijera': '✂️' };
+            const moves = ['Piedra', 'Papel', 'Tijera'];
+            const aiMove = moves[Math.floor(Math.random() * 3)];
+
+            // Retraso para generar suspenso (Misterio)
+            setTimeout(() => {
+                document.getElementById('rps-loading-overlay').classList.add('hidden');
+                document.getElementById('rps-btn-group').classList.remove('pointer-events-none', 'opacity-50');
+                
+                document.getElementById('rps-user-arena').innerText = emojis[userMove];
+                document.getElementById('rps-ai-arena').innerText = emojis[aiMove];
+                
+                processRpsResult(userMove, aiMove);
+            }, 1200); 
+        }
+
+        function processRpsResult(userMove, aiMove) {
+            soundSuccess();
+            STATE.rpsRound++;
+
+            const cellIds = ['cell-rps-pp', 'cell-rps-pa', 'cell-rps-pt', 'cell-rps-ap', 'cell-rps-aa', 'cell-rps-at', 'cell-rps-tp', 'cell-rps-ta', 'cell-rps-tt'];
+            cellIds.forEach(id => document.getElementById(id).className = "p-3 border border-cyber-card transition-colors duration-500");
+
+            let matrixCellId = "";
+            let outcomeMessage = "";
+
+            if (userMove === 'Piedra') {
+                if (aiMove === 'Piedra') { matrixCellId = 'cell-rps-pp'; outcomeMessage = "Empate"; }
+                else if (aiMove === 'Papel') { matrixCellId = 'cell-rps-pa'; outcomeMessage = "Perdiste"; STATE.rpsAiScore++; }
+                else { matrixCellId = 'cell-rps-pt'; outcomeMessage = "Ganaste"; STATE.rpsUserScore++; }
+            } else if (userMove === 'Papel') {
+                if (aiMove === 'Piedra') { matrixCellId = 'cell-rps-ap'; outcomeMessage = "Ganaste"; STATE.rpsUserScore++; }
+                else if (aiMove === 'Papel') { matrixCellId = 'cell-rps-aa'; outcomeMessage = "Empate"; }
+                else { matrixCellId = 'cell-rps-at'; outcomeMessage = "Perdiste"; STATE.rpsAiScore++; }
+            } else { // Tijera
+                if (aiMove === 'Piedra') { matrixCellId = 'cell-rps-tp'; outcomeMessage = "Perdiste"; STATE.rpsAiScore++; }
+                else if (aiMove === 'Papel') { matrixCellId = 'cell-rps-ta'; outcomeMessage = "Ganaste"; STATE.rpsUserScore++; }
+                else { matrixCellId = 'cell-rps-tt'; outcomeMessage = "Empate"; }
+            }
+
+            document.getElementById(matrixCellId).className = "p-3 border-2 border-cyber-secondary bg-cyber-secondary/20 font-black animate-pulse glow-cyan text-white";
+            document.getElementById('rps-round-badge').innerText = `${STATE.rpsRound} / 3`;
+
+            // Animación visual del ganador en la Arena VS
+            const arenaResult = document.getElementById('rps-arena-result');
+            arenaResult.innerText = outcomeMessage.toUpperCase();
+            arenaResult.classList.remove('opacity-0', 'text-cyber-primary', 'text-cyber-alert', 'text-gray-400');
+
+            if(outcomeMessage === 'Ganaste') {
+                arenaResult.classList.add('text-cyber-primary');
+                document.getElementById('rps-user-arena').classList.add('glow-green', 'scale-125');
+                setTimeout(() => document.getElementById('rps-user-arena').classList.remove('glow-green', 'scale-125'), 1000);
+            } else if (outcomeMessage === 'Perdiste') {
+                arenaResult.classList.add('text-cyber-alert');
+                document.getElementById('rps-ai-arena').classList.add('glow-red', 'scale-125');
+                setTimeout(() => document.getElementById('rps-ai-arena').classList.remove('glow-red', 'scale-125'), 1000);
+            } else {
+                arenaResult.classList.add('text-gray-400');
+            }
+
+            if (STATE.rpsRound >= 3) {
+                setTimeout(endRps, 1500); 
+            }
+        }
+
+        function endRps() {
+            soundCrash();
+            const panel = document.getElementById('rps-outcome-panel');
+            panel.classList.remove('hidden');
+            const winnerText = STATE.rpsUserScore > STATE.rpsAiScore ? "¡Ganaste la serie!" : STATE.rpsUserScore < STATE.rpsAiScore ? "La IA ganó la serie." : "Empataron la serie.";
+            
+            document.getElementById('rps-feedback-body').innerHTML = `
+                <strong class="text-white text-sm md:text-base">${winnerText} (Tú: ${STATE.rpsUserScore} | IA: ${STATE.rpsAiScore})</strong><br><br>
+                1. <strong>Sin Nash Fijo:</strong> Ningún cuadrante es estable permanentemente en PPT. El sistema está en constante movimiento competitivo.<br><br>
+                2. <strong>Estrategia Mixta:</strong> Para vencer este sistema lógico, debes aplicar el verdadero Equilibrio: elegir de forma totalmente aleatoria probabilística (33.3% para cada una).
+            `;
+        }
+
+        function resetRps() {
+            soundClick();
+            STATE.rpsRound = 0;
+            STATE.rpsUserScore = 0;
+            STATE.rpsAiScore = 0;
+            document.getElementById('rps-round-badge').innerText = "0 / 3";
+            document.getElementById('rps-user-arena').innerText = "👤";
+            document.getElementById('rps-ai-arena').innerText = "🤖";
+            document.getElementById('rps-arena-result').classList.add('opacity-0');
+            document.getElementById('rps-outcome-panel').classList.add('hidden');
+            const cellIds = ['cell-rps-pp', 'cell-rps-pa', 'cell-rps-pt', 'cell-rps-ap', 'cell-rps-aa', 'cell-rps-at', 'cell-rps-tp', 'cell-rps-ta', 'cell-rps-tt'];
+            cellIds.forEach(id => document.getElementById(id).className = "p-3 border border-cyber-card transition-colors duration-500");
+        }
+
+        // --- VIDEOS AULA MULTIMEDIA ---
+        function playVideo(videoId) {
+            soundClick();
+            const modal = document.getElementById('video-modal');
+            const iframe = document.getElementById('video-iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            modal.classList.remove('hidden');
+        }
+
+        function closeVideo() {
+            soundClick();
+            const modal = document.getElementById('video-modal');
+            document.getElementById('video-iframe').src = "";
+            modal.classList.add('hidden');
+        }
+
+        function showVideoCredits(type) {
+            soundClick();
+            triggerAlert("Créditos", type === 'colas' ? "Academia Play. (2020, 15 de marzo). ¿Cuál es la fila más rápida del supermercado? | Teoría de colas [Video]. YouTube. https://www.youtube.com/watch?v=ejh9N-n3n5g" : "Academia Play. (2018, 11 de noviembre). Teoría de los juegos - Explicada con ejemplos! [Video]. YouTube. https://www.youtube.com/watch?v=R4nO3wQ83sI", "fa-info", "text-cyber-secondary");
+        }
+
+        // --- DRAG AND DROP LAB QUIZ ---
+        function drag(ev) { STATE.draggedId = ev.target.id; }
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drop(ev, dropZoneId) {
+            ev.preventDefault();
+            soundClick();
+            const dropTarget = document.getElementById(`drop-zone-${dropZoneId}`);
+            if (dropTarget && dropTarget.innerHTML === "") dropTarget.appendChild(document.getElementById(STATE.draggedId));
+        }
+
+        function initiateQuizPortal() {
+            soundClick();
+            goToSlide(7);
+            document.getElementById('quiz-intro-box').classList.remove('hidden');
+            document.getElementById('quiz-body-box').classList.add('hidden');
+            document.getElementById('quiz-control-box').classList.add('hidden');
+        }
+
+        function unlockQuiz() {
+            soundSuccess();
+            document.getElementById('quiz-intro-box').classList.add('hidden');
+            document.getElementById('quiz-body-box').classList.remove('hidden');
+            document.getElementById('quiz-control-box').classList.remove('hidden');
+        }
+
+        function submitQuiz() {
+            soundSuccess();
+            let score = 0;
+            const hints = ['q-hint-1', 'q-hint-2', 'q-hint-4', 'q-hint-6', 'q-hint-7'];
+            hints.forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            // Q1
+            const dropL = document.getElementById('drop-zone-lambda').firstChild;
+            const dropM = document.getElementById('drop-zone-mu').firstChild;
+            if (dropL && dropL.id === 'drag-lambda') score += 20;
+            else { document.getElementById('q-hint-1').innerText = "λ mide el flujo entrante, μ es la fuerza de despacho."; document.getElementById('q-hint-1').classList.remove('hidden'); }
+            if (dropM && dropM.id === 'drag-mu') score += 20;
+
+            // Q2
+            const drop1 = document.getElementById('drop-zone-mm1').firstChild;
+            const dropC = document.getElementById('drop-zone-mmc').firstChild;
+            if (drop1 && drop1.id === 'drag-mm1') score += 20;
+            else { document.getElementById('q-hint-2').innerText = "Un solo servidor lo arriesga todo; multicanal distribuye carga."; document.getElementById('q-hint-2').classList.remove('hidden'); }
+            if (dropC && dropC.id === 'drag-mmc') score += 20;
+
+            // Q3 (Dropdown 1)
+            const r4_1 = document.getElementById('q-val-4-1').value;
+            const r4_2 = document.getElementById('q-val-4-2').value;
+            if (r4_1 === "A" && r4_2 === "A") score += 10;
+            else { document.getElementById('q-hint-4').innerText = "Recuerda que asume que el competidor buscará fríamente su máximo beneficio."; document.getElementById('q-hint-4').classList.remove('hidden'); }
+
+            // Q4 (Dropdown 2)
+            const r6_1 = document.getElementById('q-val-6-1').value;
+            const r6_2 = document.getElementById('q-val-6-2').value;
+            if (r6_1 === "B" && r6_2 === "A") score += 10;
+            else { document.getElementById('q-hint-6').innerText = "Cuando dos agentes buscan beneficio individual extremo, sabotean el colectivo (traicionan)."; document.getElementById('q-hint-6').classList.remove('hidden'); }
+
+            // Q5 (Radio)
+            const r7 = document.querySelector('input[name="q-val-7"]:checked');
+            if (r7 && r7.value === "B") score += 20;
+            else { document.getElementById('q-hint-7').innerText = "Si llegada (12) > servicio (10), la fila colapsa inestablemente."; document.getElementById('q-hint-7').classList.remove('hidden'); }
+
+            // Display
+            document.getElementById('report-user-title').innerText = `REPORTE: ${STATE.userName}`;
+            document.getElementById('report-score-val').innerText = `${score} / 100`;
+            document.getElementById('quiz-report-card').classList.remove('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('hidden');
+        }
+
+        function resetQuiz() { soundClick(); location.reload(); }
+        function toggleRefDetails(refId) { soundClick(); document.getElementById(`${refId}-body`).classList.toggle('hidden'); }
+        function generalReset() { soundSuccess(); STATE.userName = ""; document.getElementById('header-user-name').innerText = "Sin Identificar"; document.getElementById('user-name-input').value = ""; goToSlide(0); }
+
+        function systemExit() {
+            soundCrash();
+            document.body.innerHTML = `
+                <div class="h-screen w-full bg-cyber-bg text-white flex flex-col justify-center items-center font-mono p-6 text-center">
+                    <div class="w-20 h-20 bg-cyber-alert/10 border-2 border-cyber-alert rounded-full flex items-center justify-center mb-8 glow-red">
+                        <i class="fa-solid fa-power-off text-cyber-alert text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black uppercase mb-4 tracking-widest text-cyber-alert text-glow-purple">SISTEMA CERRADO</h2>
+                    <p class="text-xs md:text-sm text-gray-300 max-w-lg mx-auto leading-relaxed text-justify mb-4">
+                        ¡Felicidades, ya puedes aplicar las teorías de colas y juegos! Gracias por participar, Ingeniero/a ${STATE.userName || "Explorador"}.
+                    </p>
+                </div>
+            `;
+        }
+
+        goToSlide(0);
+    </script>
+</body>
+</html>

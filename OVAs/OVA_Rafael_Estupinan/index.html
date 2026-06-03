@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA · Parámetros de los Sistemas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="glass-bg-anim" aria-hidden="true">
+        <div class="glass-blob glass-blob--1"></div>
+        <div class="glass-blob glass-blob--2"></div>
+        <div class="glass-blob glass-blob--3"></div>
+    </div>
+
+    <nav class="nav" id="mainNav">
+        <div class="nav__inner">
+            <div class="nav__brand">
+                <span class="nav__dot"></span>
+                <span class="nav__title">OVA · TGS</span>
+            </div>
+            <button class="nav__burger" id="burger" aria-label="Menú" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav__links" id="navLinks">
+                <li><button class="nbtn active" data-tab="contexto"   onclick="goTab('contexto',this)">Contexto</button></li>
+                <li><button class="nbtn"        data-tab="teoria"     onclick="goTab('teoria',this)">Marco Teórico</button></li>
+                <li><button class="nbtn"        data-tab="videos"     onclick="goTab('videos',this)">Videos</button></li>
+                <li><button class="nbtn"        data-tab="juegos"     onclick="goTab('juegos',this)">Juegos</button></li>
+                <li><button class="nbtn"        data-tab="ejercicios" onclick="goTab('ejercicios',this)">Casos Prácticos</button></li>
+                <li><button class="nbtn"        data-tab="quiz"       onclick="goTab('quiz',this)">Autoevaluación</button></li>
+                <li><button class="nbtn"        data-tab="creditos"   onclick="goTab('creditos',this)">Créditos</button></li>
+                <li><button class="theme-toggle" onclick="document.body.classList.toggle('dark-mode')" aria-label="Cambiar tema">🌓</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero__content">
+            <p class="hero__kicker">Teoría General de Sistemas · OVA</p>
+            <h1 class="hero__h1">Parámetros de<br><em>los Sistemas</em></h1>
+            <p class="hero__lead">Homeostasis &nbsp;·&nbsp; Equilibrio Dinámico &nbsp;·&nbsp; Entropía</p>
+            <div class="hero__actions">
+                <button class="btn btn--dark" onclick="goTab('contexto', document.querySelector('.nbtn'))">Comenzar →</button>
+                <button class="btn btn--outline" onclick="goTab('teoria', document.querySelectorAll('.nbtn')[1])">Marco teórico</button>
+            </div>
+        </div>
+        <div class="hero__scroll" aria-hidden="true">↓</div>
+    </header>
+
+    <main class="wrap">
+
+        <section id="contexto" class="tab tab--active">
+            <header class="sh">
+                <p class="sh__label">01 — Contextualización</p>
+                <h2 class="sh__h2">¿Por qué estudiar los parámetros de los sistemas?</h2>
+                <p class="sh__lead">Comprender cómo los sistemas mantienen su estabilidad es fundamental para analizar, diseñar e intervenir cualquier organización, proceso tecnológico o fenómeno natural.</p>
+            </header>
+
+            <div class="ctx-grid">
+                <div class="ctx-card ctx-card--accent glass-panel">
+                    <p class="ctx-card__num">01</p>
+                    <h3>Relevancia universal</h3>
+                    <p>Los principios de homeostasis y equilibrio dinámico aplican por igual a sistemas biológicos, sociales, tecnológicos y económicos. Entenderlos permite leer el mundo con una mirada sistémica.</p>
+                </div>
+                <div class="ctx-card glass-panel">
+                    <p class="ctx-card__num">02</p>
+                    <h3>Base de la cibernética</h3>
+                    <p>La regulación automática mediante retroalimentación negativa, formalizada por Ashby y Wiener, es el fundamento de toda la tecnología de control moderno: desde un termostato hasta un sistema de piloto automático.</p>
+                </div>
+                <div class="ctx-card glass-panel">
+                    <p class="ctx-card__num">03</p>
+                    <h3>Gestión organizacional</h3>
+                    <p>Las empresas que comprenden sus mecanismos homeostáticos responden mejor a crisis, reducen la entropía operacional y mantienen sus objetivos estratégicos ante la rotación de talento o cambios del mercado.</p>
+                </div>
+                <div class="ctx-card glass-panel">
+                    <p class="ctx-card__num">04</p>
+                    <h3>Ingeniería de software</h3>
+                    <p>Los sistemas distribuidos, los microservicios y la arquitectura resiliente se diseñan bajo principios de estado estacionario: tolerancia a fallos, auto-recuperación y balanceo dinámico de cargas.</p>
+                </div>
+            </div>
+
+            <div class="justify-box glass-panel">
+                <div class="justify-box__icon">💡</div>
+                <div>
+                    <h4>Justificación académica</h4>
+                    <p>Bertalanffy (1968) demostró que todos los sistemas vivos son abiertos: intercambian energía, materia e información con su entorno. Su estudio no es optativo — es el lenguaje común de todas las ciencias del siglo XXI. Sin estos parámetros, cualquier análisis sistémico queda incompleto.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="teoria" class="tab">
+            <header class="sh">
+                <p class="sh__label">02 — Marco Teórico</p>
+                <h2 class="sh__h2">Fundamentos conceptuales</h2>
+                <p class="sh__lead">Explicación teórica con referencias académicas de los tres parámetros centrales de estabilidad sistémica.</p>
+            </header>
+
+            <div class="theory-cards">
+                <article class="tcard tcard--blue glass-panel">
+                    <div class="tcard__header">
+                        <span class="tcard__glyph">⟳</span>
+                        <div>
+                            <h3>Homeostasis</h3>
+                            <p class="tcard__ref">Ashby, W.R. (1956) · Cibernética de Control</p>
+                        </div>
+                    </div>
+                    <p>Mecanismo mediante el cual un sistema regula su ambiente interno ante perturbaciones externas. Opera mediante <strong>bucles de retroalimentación negativa</strong>: cuando una variable crítica se desvía del valor de referencia, el sistema ejecuta una acción proporcional y opuesta para corregirla.</p>
+                    <div class="tcard__example">
+                        <strong>Caso real · Biológico:</strong> La glucosa en sangre sube tras una comida → el páncreas secreta insulina → las células absorben glucosa → el nivel baja al rango normal.
+                    </div>
+                    <div class="tcard__example tcard__example--alt">
+                        <strong>Caso real · Organizacional:</strong> El servicio de soporte técnico detecta un pico de tickets → redirige agentes de otras áreas → normaliza los tiempos de respuesta al SLA original.
+                    </div>
+                </article>
+
+                <article class="tcard tcard--green glass-panel">
+                    <div class="tcard__header">
+                        <span class="tcard__glyph">⇌</span>
+                        <div>
+                            <h3>Equilibrio Dinámico</h3>
+                            <p class="tcard__ref">Bertalanffy, L.von (1968) · Steady State</p>
+                        </div>
+                    </div>
+                    <p>Estado en que el sistema mantiene sus propiedades y forma constantes <strong>mientras sus componentes se renuevan continuamente</strong> mediante flujos de entrada y salida. Es el equilibrio propio de los sistemas abiertos, opuesto al equilibrio estático de los sistemas cerrados (que implica muerte o parálisis).</p>
+                    <div class="tcard__example">
+                        <strong>Caso real · Ecológico:</strong> Un arrecife de coral mantiene su estructura y biodiversidad durante décadas aunque miles de organismos nazcan, mueran y migren constantemente.
+                    </div>
+                    <div class="tcard__example tcard__example--alt">
+                        <strong>Caso real · Tecnológico:</strong> Un servidor de producción mantiene su tasa de respuesta estable aunque las peticiones, los procesos y los datos cambien millones de veces por segundo.
+                    </div>
+                </article>
+
+                <article class="tcard tcard--red glass-panel">
+                    <div class="tcard__header">
+                        <span class="tcard__glyph">↓</span>
+                        <div>
+                            <h3>Entropía</h3>
+                            <p class="tcard__ref">Segunda Ley Termodinámica · TGS</p>
+                        </div>
+                    </div>
+                    <p>Tendencia natural e irreversible de los sistemas hacia el <strong>desorden, degradación y desintegración</strong>. Los sistemas abiertos combaten la entropía incorporando energía e información del entorno (negentropía). Un sistema cerrado que deja de intercambiar con su entorno inevitablemente colapsa.</p>
+                    <div class="tcard__example">
+                        <strong>Caso real · Tecnológico:</strong> Un sistema operativo sin actualizaciones acumula vulnerabilidades y deuda técnica hasta volverse inoperable: entropía digital progresiva.
+                    </div>
+                    <div class="tcard__example tcard__example--alt">
+                        <strong>Caso real · Organizacional:</strong> Una empresa que no contrata talento nuevo, no actualiza procesos ni adopta tecnología colapsa en 3–5 años por obsolescencia entrópica.
+                    </div>
+                </article>
+            </div>
+
+            <div class="flow-diagram glass-panel">
+                <h3>Flujo sistémico integrado</h3>
+                <div class="flow-steps">
+                    <div class="fstep">
+                        <span class="fstep__n">1</span>
+                        <strong>Perturbación</strong>
+                        <p>Entrada entrópica externa que desvía una variable crítica del sistema.</p>
+                    </div>
+                    <div class="fstep__arr">→</div>
+                    <div class="fstep">
+                        <span class="fstep__n">2</span>
+                        <strong>Detección</strong>
+                        <p>Sensores del sistema miden la desviación respecto al valor de referencia.</p>
+                    </div>
+                    <div class="fstep__arr">→</div>
+                    <div class="fstep">
+                        <span class="fstep__n">3</span>
+                        <strong>Homeostasis</strong>
+                        <p>Bucle corrector activa una acción negativa proporcional a la desviación.</p>
+                    </div>
+                    <div class="fstep__arr">→</div>
+                    <div class="fstep">
+                        <span class="fstep__n">4</span>
+                        <strong>Steady State</strong>
+                        <p>El sistema recupera su equilibrio dinámico con componentes renovados.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="videos" class="tab">
+            <header class="sh">
+                <p class="sh__label">03 — Videos</p>
+                <h2 class="sh__h2">Recursos audiovisuales</h2>
+                <p class="sh__lead">Videos curados para reforzar los conceptos de homeostasis, equilibrio dinámico y entropía con explicaciones visuales.</p>
+            </header>
+
+            <div class="vgrid">
+                <div class="vcard glass-panel">
+                    <div class="vcard__thumb">
+                        <iframe src="https://www.youtube.com/embed/NHtHTzei9Ec?si=rVvPFHvHYXbqURn6" title="Homeostasis" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <div class="vcard__body">
+                        <span class="vtag vtag--blue">Homeostasis</span>
+                        <h4>Homeostasis en Sistemas Vivos</h4>
+                        <p>Retroalimentación negativa y regulación interna aplicada a sistemas biológicos y organizacionales.</p>
+                    </div>
+                </div>
+
+                <div class="vcard glass-panel">
+                    <div class="vcard__thumb">
+                        <iframe src="https://www.youtube.com/embed/pP1ITI6cMmw?si=fPML6WRNRH_UILrU" title="TGS Bertalanffy" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <div class="vcard__body">
+                        <span class="vtag vtag--green">TGS</span>
+                        <h4>Teoría General de Sistemas</h4>
+                        <p>Postulados de Bertalanffy: sistemas abiertos, estado estacionario y flujos de energía e información.</p>
+                    </div>
+                </div>
+
+                <div class="vcard glass-panel">
+                    <div class="vcard__thumb">
+                        <iframe src="https://www.youtube.com/embed/FApIdf9VwPk?si=yzCvNcQrCZ5Iqrgn" title="Entropía" allowfullscreen loading="lazy"></iframe>
+                    </div>
+                    <div class="vcard__body">
+                        <span class="vtag vtag--red">Entropía</span>
+                        <h4>Entropía y Equilibrio Dinámico</h4>
+                        <p>Comparativa entre equilibrio estático, dinámico y procesos entrópicos en sistemas complejos.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="juegos" class="tab">
+            <header class="sh">
+                <p class="sh__label">04 — Juegos Interactivos</p>
+                <h2 class="sh__h2">Zona de juegos</h2>
+                <p class="sh__lead">Tres dinámicas para consolidar tu comprensión. Cada juego incluye retroalimentación detallada y calificación automática.</p>
+            </header>
+
+            <div class="gtabs glass-panel">
+                <button class="gtab active-gtab" onclick="switchGame('g-intruso',this)">🔍 El Intruso</button>
+                <button class="gtab" onclick="switchGame('g-match',this)">🔗 Emparejamiento</button>
+                <button class="gtab" onclick="switchGame('g-dilema',this)">⚡ El Dilema</button>
+            </div>
+
+            <div id="g-intruso" class="gpane gpane--active glass-panel" style="padding: 2rem;">
+                <div class="gpane__head">
+                    <h3>Encuentra al Intruso Sistémico</h3>
+                    <p>Identifica cuál de las opciones introduce entropía o rompe el equilibrio dinámico del sistema planteado.</p>
+                </div>
+                <div id="intruso-question-text" class="qtxt"></div>
+                <div id="intruso-grid" class="ogrid"></div>
+                <div id="intruso-feedback" class="fb"></div>
+                <div class="gnav">
+                    <button id="btn-next-intruso" class="btn btn--dark" onclick="nextIntruso()" style="display:none">Siguiente →</button>
+                </div>
+            </div>
+
+            <div id="g-match" class="gpane glass-panel" style="padding: 2rem;">
+                <div class="gpane__head">
+                    <h3>Conectar Conceptos</h3>
+                    <p>Selecciona primero un concepto (izquierda) y luego su definición (derecha). Se califica automáticamente.</p>
+                </div>
+                <div class="mlayout">
+                    <div class="mcol">
+                        <p class="mcol__label">Conceptos</p>
+                        <button class="mbtn" id="concept-1" onclick="selectMatchItem('concept',1)">Homeostasis</button>
+                        <button class="mbtn" id="concept-2" onclick="selectMatchItem('concept',2)">Entropía</button>
+                        <button class="mbtn" id="concept-3" onclick="selectMatchItem('concept',3)">Estado Estacionario</button>
+                    </div>
+                    <div class="mcol">
+                        <p class="mcol__label">Definiciones</p>
+                        <button class="mbtn" id="def-2" onclick="selectMatchItem('def',2)">Tendencia natural al desgaste, desorden y caos total.</button>
+                        <button class="mbtn" id="def-3" onclick="selectMatchItem('def',3)">Equilibrio de sistemas abiertos con flujos constantes.</button>
+                        <button class="mbtn" id="def-1" onclick="selectMatchItem('def',1)">Acción correctora mediante retroalimentación negativa.</button>
+                    </div>
+                </div>
+                <div id="match-feedback" class="fb"></div>
+            </div>
+
+            <div id="g-dilema" class="gpane glass-panel" style="padding: 2rem;">
+                <div class="gpane__head">
+                    <h3>El Dilema del Ingeniero</h3>
+                    <p>Eres el líder tecnológico. Aplica homeostasis y cibernética de control para resolver cada crisis.</p>
+                </div>
+                <div id="dilema-question-text" class="qtxt"></div>
+                <div id="dilema-box" class="olist"></div>
+                <div id="dilema-feedback" class="fb"></div>
+                <div class="gnav">
+                    <button id="btn-next-dilema" class="btn btn--dark" onclick="nextDilema()" style="display:none">Siguiente →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="ejercicios" class="tab">
+            <header class="sh">
+                <p class="sh__label">05 — Casos Prácticos</p>
+                <h2 class="sh__h2">Ejercicios con retroalimentación</h2>
+                <p class="sh__lead">Analiza el escenario organizacional y clasifica correctamente cada componente sistémico.</p>
+            </header>
+
+            <div class="case-wrap glass-panel">
+                <div class="case-scenario">
+                    <span class="tag">📋 Caso de estudio</span>
+                    <p>Una empresa de desarrollo de software pierde inesperadamente a 3 ingenieros senior, lo que amenaza críticamente los tiempos de entrega pactados. Inmediatamente, la gerencia activa un plan de contingencia duplicando los bonos por horas extras y contratando desarrolladores freelance para estabilizar el ritmo de producción original.</p>
+                </div>
+                <div class="case-qs">
+                    <div class="cq">
+                        <label class="cq__label">1. ¿Qué representa la pérdida abrupta de ingenieros senior?</label>
+                        <select id="ex1" class="cq__sel">
+                            <option value="">— Selecciona una respuesta —</option>
+                            <option value="perturbacion">Perturbación / Entrada Entrópica</option>
+                            <option value="homeostasis">Mecanismo Homeostático</option>
+                            <option value="equilibrio">Equilibrio Estático</option>
+                        </select>
+                    </div>
+                    <div class="cq">
+                        <label class="cq__label">2. ¿Qué representa contratar freelancers y asignar bonos económicos?</label>
+                        <select id="ex2" class="cq__sel">
+                            <option value="">— Selecciona una respuesta —</option>
+                            <option value="retroalimentacion">Retroalimentación Negativa (Homeostasis)</option>
+                            <option value="salida">Salida del Sistema</option>
+                            <option value="estatico">Equilibrio Estático</option>
+                        </select>
+                    </div>
+                    <div class="cq">
+                        <label class="cq__label">3. ¿Qué representa mantener el ritmo de producción inicial con el nuevo personal?</label>
+                        <select id="ex3" class="cq__sel">
+                            <option value="">— Selecciona una respuesta —</option>
+                            <option value="entropia">Entropía Positiva</option>
+                            <option value="estacionario">Estado Estacionario (Equilibrio Dinámico)</option>
+                            <option value="limite">Límite del Sistema</option>
+                        </select>
+                    </div>
+                    <button class="btn btn--dark" onclick="validateExercise()" style="width: fit-content;">Verificar análisis</button>
+                    <div id="ex-feedback" class="fb"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="quiz" class="tab">
+            <header class="sh">
+                <p class="sh__label">06 — Autoevaluación</p>
+                <h2 class="sh__h2">Quiz de competencias</h2>
+                <p class="sh__lead">6 preguntas de selección múltiple con puntaje automático en escala 0.0–5.0 y retroalimentación teórica inmediata.</p>
+            </header>
+            <div class="qbox glass-panel">
+                <div id="question" class="qtxt">Cargando…</div>
+                <div id="options-container" class="olist"></div>
+                <div id="quiz-feedback" class="fb"></div>
+            </div>
+        </section>
+
+        <section id="creditos" class="tab">
+            <header class="sh">
+                <p class="sh__label">07 — Créditos</p>
+                <h2 class="sh__h2">Autoría y referencias</h2>
+                <p class="sh__lead">Ficha técnica, bibliografía académica y recursos utilizados en el desarrollo de este OVA.</p>
+            </header>
+
+            <div class="cred-grid">
+                <div class="cred-card glass-panel">
+                    <h4>Autoría</h4>
+                    <p>Desarrollado como proyecto final de la asignatura <strong>Teoría General de Sistemas (TGS)</strong>.</p>
+                    <p>Tema: <em>Parámetros de los Sistemas — Homeostasis y Equilibrio Dinámico.</em></p>
+                </div>
+                <div class="cred-card glass-panel">
+                    <h4>Ficha Técnica</h4>
+                    <ul class="cred-list">
+                        <li><strong>Formato:</strong> OVA Web — HTML · CSS · JavaScript</li>
+                        <li><strong>Nivel:</strong> Educación Superior</li>
+                        <li><strong>Asignatura:</strong> Teoría General de Sistemas</li>
+                        <li><strong>Idioma:</strong> Español</li>
+                        <li><strong>Licencia:</strong> Creative Commons BY-NC — Uso educativo</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="refs-block glass-panel">
+                <h4>Referencias Bibliográficas (APA 7ª ed.)</h4>
+                <ol class="refs-list">
+                    <li>Bertalanffy, L. von. (1968). <em>General System Theory: Foundations, Development, Applications.</em> George Braziller.</li>
+                    <li>Ashby, W. R. (1956). <em>An Introduction to Cybernetics.</em> Chapman & Hall.</li>
+                    <li>Wiener, N. (1948). <em>Cybernetics: Or Control and Communication in the Animal and the Machine.</em> MIT Press.</li>
+                    <li>Checkland, P. (1981). <em>Systems Thinking, Systems Practice.</em> John Wiley & Sons.</li>
+                    <li>Meadows, D. H. (2008). <em>Thinking in Systems: A Primer.</em> Chelsea Green Publishing.</li>
+                    <li>García, R. (2006). <em>Sistemas Complejos: Conceptos, método y fundamentación epistemológica de la investigación interdisciplinaria.</em> Gedisa.</li>
+                </ol>
+            </div>
+
+            <div class="tech-block glass-panel">
+                <h4>Herramientas utilizadas</h4>
+                <div class="pills">
+                    <span class="pill">HTML5</span>
+                    <span class="pill">CSS3</span>
+                    <span class="pill">JavaScript ES6+</span>
+                    <span class="pill">Google Fonts</span>
+                    <span class="pill">Claude AI — Anthropic</span>
+                    <span class="pill">YouTube (videos curados)</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer glass-panel">
+        <p>OVA · Parámetros de los Sistemas · Teoría General de Sistemas &nbsp;&mdash;&nbsp; Uso educativo exclusivo</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

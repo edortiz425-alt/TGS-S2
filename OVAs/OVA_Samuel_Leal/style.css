@@ -1,0 +1,744 @@
+/* ==========================================
+   PALETA DE COLORES CYBER DARK & CONFIGS
+   ========================================== */
+:root {
+    --bg-main: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-card-alt: #111827;
+    --color-text: #f8fafc;
+    --color-muted: #94a3b8;
+    --neon-cyan: #22d3ee;
+    --neon-green: #34d399;
+    --neon-red: #f87171;
+    --border-dark: #334155;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--color-text);
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   HEADER PRINCIPAL REDISEÑADO (CON AIRE Y ESTILO)
+   ========================================== */
+.main-header {
+    text-align: center;
+    /* Le damos un margen amplio arriba y abajo para que respire */
+    margin: 30px auto 45px auto; 
+    /* Aumentamos el colchón interno (padding) superior, inferior y a los lados */
+    padding: 35px 25px; 
+    max-width: 1100px;
+    /* Creamos un degradado de fondo sutil que se desvanece hacia abajo */
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.6) 0%, transparent 100%);
+    border-radius: 12px;
+    position: relative; /* Necesario para el nuevo separador mágico */
+}
+
+.main-header h1 {
+    color: var(--neon-cyan);
+    font-size: 2.5rem; /* Un toque más imponente y nítido */
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    /* Agregamos un aura de brillo muy suave detrás de las letras */
+    text-shadow: 0 0 15px rgba(34, 211, 238, 0.25);
+}
+
+.main-header p {
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    margin-bottom: 0; /* Evitamos que empuje de más hacia abajo */
+}
+
+/* SEPARADOR DE NEÓN DESVANECIDO (REEMPLAZA LA LÍNEA FEA) */
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    /* Un degradado lineal que nace transparente, brilla en el centro y muere transparente */
+    background: linear-gradient(90deg, transparent, var(--border-dark), var(--neon-cyan), var(--border-dark), transparent);
+    box-shadow: 0 1px 6px rgba(34, 211, 238, 0.2);
+}
+/* NAVEGACIÓN POR PESTAÑAS REPOTENCIADA CON BRILLO */
+.tab-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.tab-btn {
+    background: linear-gradient(135deg, var(--bg-surface), #1e293b);
+    color: var(--color-text);
+    border: 1px solid var(--border-dark);
+    padding: 12px 18px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 6px;
+    backdrop-filter: blur(4px); /* Difuminado de fondo */
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.tab-btn:hover {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: linear-gradient(135deg, #273549, var(--bg-surface));
+    box-shadow: 0 0 15px rgba(34, 211, 238, 0.3); /* Brillo exterior suave */
+    transform: translateY(-1px);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, var(--neon-cyan), #06b6d4);
+    color: var(--bg-main);
+    border-color: var(--neon-cyan);
+    font-weight: bold;
+    /* Doble capa de brillo: exterior intenso difuminado e interior nítido */
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.6), inset 0 0 8px rgba(255, 255, 255, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+}
+
+/* CONTENEDOR DE CONTENIDO */
+.content-wrapper {
+    background-color: var(--bg-surface);
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-dark);
+    min-height: 400px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    color: var(--neon-cyan);
+    margin-bottom: 20px;
+    border-left: 4px solid var(--neon-cyan);
+    padding-left: 10px;
+    font-size: 1.6rem;
+}
+
+h3 {
+    margin-bottom: 15px;
+    color: var(--color-text);
+}
+
+p {
+    margin-bottom: 15px;
+    color: #cbd5e1;
+}
+
+/* DISEÑO MULTICOLUMNA RESPONSIVO */
+.grid-2-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.text-card, .video-card {
+    background-color: var(--bg-card-alt);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+}
+
+/* CONTENEDOR DE VIDEO DE YOUTUBE RESPONSIVO */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* ESTRUCTURAS DE ACCORDEÓN (MÓDULO 2) */
+.academic-quote {
+    background: var(--bg-card-alt);
+    border-left: 4px solid var(--neon-green);
+    padding: 15px;
+    margin-bottom: 20px;
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+}
+
+.academic-quote cite {
+    display: block;
+    text-align: right;
+    font-weight: bold;
+    color: var(--neon-green);
+    margin-top: 5px;
+}
+
+.accordion-item {
+    background-color: var(--bg-card-alt);
+    border: 1px solid var(--border-dark);
+    margin-bottom: 10px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--color-text);
+    text-align: left;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.accordion-header:hover {
+    background-color: rgba(255,255,255,0.02);
+    color: var(--neon-cyan);
+}
+
+.accordion-body {
+    /* En lugar de display: none, usamos altura 0 y ocultamos el exceso */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 15px; /* Padding vertical en 0 para evitar saltos bruscos al iniciar */
+    border-top: 1px solid transparent;
+    background-color: var(--bg-surface);
+    /* Curva de aceleración Bezier para un efecto premium de cortina */
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease, 
+                padding 0.4s ease;
+}
+
+/* Esta clase se inyectará con JavaScript para activar la animación */
+.accordion-body.open {
+    max-height: 1000px; /* Un límite alto seguro para que el texto respire */
+    opacity: 1;
+    padding: 15px;
+    border-top: 1px solid var(--border-dark);
+}
+/* SIMULADOR GRÁFICO */
+.simulator-box {
+    background-color: var(--bg-card-alt);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+    margin-bottom: 20px;
+}
+
+.slider-control {
+    margin: 15px 0;
+}
+
+.slider-control input[type="range"] {
+    width: 100%;
+    margin-top: 8px;
+    accent-color: var(--neon-cyan);
+}
+
+.canvas-container {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+
+/* JUEGOS INTERACTIVOS */
+.game-card {
+    background-color: var(--bg-card-alt);
+    border: 1px solid var(--border-dark);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.game-display {
+    text-align: center;
+    font-size: 1.3rem;
+    margin: 15px 0;
+    padding: 15px;
+    background-color: var(--bg-main);
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+}
+
+#g1-valor {
+    font-weight: bold;
+    color: var(--neon-cyan);
+}
+
+#g1-status {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin-top: 5px;
+}
+
+.enunciado-caja {
+    min-height: 65px;
+    background-color: var(--bg-main);
+    padding: 12px;
+    border-radius: 6px;
+    font-style: italic;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--neon-green);
+}
+
+.btn-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* BOTONES GLOBALES DE ACCIÓN */
+.btn-action, .btn-toggle, .btn-secondary-game {
+    background-color: var(--bg-surface);
+    color: var(--color-text);
+    border: 1px solid var(--border-dark);
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-action {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+}
+
+.btn-action:hover {
+    background-color: var(--neon-cyan);
+    color: var(--bg-main);
+}
+
+.btn-toggle {
+    border-color: var(--color-muted);
+    width: auto;
+}
+
+.btn-toggle:hover {
+    background-color: var(--color-muted);
+    color: var(--bg-main);
+}
+
+.btn-secondary-game {
+    margin: 0;
+    text-align: left;
+}
+
+.btn-secondary-game:hover {
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+}
+
+/* PRÁCTICA */
+.practice-item {
+    background-color: var(--bg-card-alt);
+    border: 1px solid var(--border-dark);
+    padding: 18px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.retro-box {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 15px;
+    margin-top: 0;
+    border-left: 4px solid var(--neon-cyan);
+    background-color: var(--bg-main);
+    border-radius: 0 6px 6px 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease, 
+                padding 0.4s ease,
+                margin 0.4s ease;
+}
+
+.retro-box.open {
+    max-height: 600px;
+    opacity: 1;
+    padding: 15px;
+    margin-top: 15px;
+}
+/* APLICACIONES COMPONENTES */
+.apps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+}
+
+.app-card {
+    background-color: var(--bg-card-alt);
+    border: 1px solid var(--border-dark);
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.app-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+/* EVALUACIÓN - QUIZ Y REGISTRO */
+.name-register-box {
+    background-color: var(--bg-card-alt);
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px dashed var(--neon-cyan);
+    margin-bottom: 20px;
+}
+
+.name-register-box input {
+    width: 100%;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-dark);
+    padding: 10px;
+    color: white;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+.name-register-box input:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+}
+
+.quiz-container {
+    background-color: var(--bg-card-alt);
+    border: 1px solid var(--border-dark);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.badge {
+    background-color: var(--bg-main);
+    color: var(--neon-cyan);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-dark);
+}
+
+.quiz-options-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn-option {
+    background-color: var(--bg-surface);
+    color: var(--color-text);
+    border: 1px solid var(--border-dark);
+    padding: 12px 15px;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.btn-option:hover:not(:disabled) {
+    border-color: var(--neon-cyan);
+    background-color: rgba(34, 211, 238, 0.02);
+}
+
+.btn-option:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.feedback-text {
+    font-weight: bold;
+    min-height: 24px;
+}
+
+/* CRÉDITOS Y REFERENCIAS */
+.glossary-list dt {
+    color: var(--neon-cyan);
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-top: 15px;
+}
+
+.glossary-list dd {
+    color: var(--color-muted);
+    margin-left: 15px;
+    margin-bottom: 10px;
+}
+
+.separator {
+    border: 0;
+    height: 1px;
+    background: var(--border-dark);
+    margin: 30px 0;
+}
+
+.bibliography-list {
+    list-style: none;
+}
+
+.bibliography-list li {
+    margin-bottom: 12px;
+    color: #cbd5e1;
+    padding-left: 15px;
+    text-indent: -15px;
+}
+
+.credits-footer {
+    margin-top: 40px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-dark);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+}
+/* ==========================================
+   REDISEÑO MÓDULO 1: DASHBOARD DE DOS COLUMNAS
+   ========================================== */
+.mod1-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide el espacio exactamente a la mitad */
+    gap: 30px;
+    margin-top: 20px;
+    align-items: start;
+}
+
+/* Responsividad: Si la pantalla es pequeña, se apilan verticalmente */
+@media (max-width: 900px) {
+    .mod1-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mod1-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.justificacion-box {
+    background-color: var(--bg-surface);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+}
+
+.video-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* BOTONES DE CONTROL DE VIDEO */
+.vid-btn {
+    background: var(--bg-surface);
+    color: var(--color-text);
+    border: 1px solid var(--border-dark);
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vid-btn:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.15);
+    transform: translateX(4px); /* Sutil desplazamiento interactivo */
+}
+
+.vid-btn.active {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.05) 0%, transparent 100%);
+    box-shadow: inset 4px 0 0 var(--neon-cyan); /* Indicador visual de pestaña activa */
+}
+
+/* PANELES DE VIDEO DINÁMICOS */
+.video-panel {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    background: var(--bg-surface);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-dark);
+}
+
+.video-panel.active {
+    display: flex;
+    animation: smoothFadeIn 0.4s ease forwards;
+}
+
+/* BOTÓN DE EMERGENCIA EN COLOR ROJO MUTED ALERT */
+.emergency-btn {
+    display: block;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.08);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.emergency-btn:hover {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fca5a5;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+@keyframes smoothFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ==========================================
+   REDISEÑO MÓDULO 1: DASHBOARD DE DOS COLUMNAS
+   ========================================== */
+.mod1-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide el espacio exactamente a la mitad */
+    gap: 30px;
+    margin-top: 20px;
+    align-items: start;
+}
+
+/* Responsividad: Si la pantalla es pequeña, se apilan verticalmente */
+@media (max-width: 900px) {
+    .mod1-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mod1-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.justificacion-box {
+    background-color: var(--bg-surface);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+}
+
+.video-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* BOTONES DE CONTROL DE VIDEO */
+.vid-btn {
+    background: var(--bg-surface);
+    color: var(--color-text);
+    border: 1px solid var(--border-dark);
+    padding: 15px 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.vid-btn:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.15);
+    transform: translateX(4px); /* Sutil desplazamiento interactivo */
+}
+
+.vid-btn.active {
+    border-color: var(--neon-cyan);
+    color: var(--neon-cyan);
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0.05) 0%, transparent 100%);
+    box-shadow: inset 4px 0 0 var(--neon-cyan); /* Indicador visual de pestaña activa */
+}
+
+/* PANELES DE VIDEO DINÁMICOS */
+.video-panel {
+    display: none;
+    flex-direction: column;
+    gap: 15px;
+    background: var(--bg-surface);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border-dark);
+}
+
+.video-panel.active {
+    display: flex;
+    animation: smoothFadeIn 0.4s ease forwards;
+}
+
+/* BOTÓN DE EMERGENCIA EN COLOR ROJO MUTED ALERT */
+.emergency-btn {
+    display: block;
+    text-align: center;
+    background: rgba(239, 68, 68, 0.08);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.emergency-btn:hover {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: #ef4444;
+    color: #fca5a5;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+@keyframes smoothFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}

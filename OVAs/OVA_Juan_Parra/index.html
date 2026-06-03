@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OVA - ENFOQUE REDUCCIONISTA </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <audio id="sound-applause" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav" preload="auto"></audio>
+
+    <nav class="tabs-container">
+        <div class="tabs-wrapper">
+            <button class="tab-link active" onclick="openTab(event, 'inicio')">Inicio</button>
+            <button class="tab-link" onclick="openTab(event, 'teoria')">Teoría</button>
+            <button class="tab-link" onclick="openTab(event, 'ejemplos')">Laboratorio</button>
+            <button class="tab-link" onclick="openTab(event, 'evaluacion')">Quiz</button>
+            <button class="tab-link" onclick="openTab(event, 'creditos')">Créditos</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <section id="inicio" class="tab-content show">
+            <div class="hero-section">
+                <div class="hero-badge">Objeto Virtual de Aprendizaje</div>
+                <h1>El Enfoque <br><span class="text-highlight">Reduccionista</span></h1>
+                <p class="hero-subtitle">Fundamentos de la Teoría General de Sistemas para la Ingeniería.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary" onclick="document.querySelector('[onclick*=\'teoria\']').click()">Comenzar Aprendizaje</button>
+                </div>
+            </div>
+
+            <div class="card hero-card">
+                <p class="justification-text">
+                    Antes de integrar arquitecturas masivas o aplicar el pensamiento sistémico complejo, un ingeniero de sistemas debe dominar el enfoque reduccionista. Es la herramienta que permite estructurar la lógica de programación, aislar fallas (debugging) y aplicar la premisa de "divide y vencerás". Entender las piezas es el primer paso para hacer que el sistema funcione como un todo.
+                </p>
+            </div>
+        </section>
+
+        <section id="teoria" class="tab-content">
+            <div class="section-header">
+                <h2> Marco Teórico Fundamental</h2>
+                <p> Análisis de componentes elementales y su aplicación.</p>
+            </div>
+            
+            <div class="grid">
+                <div class="card complex-card">
+                    <div class="card-meta">Método Científico</div>
+                    <h3>¿Qué es el Reduccionismo?</h3>
+                    <p>Es un método basado en Descartes que estudia los fenómenos complejos dividiéndolos en sus partes constitutivas elementales (subsistemas) para predecirlos y controlarlos. Permitió el crecimiento de ciencias como la física y la electricidad.</p>
+                    
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/BSPtpldMcbE?si=Mivd7uxTbqjp7Xgo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="card highlight-card">
+                    <div class="card-meta text-green">Contraste de Paradigmas</div>
+                    <h3>Reduccionismo vs. TGS</h3>
+                    <p>Mientras el reduccionismo subdivide, la TGS prioriza la sinergia. Una desventaja del reduccionismo es que <strong>puede que no se logre entender la situación al completo</strong> al ignorar las interacciones.</p>
+                    
+                    <div class="pros-cons-container">
+                        <div class="pro-box">
+                            <h4>✅ Fortalezas</h4>
+                            <ul>
+                                <li>Aísla variables complejas.</li>
+                                <li>Estudio de fenómenos a fondo.</li>
+                                <li>Diagnóstico de fallas puntuales.</li>
+                            </ul>
+                        </div>
+                        <div class="con-box">
+                            <h4>❌ Limitaciones</h4>
+                            <ul>
+                                <li>Falta de visión global.</li>
+                                <li>Ignora propiedades emergentes.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card music-card mt-4">
+                <div class="card-meta">Ejemplo del Video Académico</div>
+                <h3>Análisis Reduccionista: El Pentagrama Musical</h3>
+                <p>Tal como explica el recurso audiovisual, un sistema complejo como una partitura musical de "Cumpleaños Feliz" puede ser analizado bajo el reduccionismo dividiéndolo en:</p>
+                <div class="system-breakdown">
+                    <div class="breakdown-item"><strong>Sistema Complejo:</strong> Pentagrama</div>
+                    <div class="breakdown-arrow">⬇️</div>
+                    <div class="breakdown-item"><strong>Subsistemas:</strong> Compases</div>
+                    <div class="breakdown-arrow">⬇️</div>
+                    <div class="breakdown-item"><strong>Elementos Mínimos:</strong> Notas Musicales</div>
+                </div>
+                <p class="mt-2"><em>Conclusión: Si un subsistema o nota falla, afecta la ejecución entera, demostrando la dependencia del sistema hacia sus partes más simples.</em></p>
+            </div>
+
+            <div class="card code-card mt-4">
+                <div class="card-meta">Aplicación en Ingeniería</div>
+                <h3> El Reduccionismo en el Debugging</h3>
+                <p> En el desarrollo de software dentro de entornos como NetBeans, aplicamos el reduccionismo al depurar. Si un programa masivo falla, aislamos las estructuras utilizando ciclos independientes para verificar la lógica matemática elemento por elemento:</p>
+                
+                <div class="code-snippet">
+<pre><code>// Aislamiento analítico de una rutina iterativa
+int i = 0;
+while (i < vectorNumeros.length) {
+    if (vectorNumeros[i] == valorBuscado) {
+        System.out.println("Elemento verificado en índice: " + i);
+    }
+    i++;
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <section id="ejemplos" class="tab-content">
+            <div class="section-header">
+                <h2>Laboratorio Interactivo</h2>
+                <p>Pon a prueba tus conocimientos con este software educativo dinámico.</p>
+            </div>
+            <div class="card game-card">
+                <div class="iframe-game-wrapper">
+                    <iframe src="https://www.educaplay.com/game/29314693-enfoques_y_mecanismos_ahorcado_mecanico_entropia_y_homeostasis.html" allowfullscreen frameborder="0"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="evaluacion" class="tab-content">
+            <div class="section-header">
+                <h2>Quiz de Evaluación Integral</h2>
+                <p>Responde las siguientes 10 preguntas para medir tu dominio sobre el Enfoque Reduccionista y la TGS.</p>
+            </div>
+            
+            <div class="quiz-scroll-container">
+                <div class="card quiz-card-block" data-q="1">
+                    <p class="quiz-question">1. Según el video académico expuesto, ¿cuál es una de las principales desventajas del enfoque reduccionista?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 1, false)">A) Que divide los problemas de manera excesiva.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 1, true)">B) Que puede que no se logre entender la situación al completo.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 1, false)">C) Que impide el desarrollo de las ciencias especializadas.</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="2">
+                    <p class="quiz-question">2. ¿Qué pensador histórico sentó las bases del método analítico y la división de problemas que fundamenta al reduccionismo?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 2, false)">A) Ludwig von Bertalanffy</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 2, true)">B) René Descartes</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 2, false)">C) Norbert Wiener</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="3">
+                    <p class="quiz-question">3. En el ejemplo del pentagrama musical, ¿qué nivel representa el elemento mínimo constitutivo?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 3, false)">A) El compás</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 3, false)">B) La partitura completa</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 3, true)">C) Las notas musicales independientes</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="4">
+                    <p class="quiz-question">4. Cuando un ingeniero de sistemas extrae un ciclo `while` de un programa masivo para probarlo por separado en NetBeans, ¿qué acción reduccionista está ejecutando?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 4, true)">A) Aislamiento analítico de variables (Debugging)</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 4, false)">B) Identificación de propiedades emergentes</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 4, false)">C) Modelamiento de sinergia cerrada</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="5">
+                    <p class="quiz-question">5. ¿Cuál es la principal diferencia filosófica entre el Reduccionismo y la Teoría General de Sistemas (TGS)?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 5, false)">A) El reduccionismo no utiliza las matemáticas.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 5, true)">B) El reduccionismo divide para estudiar las partes; la TGS estudia las interacciones y el todo.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 5, false)">C) La TGS rechaza el concepto de subsistemas.</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="6">
+                    <p class="quiz-question">6. Si un sistema de software experimenta un desgaste natural y desorganización interna al ser aislado de actualizaciones y del entorno, ¿qué concepto de la TGS está operando?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 6, true)">A) Entropía</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 6, false)">B) Neguentropía</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 6, false)">C) Homeostasis</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="7">
+                    <p class="quiz-question">7. La propiedad que afirma que un sistema operativo es más eficiente que la simple suma de sus líneas de código aisladas se conoce como:</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 7, false)">A) Especialización lineal</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 7, true)">B) Sinergia</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 7, false)">C) Entropía negativa</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="8">
+                    <p class="quiz-question">8. Cuando el software inyecta parches, configuraciones externas u orden para combatir su degradación, se está aplicando:</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 8, false)">A) Descomposición cartesiana</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 8, true)">B) Neguentropía</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 8, false)">C) Homeostasis estática</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="9">
+                    <p class="quiz-question">9. Un mecanismo automatizado en un servidor que monitorea la carga de peticiones y equilibra el uso de memoria RAM para mantenerse estable opera bajo el principio de:</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 9, false)">A) Reducción elemental</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 9, false)">B) Sinergia cerrada</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 9, true)">C) Homeostasis</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+
+                <div class="card quiz-card-block" data-q="10">
+                    <p class="quiz-question">10. ¿Por qué el principio de "Divide y Vencerás" en algoritmos se considera una herencia directa del enfoque reduccionista?</p>
+                    <div class="quiz-options">
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 10, true)">A) Porque resuelve un problema complejo rompiéndolo en subproblemas independientes más simples.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 10, false)">B) Porque ignora la existencia de un resultado final.</button>
+                        <button class="option-btn" onclick="checkQuizAnswer(this, 10, false)">C) Porque obliga al sistema a volverse puramente entrópico.</button>
+                    </div>
+                    <div class="feedback-text hidden"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="creditos" class="tab-content">
+            <div class="section-header">
+                <h2>Créditos y Referencias</h2>
+                <p>Transparencia académica y propiedad intelectual del recurso.</p>
+            </div>
+            <div class="card">
+                <h3>Equipo de Desarrollo</h3>
+                <p><strong>Autor del Objeto de Aprendizaje:</strong> Ingeniero Juan Parra</p>
+                <p><strong>Asignatura:</strong> Teoría General de Sistemas</p>
+                <p><strong>Programa:</strong> Ingeniería de Sistemas</p>
+                <hr class="my-4">
+                <h3>Referencias Multimedia y Bibliográficas</h3>
+                <ul class="ref-list">
+                    <li>  Bertalanffy, L. V. (1968). <em>Teoría General de los Sistemas</em>. Fondo de Cultura Económica.</li>
+                    <li>  Descartes, R. (1637). <em>Discurso del método</em>.</li>
+                    <li><strong>  Recurso Audiovisual Principal:</strong> Canal Teoría Sistemas. (2018). <em>Enfoque reduccionista</em> [Video de YouTube]. Disponible en: <a href="http://www.youtube.com/watch?v=BSPtpldMcbE" target="_blank">http://www.youtube.com/watch?v=BSPtpldMcbE</a></li>
+                    <li><strong>  Recurso Lúdico Interactivo:</strong> Parra, J. (2026). <em>Ahorcado Mecánico: Entropía y Homeostasis</em> [Software de Entretenimiento Educativo]. Alojado en Educaplay. Disponible en: <a href="https://www.educaplay.com/game/29314693-enfoques_y_mecanismos_ahorcado_mecanico_entropia_y_homeostasis.html" target="_blank">Enlace al juego</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Controlador de Navegación de Pestañas
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("show");
+            }
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("show");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // Lógica Dinámica del Quiz (Previene marcas automáticas y reproduce audio)
+        function checkQuizAnswer(buttonElement, questionId, isCorrect) {
+            const questionBlock = buttonElement.closest('.quiz-card-block');
+            const allOptions = questionBlock.querySelectorAll('.option-btn');
+            const feedbackText = questionBlock.querySelector('.feedback-text');
+            const applauseSound = document.getElementById('sound-applause');
+
+            // 1. Deshabilitar los botones de esta pregunta para congelar la selección
+            allOptions.forEach(btn => {
+                btn.disabled = true;
+                btn.style.cursor = 'not-allowed';
+                btn.style.opacity = '0.6';
+            });
+
+            // 2. Resaltar visualmente la opción escogida
+            buttonElement.style.opacity = '1'; 
+            
+            if (isCorrect) {
+                buttonElement.classList.add('correct');
+                feedbackText.textContent = "🎯 ¡Excelente! Respuesta correcta. Dominas el concepto.";
+                feedbackText.className = "feedback-text success"; 
+                
+                // Disparar audio de aplausos sin interferencias interactivas
+                if (applauseSound) {
+                    applauseSound.currentTime = 0; 
+                    applauseSound.play().catch(error => {
+                        console.log("Audio bloqueado por políticas del navegador:", error);
+                    });
+                }
+            } else {
+                buttonElement.classList.add('incorrect');
+                feedbackText.textContent = "❌ Respuesta incorrecta. Repasa el material de soporte e inténtalo en tu siguiente revisión.";
+                feedbackText.className = "feedback-text error"; 
+                
+                // Mostrar sutilmente el borde verde de la respuesta que era correcta
+                allOptions.forEach(btn => {
+                    if (btn.getAttribute('onclick').includes('true')) {
+                        btn.style.borderColor = 'var(--primary)';
+                        btn.style.opacity = '0.9';
+                    }
+                });
+            }
+        }
+    </script>
+</body></html>

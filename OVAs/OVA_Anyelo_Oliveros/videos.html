@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Videos · TGS OVA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Loader removed -->
+  <nav>
+    <div class="navbar">
+      <a href="index.html" class="logo"><i class="fas fa-network-wired"></i> TGS OVA</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="conceptos.html">Conceptos</a></li>
+        <li><a href="ejemplos.html">Ejemplos</a></li>
+        <li><a href="juegos.html">Juegos</a></li>
+        <li><a href="quiz.html">Quiz</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="referencias.html">Referencias</a></li>
+      </ul>
+      <div style="display:flex; gap:15px; align-items:center;"><button class="theme-toggle"> Claro</button><div class="menu-toggle"><span></span><span></span><span></span></div></div>
+    </div>
+  </nav>
+
+<section id="videos">
+    <h2 class="section-title">Recursos Multimedia</h2>
+    <p style="text-align:center; color:#b0b0b0;">
+        Amplía tu conocimiento con estos videos educativos sobre Teoría General de Sistemas.
+    </p>
+
+    <div class="videos-grid">
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/QbBy20GPlqc"
+                    title="Introducción a la Teoría de Sistemas"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Introducción a la Teoría de Sistemas</div>
+        </div>
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/QnuVjO4-wis"
+                    title="Sistemas Abiertos vs Cerrados vs Aislados"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Sistemas Abiertos vs Cerrados vs Aislados</div>
+        </div>
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/xZjuPz6MNS8"
+                    title="Sistemas y Cibernética"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Sistemas y Cibernética</div>
+        </div>
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/qsKTjL9OVp4"
+                    title="Pensamiento Sistémico Explicado"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Pensamiento Sistémico Explicado</div>
+        </div>
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/KhE16DjeM5A"
+                    title="Aplicaciones de TGS en Empresas"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Aplicaciones de TGS en Empresas</div>
+        </div>
+
+        <div class="video-container scroll-animation">
+            <div class="video-wrapper">
+                <iframe
+                    src="https://www.youtube.com/embed/loZOrCa4FS0"
+                    title="Reduccionismo y ciencias de la complejidad"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+            <div class="video-title">Reduccionismo y ciencias de la complejidad</div>
+        </div>
+
+    </div>
+</section>
+
+  <footer>
+    <div class="footer-content"><div class="footer-text"><strong>Teoría General de Sistemas - OVA v1.0</strong></div></div>
+  </footer>
+
+  <script src="js/script.js"></script>
+    <script>
+        // Fallback: detect thumbnail load errors and mark wrapper with 'no-thumb'
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.video-thumb').forEach(img => {
+                function markError() {
+                    const wrapper = img.closest('.video-wrapper');
+                    if (wrapper) wrapper.classList.add('no-thumb');
+                }
+
+                img.addEventListener('error', markError);
+                // If image is already complete but failed to load
+                if (img.complete && img.naturalWidth === 0) markError();
+            });
+        });
+    </script>
+</body>
+</html>
